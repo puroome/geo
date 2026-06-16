@@ -2,810 +2,338 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>한국지리 백지도 정복 - 게임</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: #f0f4f8;
-      color: #1e293b;
-      font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ── 헤더 ── */
-    .header {
-      background: #fff;
-      border-bottom: 1px solid #e2e8f0;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .logo { font-size: 20px; font-weight: 800; color: #1e293b; }
-    .logo span { color: #6366f1; }
-    .user-badge {
-      background: #ede9fe; border-radius: 20px;
-      padding: 4px 12px; font-size: 12px; color: #6366f1; font-weight: 600;
-    }
-    .header-right { display: flex; align-items: center; gap: 10px; }
-    .score-badge {
-      background: #dcfce7; border-radius: 20px;
-      padding: 4px 14px; font-size: 13px; color: #16a34a; font-weight: 700;
-    }
-    .btn-sm {
-      background: #f1f5f9; border: 1px solid #e2e8f0; color: #64748b;
-      border-radius: 8px; padding: 6px 14px; font-size: 12px;
-      cursor: pointer; transition: background 0.2s; font-weight: 600;
-    }
-    .btn-sm:hover { background: #e2e8f0; color: #1e293b; }
-
-    /* ── 메인 ── */
-    .main {
-      flex: 1; display: flex; flex-direction: column;
-      padding: 16px; gap: 12px;
-      max-width: 1100px; width: 100%; margin: 0 auto;
-    }
-
-    /* ── 상단 컨트롤 바 ── */
-    .control-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 12px 16px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    }
-
-    /* 문제 유형 탭 */
-    .mode-tabs { display: flex; gap: 6px; }
-
-    .mode-tab {
-      background: #f8fafc;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 8px 18px;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #64748b;
-      white-space: nowrap;
-    }
-    .mode-tab .icon { font-size: 16px; }
-    .mode-tab:hover { border-color: #a5b4fc; color: #4338ca; background: #f5f3ff; }
-    .mode-tab.active {
-      background: #6366f1; border-color: #6366f1; color: #fff;
-    }
-
-    /* 구분선 */
-    .divider {
-      width: 1px; height: 28px; background: #e2e8f0; flex-shrink: 0;
-    }
-
-    /* 지역 필터 */
-    .filter-label { font-size: 12px; color: #94a3b8; font-weight: 600; white-space: nowrap; }
-
-    .filter-btns { display: flex; gap: 5px; flex-wrap: wrap; }
-
-    .filter-btn {
-      background: #f8fafc; border: 1px solid #e2e8f0;
-      border-radius: 20px; padding: 5px 13px;
-      font-size: 12px; color: #64748b; cursor: pointer;
-      transition: all 0.2s; font-weight: 500;
-    }
-    .filter-btn:hover { background: #f5f3ff; border-color: #a5b4fc; }
-    .filter-btn.active {
-      background: #6366f1; border-color: #6366f1; color: #fff; font-weight: 700;
-    }
-
-    /* ── 게임 영역 ── */
-    .game-area { display: flex; gap: 14px; flex: 1; }
-
-    /* 백지도 패널 */
-    .map-panel {
-      flex: 1;
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-      min-height: 400px;
-    }
-
-    .map-top {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .map-hint {
-      font-size: 12px;
-      color: #94a3b8;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .map-controls { display: flex; gap: 6px; }
-
-    .toggle-btn {
-      background: #f1f5f9; border: 1px solid #e2e8f0;
-      border-radius: 8px; padding: 5px 14px;
-      font-size: 12px; color: #64748b; cursor: pointer;
-      transition: all 0.2s; font-weight: 600;
-    }
-    .toggle-btn.active { background: #6366f1; border-color: #6366f1; color: #fff; }
-
-    /* 선택된 지역 표시 */
-    .selected-region-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: #ede9fe; border-radius: 20px;
-      padding: 4px 12px; font-size: 12px; color: #6366f1; font-weight: 700;
-    }
-
-    #map-svg {
-      width: 100%; max-width: 480px; height: auto; display: block;
-    }
-
-    /* SVG 스타일 */
-    #map-svg path {
-      fill: #dbeafe; stroke: #93c5fd; stroke-width: 0.7;
-      cursor: pointer; transition: fill 0.15s;
-    }
-    #map-svg path:hover { fill: #bfdbfe; }
-
-    /* 선택된 지역 강조 */
-    #map-svg path.selected-region { fill: #e0e7ff !important; stroke: #6366f1 !important; stroke-width: 1.5; }
-
-    /* 퀴즈 패널 */
-    .quiz-panel {
-      width: 340px; display: flex; flex-direction: column; gap: 12px;
-    }
-
-    /* 진행바 */
-    .progress-wrap { display: flex; align-items: center; gap: 8px; }
-    .progress-bar {
-      flex: 1; height: 6px; background: #e2e8f0; border-radius: 4px; overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%; background: #6366f1; border-radius: 4px;
-      transition: width 0.4s ease; width: 0%;
-    }
-    .progress-text { font-size: 12px; color: #94a3b8; white-space: nowrap; }
-
-    /* 문제 카드 */
-    .question-card {
-      background: #fff; border: 1px solid #e2e8f0;
-      border-radius: 16px; padding: 20px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    }
-    .q-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
-    .q-type-badge {
-      font-size: 10px; font-weight: 700;
-      padding: 3px 10px; border-radius: 20px;
-    }
-    .badge-mcq { background: #ede9fe; color: #6366f1; }
-    .badge-ox  { background: #fef3c7; color: #d97706; }
-    .q-region { font-size: 11px; color: #94a3b8; font-weight: 600; }
-    .q-count  { margin-left: auto; font-size: 11px; color: #cbd5e1; }
-    .question-text { font-size: 15px; line-height: 1.75; color: #1e293b; font-weight: 500; }
-
-    /* MCQ 보기 */
-    .choices { display: flex; flex-direction: column; gap: 8px; }
-    .choice-btn {
-      background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px;
-      padding: 11px 16px; font-size: 13px; color: #334155;
-      cursor: pointer; text-align: left; transition: all 0.15s;
-      display: flex; align-items: center; gap: 10px; font-weight: 500;
-    }
-    .choice-btn:hover:not(:disabled) { background: #f5f3ff; border-color: #a5b4fc; color: #4338ca; }
-    .choice-btn .num {
-      width: 24px; height: 24px; border-radius: 50%; background: #e2e8f0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; flex-shrink: 0; color: #64748b;
-    }
-    .choice-btn.correct { background: #f0fdf4; border-color: #16a34a; color: #15803d; }
-    .choice-btn.correct .num { background: #bbf7d0; color: #15803d; }
-    .choice-btn.wrong { background: #fff1f2; border-color: #dc2626; color: #b91c1c; }
-    .choice-btn.wrong .num { background: #fecaca; color: #b91c1c; }
-    .choice-btn:disabled { cursor: not-allowed; }
-
-    /* OX 버튼 */
-    .ox-btns { display: flex; gap: 10px; }
-    .ox-btn {
-      flex: 1; padding: 20px; border-radius: 14px;
-      border: 2px solid transparent; font-size: 36px;
-      cursor: pointer; transition: all 0.15s; font-weight: 900;
-    }
-    .ox-btn.o-btn { background: #f0fdf4; border-color: #86efac; color: #16a34a; }
-    .ox-btn.x-btn { background: #fff1f2; border-color: #fca5a5; color: #dc2626; }
-    .ox-btn:hover:not(:disabled) { transform: scale(1.04); }
-    .ox-btn:disabled { cursor: not-allowed; opacity: 0.5; }
-    .ox-btn.correct { border-width: 2.5px; filter: brightness(0.92); opacity: 1 !important; }
-    .ox-btn.wrong { opacity: 0.25 !important; }
-
-    /* 해설 */
-    .exp-box {
-      background: #f5f3ff; border: 1px solid #c4b5fd;
-      border-radius: 10px; padding: 12px 14px;
-      font-size: 12px; line-height: 1.65; color: #4c1d95; display: none;
-    }
-    .exp-box.show { display: block; }
-    .exp-label { font-weight: 700; margin-bottom: 4px; color: #6366f1; }
-
-    /* 다음 버튼 */
-    .btn-next {
-      width: 100%; background: #6366f1; color: #fff; border: none;
-      border-radius: 10px; padding: 13px; font-size: 14px; font-weight: 700;
-      cursor: pointer; transition: background 0.2s; display: none;
-    }
-    .btn-next.show { display: block; }
-    .btn-next:hover { background: #4f46e5; }
-
-    /* 결과 카드 */
-    .result-card {
-      background: #fff; border: 1px solid #e2e8f0;
-      border-radius: 16px; padding: 28px 24px; text-align: center;
-      display: none; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .result-card.show { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .result-emoji { font-size: 52px; }
-    .result-title { font-size: 18px; font-weight: 800; color: #1e293b; }
-    .result-score { font-size: 40px; font-weight: 900; color: #6366f1; }
-    .result-sub { font-size: 13px; color: #94a3b8; }
-    .btn-restart {
-      background: #6366f1; color: #fff; border: none;
-      border-radius: 10px; padding: 12px 28px; font-size: 14px;
-      font-weight: 700; cursor: pointer; margin-top: 6px; transition: background 0.2s;
-    }
-    .btn-restart:hover { background: #4f46e5; }
-
-    /* 랭킹 패널 */
-    .ranking-panel {
-      background: #fff; border: 1px solid #e2e8f0;
-      border-radius: 16px; padding: 16px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    }
-    .ranking-title { font-size: 13px; font-weight: 700; color: #64748b; margin-bottom: 12px; }
-    .rank-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px;
-    }
-    .rank-item:last-child { border-bottom: none; }
-    .rank-num {
-      width: 24px; height: 24px; border-radius: 50%; background: #f1f5f9;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; color: #94a3b8; flex-shrink: 0;
-    }
-    .rank-num.gold   { background: #fef9c3; color: #ca8a04; }
-    .rank-num.silver { background: #f1f5f9; color: #64748b; }
-    .rank-num.bronze { background: #fff7ed; color: #c2410c; }
-    .rank-name { flex: 1; color: #334155; font-weight: 500; }
-    .rank-score { font-weight: 700; color: #6366f1; }
-    .rank-me { color: #16a34a !important; font-weight: 700; }
-
-    @media (max-width: 700px) {
-      .game-area { flex-direction: column; }
-      .quiz-panel { width: 100%; }
-      .control-bar { gap: 8px; }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>한국지리 백지도 정복</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<!-- 헤더 -->
-<div class="header">
-  <div class="header-left">
-    <div class="logo">🗺️ <span>백지도</span>정복</div>
-    <div class="user-badge" id="userBadge">로딩 중...</div>
+<!-- ===================== 홈 화면 ===================== -->
+<div id="screen-home" class="screen">
+  <div class="home-header">
+    <div class="home-logo">🗺️ <span>백지도</span>정복</div>
+    <button id="account-chip">로그인 중...</button>
+    <button class="btn-icon" id="btn-collection">🃏 도감</button>
   </div>
-  <div class="header-right">
-    <div class="score-badge">⭐ 총점 <span id="totalScore">0</span></div>
-    <button class="btn-sm" id="rankBtn">🏆 랭킹</button>
-    <button class="btn-sm" id="logoutBtn">로그아웃</button>
+
+  <!-- 하단 탭 컨텐츠 -->
+  <div class="home-body">
+
+    <!-- 플레이 탭 -->
+    <div class="tab-panel active" id="tab-play">
+      <!-- 계급 / XP -->
+      <div class="rank-section">
+        <div id="rank-badge">🌱 신참 지리학자</div>
+        <div class="xp-bar-wrap"><div id="xp-bar" style="width:0%"></div></div>
+        <div id="xp-text">첫 게임을 시작해 보세요!</div>
+      </div>
+
+      <!-- 추천 액션 -->
+      <div class="rec-wrap">
+        <div id="rec-bubble">👋 지도를 탭해 지역을 찾아보세요!</div>
+        <button id="rec-btn" onclick="openModesModal()">🎮 게임 시작</button>
+      </div>
+
+      <!-- 초보자 가이드 (첫 방문) -->
+      <div class="beginner-guide" id="beginner-guide" style="display:none">
+        <h3>🗺️ 백지도 정복에 오신 걸 환영해요!</h3>
+        <p>수능 한국지리 시·군 위치 + 개념 퀴즈를 한 번에! 지도에서 직접 탭해 지역을 찾고, 기후·통계 그래프 비교도 도전해 보세요.</p>
+        <div class="guide-steps">
+          <div class="guide-step">① 게임 모드 선택</div>
+          <div class="guide-step">② 지역 필터 설정</div>
+          <div class="guide-step">③ 백지도에서 탭!</div>
+        </div>
+      </div>
+
+      <!-- 게임 모드 캐러셀 -->
+      <div class="board-title" style="margin-bottom:6px">🎮 게임 모드</div>
+      <div class="mode-row">
+        <button id="car-prev">‹</button>
+        <div id="mode-carousel"></div>
+        <button id="car-next">›</button>
+      </div>
+
+      <!-- 지역 선택 -->
+      <div class="board-title" style="margin-bottom:6px">🌏 지역 선택</div>
+      <div id="region-chips" class="region-chips" style="margin-bottom:12px"></div>
+
+      <!-- 플레이 히어로 (오늘의 도전) -->
+      <div class="play-hero">
+        <div id="ph-start-wrap">
+          <button id="ph-start">▶ 게임 시작</button>
+        </div>
+        <button id="ph-mission" style="display:none"></button>
+      </div>
+
+      <!-- 숙련도 -->
+      <div class="mastery-section">
+        <div class="sec-title">📊 권역 숙련도</div>
+        <div id="mastery-list"></div>
+      </div>
+
+      <!-- 약점 보고서 -->
+      <div class="weak-section">
+        <div class="sec-title">🔴 약점 지역</div>
+        <div id="weak-body"><div style="font-size:13px;color:var(--dim2)">아직 기록이 없어요. 게임을 해보세요!</div></div>
+      </div>
+    </div>
+
+    <!-- 챌린지 탭 -->
+    <div class="tab-panel" id="tab-challenge">
+      <!-- 오늘의 도전 -->
+      <div class="daily-section">
+        <div class="sec-title">🔁 오늘의 도전</div>
+        <div id="daily-body">로딩 중...</div>
+      </div>
+
+      <!-- 보스전 -->
+      <div class="boss-section">
+        <div class="sec-title">👹 권역 보스전</div>
+        <div class="boss-cards" id="boss-body"></div>
+      </div>
+
+      <!-- 미션 -->
+      <div class="mission-section">
+        <div class="sec-title">🎯 오늘의 미션</div>
+        <div id="mission-body">로딩 중...</div>
+      </div>
+
+      <!-- 업적 -->
+      <div class="ach-section">
+        <div class="sec-title">🏅 업적 <span id="ach-count" style="font-size:12px;color:var(--dim2)"></span></div>
+        <div id="ach-list"></div>
+      </div>
+
+      <!-- 오답 수배서 -->
+      <div class="weak-section" id="wanted-section">
+        <div class="sec-title">🔍 오답 수배서</div>
+        <div id="wanted-body"><div style="font-size:13px;color:var(--dim2)">틀린 지역이 없어요! 🎉</div></div>
+      </div>
+    </div>
+
+    <!-- 분석 탭 -->
+    <div class="tab-panel" id="tab-analyze">
+      <!-- 빈출 분석 -->
+      <div class="freq-section">
+        <div class="sec-title">📈 수능 빈출 분석</div>
+        <span id="freq-span"></span>
+        <div id="freq-list"></div>
+      </div>
+
+      <!-- 랭킹 보드 -->
+      <div class="board-section">
+        <div class="board-title">🏆 명예의 전당</div>
+        <div class="board-tabs" id="board-tabs"></div>
+        <div id="home-board"></div>
+      </div>
+
+      <!-- 정복 지도 -->
+      <div class="conquest-wrap">
+        <div class="sec-title" style="margin-bottom:8px">🗺️ 정복 현황</div>
+        <div id="conquest-wrap"></div>
+      </div>
+
+      <!-- 데이터 초기화 -->
+      <div style="text-align:center;padding:10px 0">
+        <button id="reset-data" class="text-btn" style="font-size:11px;color:var(--dim2)">⚠️ 게임 데이터 초기화</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 하단 탭 바 -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="play"><span class="t-icon">🎮</span>플레이</button>
+    <button class="tab-btn" data-tab="challenge"><span class="t-icon">🏆</span>챌린지</button>
+    <button class="tab-btn" data-tab="analyze"><span class="t-icon">📊</span>분석</button>
   </div>
 </div>
 
-<div class="main">
-
-  <!-- 상단 컨트롤 바 (문제유형 + 지역선택 한 줄) -->
-  <div class="control-bar">
-
-    <!-- 문제 유형 -->
-    <div class="mode-tabs">
-      <div class="mode-tab active" data-mode="mcq">
-        <span class="icon">📝</span> 4지선다
-      </div>
-      <div class="mode-tab" data-mode="ox">
-        <span class="icon">⭕</span> OX 퀴즈
+<!-- ===================== 게임 화면 ===================== -->
+<div id="screen-game" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <div class="hud">
+        <div class="hud-item"><span id="hud-qnum">0</span>/<span id="hud-qtotal">0</span></div>
+        <div class="hud-item score" style="position:relative">
+          <span>⭐</span><span id="hud-score">0</span>
+        </div>
+        <div class="hud-item combo">🔥<span id="hud-combo">0</span></div>
       </div>
     </div>
-
-    <div class="divider"></div>
-
-    <!-- 지역 필터 -->
-    <span class="filter-label">지역</span>
-    <div class="filter-btns">
-      <button class="filter-btn active" data-region="전체">전체</button>
-      <button class="filter-btn" data-region="수도권">수도권</button>
-      <button class="filter-btn" data-region="강원">강원</button>
-      <button class="filter-btn" data-region="충청">충청</button>
-      <button class="filter-btn" data-region="호남">호남</button>
-      <button class="filter-btn" data-region="영남">영남</button>
-      <button class="filter-btn" data-region="제주">제주</button>
+    <div class="top-bar-right">
+      <button id="btn-quit" class="btn-icon">✕</button>
     </div>
-
   </div>
-
-  <!-- 게임 영역 -->
-  <div class="game-area">
-
-    <!-- 백지도 패널 -->
-    <div class="map-panel">
-      <div class="map-top">
-        <div class="map-hint">
-          <span id="selectedBadge" class="selected-region-badge">🌏 전체</span>
-          <span style="color:#cbd5e1; font-size:11px; margin-left:4px;">지도를 클릭해 지역 선택</span>
-        </div>
-        <div class="map-controls">
-          <button class="toggle-btn active" id="toggleProv">시·도</button>
-          <button class="toggle-btn" id="toggleMuni">시·군</button>
+  <div id="timer-bar-wrap"><div id="timer-bar"></div></div>
+  <div class="boss-bar hidden" id="boss-bar">
+    <span>👹 보스 HP</span>
+    <div class="boss-hp-bar"><div class="boss-hp-fill" id="boss-hp-fill" style="width:100%"></div></div>
+    <span id="boss-hp-text"></span>
+  </div>
+  <div class="turn-indicator hidden" id="turn-indicator"></div>
+  <div class="game-inner" id="game-body">
+    <!-- 지도 패널 -->
+    <div id="map-pane">
+      <div class="map-toolbar">
+        <div class="game-title-bar" id="game-title">게임</div>
+        <div class="zoom-btns">
+          <button class="zoom-btn" id="zoom-in">＋</button>
+          <button class="zoom-btn" id="zoom-out">－</button>
+          <button class="zoom-btn" id="zoom-reset">⌂</button>
         </div>
       </div>
-      <svg id="map-svg" viewBox="0 0 760 806" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div id="map-svg-wrap">
+        <svg id="map-svg" viewBox="-8 -8 776 822" xmlns="http://www.w3.org/2000/svg" style="touch-action:none"></svg>
+      </div>
+      <div class="warmup-tip hidden" id="warmup-tip">💡 첫 몇 문제는 워밍업 — 느긋하게 위치를 익혀 봐요!</div>
     </div>
-
     <!-- 퀴즈 패널 -->
-    <div class="quiz-panel">
-
-      <div class="progress-wrap">
-        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-text" id="qCount">0 / 10</div>
-      </div>
-
-      <div class="question-card" id="questionCard">
-        <div class="q-meta">
-          <span class="q-type-badge badge-mcq" id="qTypeBadge">4지선다</span>
-          <span class="q-region" id="qRegion"></span>
-          <span class="q-count" id="qCountBadge"></span>
-        </div>
-        <div class="question-text" id="questionText">지역을 선택하면 문제가 시작됩니다!</div>
-      </div>
-
-      <div class="choices" id="choicesArea"></div>
-
-      <div class="ox-btns" id="oxArea" style="display:none">
-        <button class="ox-btn o-btn" id="oBtn">O</button>
-        <button class="ox-btn x-btn" id="xBtn">X</button>
-      </div>
-
-      <div class="exp-box" id="expBox">
-        <div class="exp-label">📖 해설</div>
-        <div id="expText"></div>
-      </div>
-
-      <button class="btn-next" id="nextBtn">다음 문제 →</button>
-
-      <div class="result-card" id="resultCard">
-        <div class="result-emoji" id="resultEmoji">🎉</div>
-        <div class="result-title">세션 결과</div>
-        <div class="result-score" id="resultScore"></div>
-        <div class="result-sub" id="resultSub"></div>
-        <button class="btn-restart" id="restartBtn">다시 하기</button>
-      </div>
-
-      <div class="ranking-panel" id="rankingPanel" style="display:none">
-        <div class="ranking-title">🏆 TOP 랭킹</div>
-        <div id="rankList"></div>
-      </div>
-
+    <div class="game-panel">
+      <div id="question-box">문제 로딩 중...</div>
+      <div id="choices-box"></div>
+      <div class="feedback-box hidden" id="feedback-box"></div>
+      <button id="btn-next" class="hidden">다음 문제 →</button>
+      <!-- 빙고 그리드 (빙고 모드 전용) -->
+      <div id="bingo-grid" class="bingo-grid" style="display:none"></div>
     </div>
   </div>
 </div>
 
-<script type="module">
-import { auth, db } from './js/firebase-config.js';
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { MCQ, OX } from './js/questions.js';
+<!-- ===================== 결과 화면 ===================== -->
+<div id="screen-result" class="screen">
+  <div class="result-card">
+    <button id="btn-quit" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:18px;color:var(--dim2);cursor:pointer">✕</button>
+    <div id="result-title">결과</div>
+    <div id="result-main">0점</div>
+    <div id="result-detail"></div>
+    <div class="name-entry hidden" id="name-entry">
+      <input type="text" id="player-name" placeholder="이름 입력 (최대 12자)">
+      <button id="btn-save-score">🏆 명예의 전당 등록</button>
+    </div>
+    <div class="result-btns">
+      <button id="btn-retry">🔄 다시 하기</button>
+      <button id="btn-home">🏠 홈으로</button>
+    </div>
+  </div>
+</div>
 
-// ── 지역명 → region 매핑 (시도명 → 문제 region 태그) ──
-const REGION_MAP = {
-  '서울특별시':   '수도권',
-  '인천광역시':   '수도권',
-  '경기도':       '수도권',
-  '강원특별자치도': '강원',
-  '충청북도':     '충청',
-  '충청남도':     '충청',
-  '대전광역시':   '충청',
-  '세종특별자치시': '충청',
-  '전북특별자치도': '호남',
-  '전라남도':     '호남',
-  '광주광역시':   '호남',
-  '경상북도':     '영남',
-  '경상남도':     '영남',
-  '대구광역시':   '영남',
-  '부산광역시':   '영남',
-  '울산광역시':   '영남',
-  '제주특별자치도': '제주',
-};
+<!-- ===================== 도감 화면 ===================== -->
+<div id="screen-cards" class="screen">
+  <div class="cards-header">
+    <button id="btn-cards-back" class="btn-icon">← 뒤로</button>
+    <h2>🃏 지역 카드 도감</h2>
+    <button id="btn-draw">🎲 뽑기</button>
+  </div>
+  <div class="coll-chips" id="coll-chips"></div>
+  <div class="coll-progress" id="coll-progress">
+    <span id="coll-title-progress">0 / 0 수집</span>
+  </div>
+  <div id="cards-grid"></div>
+</div>
 
-// ── 상태 ──────────────────────────────────────
-let currentUser = null;
-let currentMode = 'mcq';
-let currentRegion = '전체';   // '전체' 또는 '수도권' 등
-let mapLevel = 'prov';
-let questionPool = [];
-let currentQ = null;
-let qIndex = 0;
-let sessionScore = 0;
-let answered = false;
-const QUESTIONS_PER_SESSION = 10;
+<!-- ===================== 가챠 모달 ===================== -->
+<div class="modal hidden" id="gacha-modal">
+  <div class="modal-box">
+    <h3>🎲 지역 카드 뽑기</h3>
+    <div id="coin-cnt">🪙 코인 0개 보유</div>
+    <div id="gacha-card" class="gacha-flip"><div id="gcard-front"></div></div>
+    <div id="gacha-msg">코인 5개로 랜덤 카드를 뽑아요!</div>
+    <div class="gacha-btns">
+      <button id="btn-draw">🎲 뽑기 (코인 5)</button>
+      <button id="btn-draw-again" class="hidden">🔄 한 번 더</button>
+      <button id="btn-gacha-close">닫기</button>
+    </div>
+  </div>
+</div>
 
-// ── 인증 ──────────────────────────────────────
-onAuthStateChanged(auth, async (user) => {
-  if (!user) { window.location.href = 'index.html'; return; }
-  currentUser = user;
-  document.getElementById('userBadge').textContent = user.email.split('@')[0];
+<!-- ===================== 로그인 모달 ===================== -->
+<div class="modal hidden login-modal" id="login-modal">
+  <div class="modal-box" style="position:relative">
+    <button class="modal-close" id="login-close">✕</button>
+    <h3>👤 계정 동기화</h3>
+    <p style="font-size:13px;color:var(--dim);margin-bottom:14px">반 이름·닉네임·PIN으로 기기 간 기록을 동기화할 수 있어요.</p>
+    <div class="modal-field">
+      <label>학교/반 이름</label>
+      <input type="text" id="login-class" placeholder="예: 3학년 7반">
+    </div>
+    <div class="modal-field">
+      <label>닉네임</label>
+      <input type="text" id="login-nick" placeholder="예: 지리왕">
+    </div>
+    <div class="modal-field">
+      <label>비밀번호 (숫자 4~8자리)</label>
+      <input type="password" id="login-pin" placeholder="숫자만">
+    </div>
+    <button class="modal-submit" id="login-submit">동기화 시작</button>
+    <div class="modal-row">
+      <button id="login-guest">게스트로 계속</button>
+      <button id="login-teacher">선생님 대시보드</button>
+    </div>
+    <div class="modal-msg" id="login-msg"></div>
+  </div>
+</div>
 
-  const userRef = doc(db, 'users', user.uid);
-  const snap = await getDoc(userRef);
-  if (snap.exists()) {
-    document.getElementById('totalScore').textContent = snap.data().totalScore || 0;
-  } else {
-    await setDoc(userRef, { email: user.email, totalScore: 0, playCount: 0, createdAt: new Date() });
-  }
-  renderMap();
-  startSession();
-});
+<!-- ===================== 선생님 모달 ===================== -->
+<div class="modal hidden teacher-modal" id="teacher-modal">
+  <div class="modal-box" style="position:relative">
+    <button class="modal-close" id="teacher-close">✕</button>
+    <h3>👩‍🏫 선생님 대시보드</h3>
+    <p class="t-msg" id="teacher-sub">학교명·닉네임·비밀번호로 로그인하면 학생 기록을 확인할 수 있습니다.</p>
+    <div id="teacher-auth">
+      <div class="modal-field"><label>학교명</label><input type="text" id="teacher-school" placeholder="예: 한국고등학교"></div>
+      <div class="modal-field"><label>교사 닉네임</label><input type="text" id="teacher-nick" placeholder="예: 지리선생님"></div>
+      <div class="modal-field"><label>비밀번호</label><input type="password" id="teacher-pw" placeholder="비밀번호"></div>
+      <div class="modal-field hidden" id="teacher-code"><label>교사 등록 코드</label><input type="text" id="teacher-code-input" placeholder="관리자에게 받은 코드"></div>
+      <button class="modal-submit" id="teacher-submit">로그인</button>
+      <div style="text-align:center;margin-top:8px">
+        <button class="text-link" id="teacher-toggle">처음이신가요? 교사 등록하기 →</button>
+      </div>
+    </div>
+    <div id="teacher-result"></div>
+    <div class="modal-msg" id="teacher-msg"></div>
+  </div>
+</div>
 
-// ── 로그아웃 ──────────────────────────────────
-document.getElementById('logoutBtn').addEventListener('click', async () => {
-  await signOut(auth);
-  window.location.href = 'index.html';
-});
+<!-- ===================== 모드 선택 모달 ===================== -->
+<div class="modal hidden" id="modes-modal">
+  <div class="modal-box" style="position:relative">
+    <button class="modal-close" id="modes-close">✕</button>
+    <h3>🎮 게임 모드 선택</h3>
+    <div id="modes-list"></div>
+  </div>
+</div>
 
-// ── 문제 유형 탭 ──────────────────────────────
-document.querySelectorAll('.mode-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    currentMode = tab.dataset.mode;
-    startSession();
-  });
-});
+<!-- ===================== 테마 선택 모달 ===================== -->
+<div class="modal hidden" id="theme-modal">
+  <div class="modal-box" style="position:relative">
+    <button class="modal-close" id="theme-close">✕</button>
+    <h3>🏷️ 테마 선택</h3>
+    <div id="theme-list"></div>
+  </div>
+</div>
 
-// ── 지역 필터 버튼 ────────────────────────────
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    setRegion(btn.dataset.region);
-  });
-});
+<!-- ===================== 테마 학습 모달 ===================== -->
+<div class="modal hidden" id="themelearn-modal">
+  <div class="modal-box" style="position:relative">
+    <button class="modal-close" id="themelearn-close">✕</button>
+    <h3 id="themelearn-title">테마 학습</h3>
+    <button id="tl-back">← 테마 목록</button>
+    <button id="tl-quiz">🎮 이 테마로 퀴즈</button>
+    <div id="themelearn-list" style="margin-top:10px"></div>
+  </div>
+</div>
 
-// 지역 설정 공통 함수
-function setRegion(region) {
-  currentRegion = region;
+<!-- 데이터 스크립트 -->
+<script src="js/map-data.js"></script>
+<script src="js/stats-data.js"></script>
+<script src="js/match-sets.js"></script>
+<script src="js/freq-data.js"></script>
+<script src="js/mascots-data.js"></script>
+<script src="js/questions.js"></script>
 
-  // 버튼 활성화 동기화
-  document.querySelectorAll('.filter-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.region === region);
-  });
+<!-- 메인 게임 엔진 -->
+<script type="module" src="js/engine.js"></script>
 
-  // 지도 지역 강조 동기화
-  highlightMapRegion(region);
-
-  // 선택 배지 업데이트
-  const emoji = region === '전체' ? '🌏' :
-    region === '수도권' ? '🏙️' : region === '강원' ? '🏔️' :
-    region === '충청' ? '🌾' : region === '호남' ? '🌊' :
-    region === '영남' ? '⚓' : '🍊';
-  document.getElementById('selectedBadge').textContent = `${emoji} ${region}`;
-
-  startSession();
-}
-
-// ── 시도/시군 토글 ─────────────────────────────
-document.getElementById('toggleProv').addEventListener('click', () => {
-  mapLevel = 'prov';
-  document.getElementById('toggleProv').classList.add('active');
-  document.getElementById('toggleMuni').classList.remove('active');
-  renderMap();
-});
-document.getElementById('toggleMuni').addEventListener('click', () => {
-  mapLevel = 'muni';
-  document.getElementById('toggleMuni').classList.add('active');
-  document.getElementById('toggleProv').classList.remove('active');
-  renderMap();
-});
-
-// ── 랭킹 ──────────────────────────────────────
-document.getElementById('rankBtn').addEventListener('click', () => {
-  const panel = document.getElementById('rankingPanel');
-  if (panel.style.display === 'none') { loadRanking(); panel.style.display = 'block'; }
-  else panel.style.display = 'none';
-});
-
-// ── 지도 렌더링 ───────────────────────────────
-function renderMap() {
-  const svg = document.getElementById('map-svg');
-  svg.innerHTML = '';
-  const data = mapLevel === 'prov' ? window.PROVINCES : window.MUNIS;
-  if (!data) return;
-
-  Object.entries(data).forEach(([name, info]) => {
-    const paths = info.d.split(/(?=M)/).filter(Boolean);
-    paths.forEach(pathD => {
-      const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      el.setAttribute('d', pathD);
-      el.setAttribute('data-name', name);
-      el.setAttribute('data-region', info.region || '');
-      el.addEventListener('click', () => onMapRegionClick(name, info));
-      svg.appendChild(el);
-    });
-
-    // 시도 레벨에서 지명 표시
-    if (mapLevel === 'prov' && info.cx) {
-      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      text.setAttribute('x', info.cx);
-      text.setAttribute('y', info.cy);
-      text.setAttribute('text-anchor', 'middle');
-      text.setAttribute('font-size', '8');
-      text.setAttribute('fill', '#64748b');
-      text.setAttribute('pointer-events', 'none');
-      const short = name
-        .replace(/특별자치도|특별자치시|광역시|특별시/, '')
-        .replace(/도$/, '');
-      text.textContent = short;
-      svg.appendChild(text);
-    }
-  });
-
-  // 현재 선택 지역 강조 유지
-  highlightMapRegion(currentRegion);
-}
-
-// ── 지도에서 시도 클릭 → 지역 선택 ──────────────
-function onMapRegionClick(name, info) {
-  // 시도 단위에서만 지역 선택 동작
-  if (mapLevel !== 'prov') return;
-
-  // 클릭한 시도 → region 태그로 변환
-  const region = REGION_MAP[name] || info.region || null;
-  if (!region) return;
-
-  setRegion(region);
-}
-
-// ── 지도 지역 강조 ────────────────────────────
-function highlightMapRegion(region) {
-  if (!window.PROVINCES) return;
-  document.querySelectorAll('#map-svg path').forEach(el => {
-    const elRegion = el.getAttribute('data-region');
-    // PROVINCES의 region 값과 비교 (영남, 호남, 수도권 등)
-    const regionTagMap = {
-      '수도권': '수도권', '강원': '강원', '충청': '충청',
-      '호남': '호남', '영남': '영남', '제주': '제주'
-    };
-    if (region === '전체') {
-      el.classList.remove('selected-region');
-    } else {
-      const tag = regionTagMap[region];
-      if (tag && elRegion === tag) {
-        el.classList.add('selected-region');
-      } else {
-        el.classList.remove('selected-region');
-      }
-    }
-  });
-}
-
-// ── 세션 시작 ─────────────────────────────────
-function startSession() {
-  sessionScore = 0; qIndex = 0; answered = false;
-  document.getElementById('resultCard').classList.remove('show');
-  document.getElementById('questionCard').style.display = 'block';
-  document.getElementById('nextBtn').classList.remove('show');
-  document.getElementById('expBox').classList.remove('show');
-  document.getElementById('rankingPanel').style.display = 'none';
-
-  // 문제 풀 구성
-  let pool = currentMode === 'mcq' ? MCQ : OX;
-
-  // 지역 필터
-  if (currentRegion !== '전체') {
-    pool = pool.filter(q => q.region === currentRegion);
-  }
-
-  if (pool.length === 0) {
-    document.getElementById('questionText').textContent = '해당 지역의 문제가 없습니다. 다른 지역을 선택하세요.';
-    document.getElementById('choicesArea').innerHTML = '';
-    document.getElementById('oxArea').style.display = 'none';
-    return;
-  }
-
-  questionPool = shuffle([...pool]).slice(0, QUESTIONS_PER_SESSION);
-
-  // 배지 업데이트
-  if (currentMode === 'mcq') {
-    document.getElementById('qTypeBadge').textContent = '4지선다';
-    document.getElementById('qTypeBadge').className = 'q-type-badge badge-mcq';
-  } else {
-    document.getElementById('qTypeBadge').textContent = 'OX 퀴즈';
-    document.getElementById('qTypeBadge').className = 'q-type-badge badge-ox';
-  }
-
-  loadQuestion();
-}
-
-// ── 문제 로드 ─────────────────────────────────
-function loadQuestion() {
-  if (qIndex >= questionPool.length) { showResult(); return; }
-
-  answered = false;
-  currentQ = questionPool[qIndex];
-
-  document.getElementById('progressFill').style.width = `${(qIndex / questionPool.length) * 100}%`;
-  document.getElementById('qCount').textContent = `${qIndex + 1} / ${questionPool.length}`;
-  document.getElementById('qCountBadge').textContent = `${qIndex + 1} / ${questionPool.length}`;
-  document.getElementById('qRegion').textContent = currentQ.region || '';
-  document.getElementById('questionText').textContent = currentQ.q;
-  document.getElementById('expBox').classList.remove('show');
-  document.getElementById('nextBtn').classList.remove('show');
-
-  if (currentMode === 'mcq') {
-    document.getElementById('oxArea').style.display = 'none';
-    renderChoices(currentQ.choices, currentQ.answer);
-  } else {
-    document.getElementById('choicesArea').innerHTML = '';
-    document.getElementById('oxArea').style.display = 'flex';
-    resetOxBtns();
-  }
-}
-
-// ── MCQ 보기 ──────────────────────────────────
-function renderChoices(choices, answerIdx) {
-  const area = document.getElementById('choicesArea');
-  area.innerHTML = '';
-  choices.forEach((text, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'choice-btn';
-    btn.innerHTML = `<span class="num">${i + 1}</span>${text}`;
-    btn.addEventListener('click', () => {
-      if (answered) return;
-      answered = true;
-      const correct = i === answerIdx;
-      if (correct) { btn.classList.add('correct'); sessionScore++; }
-      else {
-        btn.classList.add('wrong');
-        area.querySelectorAll('.choice-btn')[answerIdx].classList.add('correct');
-      }
-      area.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
-      showExp();
-    });
-    area.appendChild(btn);
-  });
-}
-
-// ── OX ────────────────────────────────────────
-function resetOxBtns() {
-  const o = document.getElementById('oBtn');
-  const x = document.getElementById('xBtn');
-  o.disabled = false; x.disabled = false;
-  o.className = 'ox-btn o-btn';
-  x.className = 'ox-btn x-btn';
-}
-
-document.getElementById('oBtn').addEventListener('click', () => handleOX(true));
-document.getElementById('xBtn').addEventListener('click', () => handleOX(false));
-
-function handleOX(answer) {
-  if (answered) return;
-  answered = true;
-  const correct = answer === currentQ.answer;
-  if (correct) sessionScore++;
-  const o = document.getElementById('oBtn');
-  const x = document.getElementById('xBtn');
-  if (correct) {
-    (answer ? o : x).classList.add('correct');
-    (!answer ? o : x).classList.add('wrong');
-  } else {
-    (answer ? o : x).classList.add('wrong');
-    (currentQ.answer ? o : x).classList.add('correct');
-  }
-  o.disabled = true; x.disabled = true;
-  showExp();
-}
-
-// ── 해설 ──────────────────────────────────────
-function showExp() {
-  if (currentQ.exp) {
-    document.getElementById('expText').textContent = currentQ.exp;
-    document.getElementById('expBox').classList.add('show');
-  }
-  document.getElementById('nextBtn').classList.add('show');
-}
-
-// ── 다음 버튼 ─────────────────────────────────
-document.getElementById('nextBtn').addEventListener('click', () => { qIndex++; loadQuestion(); });
-
-// ── 결과 ──────────────────────────────────────
-async function showResult() {
-  document.getElementById('progressFill').style.width = '100%';
-  document.getElementById('questionCard').style.display = 'none';
-  document.getElementById('choicesArea').innerHTML = '';
-  document.getElementById('oxArea').style.display = 'none';
-  document.getElementById('expBox').classList.remove('show');
-  document.getElementById('nextBtn').classList.remove('show');
-
-  const total = questionPool.length;
-  const pct = Math.round((sessionScore / total) * 100);
-  const emoji = pct >= 90 ? '🏆' : pct >= 70 ? '🎉' : pct >= 50 ? '😊' : '😢';
-
-  document.getElementById('resultEmoji').textContent = emoji;
-  document.getElementById('resultScore').textContent = `${sessionScore} / ${total}`;
-  document.getElementById('resultSub').textContent = `정답률 ${pct}%`;
-  document.getElementById('resultCard').classList.add('show');
-
-  if (currentUser) {
-    const userRef = doc(db, 'users', currentUser.uid);
-    await updateDoc(userRef, { totalScore: increment(sessionScore), playCount: increment(1), lastPlayed: new Date() });
-    const snap = await getDoc(userRef);
-    document.getElementById('totalScore').textContent = snap.data().totalScore || 0;
-  }
-}
-
-document.getElementById('restartBtn').addEventListener('click', startSession);
-
-// ── 랭킹 ──────────────────────────────────────
-async function loadRanking() {
-  const q = query(collection(db, 'users'), orderBy('totalScore', 'desc'), limit(10));
-  const snap = await getDocs(q);
-  const list = document.getElementById('rankList');
-  list.innerHTML = '';
-  let i = 0;
-  snap.forEach(docSnap => {
-    const data = docSnap.data();
-    const isMe = currentUser && docSnap.id === currentUser.uid;
-    const cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
-    list.innerHTML += `
-      <div class="rank-item">
-        <div class="rank-num ${cls}">${i + 1}</div>
-        <div class="rank-name ${isMe ? 'rank-me' : ''}">${(data.email||'').split('@')[0]}${isMe?' ★':''}</div>
-        <div class="rank-score ${isMe ? 'rank-me' : ''}">${data.totalScore||0}점</div>
-      </div>`;
-    i++;
-  });
-}
-
-// ── 셔플 ──────────────────────────────────────
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-</script>
-
-<script src="./js/map-data.js"></script>
 </body>
 </html>
