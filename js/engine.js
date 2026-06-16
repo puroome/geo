@@ -36,6 +36,7 @@ onAuthStateChanged(auth, async (user)=>{
   const snap=await getDoc(userRef);
   if(!snap.exists()) await setDoc(userRef,{email:user.email,totalScore:0,playCount:0,createdAt:serverTimestamp()});
   buildMap(); initMapGestures(); initHome();
+  show('screen-home');
 });
 
 async function saveScoreToFirestore(s){
