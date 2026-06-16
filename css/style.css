@@ -586,3 +586,17 @@ input{font-family:inherit}
 /* 추천 */
 #rec-bubble{background:#f0f9ff;border:1px solid var(--sea-l);border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:6px}
 #rec-btn{background:var(--sea);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;width:100%;cursor:pointer;margin-bottom:12px}
+
+/* ── 카드 실루엣 SVG 스타일 ── */
+.land{fill:#2FA34F;stroke:#fff;stroke-width:.8;vector-effect:non-scaling-stroke}
+.land-shadow{fill:#1F7A38;stroke:none;transform:translate(3px,4px)}
+.land-face{pointer-events:none}
+.card-sil{display:block;width:100%;height:auto}
+.card-sil-wrap{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;padding:4px}
+.card-lv-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;min-height:16px}
+.card-lv{font-size:10px}
+.card-cnt{font-size:11px;color:var(--dim2);font-weight:700}
+.cstar{color:#D1D5DB;font-size:10px}
+.cstar.on{color:var(--gold)}
+.gacha-sil{max-width:220px;margin:0 auto}
+.gacha-sil .card-sil{max-height:160px}
