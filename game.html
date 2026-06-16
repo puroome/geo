@@ -28,121 +28,92 @@
       flex-wrap: wrap;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
-
     .header-left { display: flex; align-items: center; gap: 12px; }
-
     .logo { font-size: 20px; font-weight: 800; color: #1e293b; }
     .logo span { color: #6366f1; }
-
     .user-badge {
-      background: #ede9fe;
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: 12px;
-      color: #6366f1;
-      font-weight: 600;
+      background: #ede9fe; border-radius: 20px;
+      padding: 4px 12px; font-size: 12px; color: #6366f1; font-weight: 600;
     }
-
     .header-right { display: flex; align-items: center; gap: 10px; }
-
     .score-badge {
-      background: #dcfce7;
-      border-radius: 20px;
-      padding: 4px 14px;
-      font-size: 13px;
-      color: #16a34a;
-      font-weight: 700;
+      background: #dcfce7; border-radius: 20px;
+      padding: 4px 14px; font-size: 13px; color: #16a34a; font-weight: 700;
     }
-
     .btn-sm {
-      background: #f1f5f9;
-      border: 1px solid #e2e8f0;
-      color: #64748b;
-      border-radius: 8px;
-      padding: 6px 14px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: background 0.2s;
-      font-weight: 600;
+      background: #f1f5f9; border: 1px solid #e2e8f0; color: #64748b;
+      border-radius: 8px; padding: 6px 14px; font-size: 12px;
+      cursor: pointer; transition: background 0.2s; font-weight: 600;
     }
     .btn-sm:hover { background: #e2e8f0; color: #1e293b; }
 
     /* ── 메인 ── */
     .main {
-      flex: 1;
+      flex: 1; display: flex; flex-direction: column;
+      padding: 16px; gap: 12px;
+      max-width: 1100px; width: 100%; margin: 0 auto;
+    }
+
+    /* ── 상단 컨트롤 바 ── */
+    .control-bar {
       display: flex;
-      flex-direction: column;
-      padding: 16px;
-      gap: 14px;
-      max-width: 1100px;
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    /* ── 모드 탭 ── */
-    .mode-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
-
-    .mode-tab {
-      flex: 1;
-      min-width: 120px;
-      background: #fff;
-      border: 2px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 12px 16px;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: center;
-    }
-
-    .mode-tab:hover { border-color: #a5b4fc; background: #f5f3ff; }
-
-    .mode-tab.active {
-      background: #f5f3ff;
-      border-color: #6366f1;
-    }
-
-    .mode-tab .icon { font-size: 22px; display: block; margin-bottom: 4px; }
-    .mode-tab .name { font-size: 13px; font-weight: 700; color: #1e293b; }
-    .mode-tab .desc { font-size: 11px; color: #94a3b8; margin-top: 2px; }
-    .mode-tab.active .desc { color: #6366f1; }
-
-    /* ── 지역 필터 ── */
-    .filter-bar {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
       align-items: center;
-    }
-
-    .filter-label { font-size: 12px; color: #94a3b8; margin-right: 4px; font-weight: 600; }
-
-    .filter-btn {
+      gap: 12px;
+      flex-wrap: wrap;
       background: #fff;
       border: 1px solid #e2e8f0;
-      border-radius: 20px;
-      padding: 5px 14px;
-      font-size: 12px;
-      color: #64748b;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-weight: 500;
+      border-radius: 14px;
+      padding: 12px 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
 
-    .filter-btn:hover { background: #f5f3ff; border-color: #a5b4fc; }
+    /* 문제 유형 탭 */
+    .mode-tabs { display: flex; gap: 6px; }
 
+    .mode-tab {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 8px 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+      white-space: nowrap;
+    }
+    .mode-tab .icon { font-size: 16px; }
+    .mode-tab:hover { border-color: #a5b4fc; color: #4338ca; background: #f5f3ff; }
+    .mode-tab.active {
+      background: #6366f1; border-color: #6366f1; color: #fff;
+    }
+
+    /* 구분선 */
+    .divider {
+      width: 1px; height: 28px; background: #e2e8f0; flex-shrink: 0;
+    }
+
+    /* 지역 필터 */
+    .filter-label { font-size: 12px; color: #94a3b8; font-weight: 600; white-space: nowrap; }
+
+    .filter-btns { display: flex; gap: 5px; flex-wrap: wrap; }
+
+    .filter-btn {
+      background: #f8fafc; border: 1px solid #e2e8f0;
+      border-radius: 20px; padding: 5px 13px;
+      font-size: 12px; color: #64748b; cursor: pointer;
+      transition: all 0.2s; font-weight: 500;
+    }
+    .filter-btn:hover { background: #f5f3ff; border-color: #a5b4fc; }
     .filter-btn.active {
-      background: #6366f1;
-      border-color: #6366f1;
-      color: #fff;
-      font-weight: 700;
+      background: #6366f1; border-color: #6366f1; color: #fff; font-weight: 700;
     }
 
     /* ── 게임 영역 ── */
-    .game-area {
-      display: flex;
-      gap: 14px;
-      flex: 1;
-    }
+    .game-area { display: flex; gap: 14px; flex: 1; }
 
     /* 백지도 패널 */
     .map-panel {
@@ -150,250 +121,151 @@
       background: #fff;
       border: 1px solid #e2e8f0;
       border-radius: 16px;
-      padding: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
-      min-height: 400px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      min-height: 400px;
     }
 
-    .map-controls { display: flex; gap: 8px; align-self: flex-end; }
+    .map-top {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .map-hint {
+      font-size: 12px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .map-controls { display: flex; gap: 6px; }
 
     .toggle-btn {
-      background: #f1f5f9;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 5px 14px;
-      font-size: 12px;
-      color: #64748b;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-weight: 600;
+      background: #f1f5f9; border: 1px solid #e2e8f0;
+      border-radius: 8px; padding: 5px 14px;
+      font-size: 12px; color: #64748b; cursor: pointer;
+      transition: all 0.2s; font-weight: 600;
     }
+    .toggle-btn.active { background: #6366f1; border-color: #6366f1; color: #fff; }
 
-    .toggle-btn.active {
-      background: #6366f1;
-      border-color: #6366f1;
-      color: #fff;
+    /* 선택된 지역 표시 */
+    .selected-region-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #ede9fe; border-radius: 20px;
+      padding: 4px 12px; font-size: 12px; color: #6366f1; font-weight: 700;
     }
 
     #map-svg {
-      width: 100%;
-      max-width: 480px;
-      height: auto;
-      display: block;
+      width: 100%; max-width: 480px; height: auto; display: block;
     }
 
+    /* SVG 스타일 */
     #map-svg path {
-      fill: #dbeafe;
-      stroke: #93c5fd;
-      stroke-width: 0.7;
-      cursor: pointer;
-      transition: fill 0.15s;
+      fill: #dbeafe; stroke: #93c5fd; stroke-width: 0.7;
+      cursor: pointer; transition: fill 0.15s;
     }
-
     #map-svg path:hover { fill: #bfdbfe; }
-    #map-svg path.correct { fill: #bbf7d0 !important; stroke: #16a34a !important; stroke-width: 1.5; }
-    #map-svg path.wrong   { fill: #fecaca !important; stroke: #dc2626 !important; stroke-width: 1.5; }
-    #map-svg path.target  { fill: #e0e7ff !important; stroke: #6366f1 !important; stroke-width: 2; }
+
+    /* 선택된 지역 강조 */
+    #map-svg path.selected-region { fill: #e0e7ff !important; stroke: #6366f1 !important; stroke-width: 1.5; }
 
     /* 퀴즈 패널 */
     .quiz-panel {
-      width: 340px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      width: 340px; display: flex; flex-direction: column; gap: 12px;
     }
 
     /* 진행바 */
     .progress-wrap { display: flex; align-items: center; gap: 8px; }
     .progress-bar {
-      flex: 1;
-      height: 6px;
-      background: #e2e8f0;
-      border-radius: 4px;
-      overflow: hidden;
+      flex: 1; height: 6px; background: #e2e8f0; border-radius: 4px; overflow: hidden;
     }
     .progress-fill {
-      height: 100%;
-      background: #6366f1;
-      border-radius: 4px;
-      transition: width 0.4s ease;
-      width: 0%;
+      height: 100%; background: #6366f1; border-radius: 4px;
+      transition: width 0.4s ease; width: 0%;
     }
     .progress-text { font-size: 12px; color: #94a3b8; white-space: nowrap; }
 
     /* 문제 카드 */
     .question-card {
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 20px;
+      background: #fff; border: 1px solid #e2e8f0;
+      border-radius: 16px; padding: 20px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
-
-    .q-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
+    .q-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
     .q-type-badge {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 20px;
-      letter-spacing: 0.3px;
+      font-size: 10px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
     }
-
     .badge-mcq { background: #ede9fe; color: #6366f1; }
     .badge-ox  { background: #fef3c7; color: #d97706; }
-    .badge-map { background: #dcfce7; color: #16a34a; }
-
     .q-region { font-size: 11px; color: #94a3b8; font-weight: 600; }
     .q-count  { margin-left: auto; font-size: 11px; color: #cbd5e1; }
+    .question-text { font-size: 15px; line-height: 1.75; color: #1e293b; font-weight: 500; }
 
-    .question-text {
-      font-size: 15px;
-      line-height: 1.75;
-      color: #1e293b;
-      font-weight: 500;
-    }
-
-    /* 보기 (MCQ) */
+    /* MCQ 보기 */
     .choices { display: flex; flex-direction: column; gap: 8px; }
-
     .choice-btn {
-      background: #f8fafc;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 11px 16px;
-      font-size: 13px;
-      color: #334155;
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 500;
+      background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px;
+      padding: 11px 16px; font-size: 13px; color: #334155;
+      cursor: pointer; text-align: left; transition: all 0.15s;
+      display: flex; align-items: center; gap: 10px; font-weight: 500;
     }
-
-    .choice-btn:hover:not(:disabled) {
-      background: #f5f3ff;
-      border-color: #a5b4fc;
-      color: #4338ca;
-    }
-
+    .choice-btn:hover:not(:disabled) { background: #f5f3ff; border-color: #a5b4fc; color: #4338ca; }
     .choice-btn .num {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #e2e8f0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      flex-shrink: 0;
-      color: #64748b;
+      width: 24px; height: 24px; border-radius: 50%; background: #e2e8f0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; flex-shrink: 0; color: #64748b;
     }
-
-    .choice-btn.correct {
-      background: #f0fdf4;
-      border-color: #16a34a;
-      color: #15803d;
-    }
+    .choice-btn.correct { background: #f0fdf4; border-color: #16a34a; color: #15803d; }
     .choice-btn.correct .num { background: #bbf7d0; color: #15803d; }
-
-    .choice-btn.wrong {
-      background: #fff1f2;
-      border-color: #dc2626;
-      color: #b91c1c;
-    }
+    .choice-btn.wrong { background: #fff1f2; border-color: #dc2626; color: #b91c1c; }
     .choice-btn.wrong .num { background: #fecaca; color: #b91c1c; }
-
     .choice-btn:disabled { cursor: not-allowed; }
 
     /* OX 버튼 */
     .ox-btns { display: flex; gap: 10px; }
-
     .ox-btn {
-      flex: 1;
-      padding: 20px;
-      border-radius: 14px;
-      border: 2px solid transparent;
-      font-size: 36px;
-      cursor: pointer;
-      transition: all 0.15s;
-      font-weight: 900;
+      flex: 1; padding: 20px; border-radius: 14px;
+      border: 2px solid transparent; font-size: 36px;
+      cursor: pointer; transition: all 0.15s; font-weight: 900;
     }
-
     .ox-btn.o-btn { background: #f0fdf4; border-color: #86efac; color: #16a34a; }
     .ox-btn.x-btn { background: #fff1f2; border-color: #fca5a5; color: #dc2626; }
     .ox-btn:hover:not(:disabled) { transform: scale(1.04); }
     .ox-btn:disabled { cursor: not-allowed; opacity: 0.5; }
     .ox-btn.correct { border-width: 2.5px; filter: brightness(0.92); opacity: 1 !important; }
-    .ox-btn.wrong   { opacity: 0.25 !important; }
-
-    /* 지도클릭 안내 */
-    .map-instruction {
-      background: #f0fdf4;
-      border: 1px solid #86efac;
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 13px;
-      color: #15803d;
-      text-align: center;
-      font-weight: 600;
-      display: none;
-    }
-    .map-instruction.show { display: block; }
+    .ox-btn.wrong { opacity: 0.25 !important; }
 
     /* 해설 */
     .exp-box {
-      background: #f5f3ff;
-      border: 1px solid #c4b5fd;
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 12px;
-      line-height: 1.65;
-      color: #4c1d95;
-      display: none;
+      background: #f5f3ff; border: 1px solid #c4b5fd;
+      border-radius: 10px; padding: 12px 14px;
+      font-size: 12px; line-height: 1.65; color: #4c1d95; display: none;
     }
     .exp-box.show { display: block; }
     .exp-label { font-weight: 700; margin-bottom: 4px; color: #6366f1; }
 
     /* 다음 버튼 */
     .btn-next {
-      width: 100%;
-      background: #6366f1;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 13px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s;
-      display: none;
-      letter-spacing: 0.3px;
+      width: 100%; background: #6366f1; color: #fff; border: none;
+      border-radius: 10px; padding: 13px; font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: background 0.2s; display: none;
     }
     .btn-next.show { display: block; }
     .btn-next:hover { background: #4f46e5; }
 
     /* 결과 카드 */
     .result-card {
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 28px 24px;
-      text-align: center;
-      display: none;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      background: #fff; border: 1px solid #e2e8f0;
+      border-radius: 16px; padding: 28px 24px; text-align: center;
+      display: none; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
     .result-card.show { display: flex; flex-direction: column; align-items: center; gap: 10px; }
     .result-emoji { font-size: 52px; }
@@ -401,76 +273,46 @@
     .result-score { font-size: 40px; font-weight: 900; color: #6366f1; }
     .result-sub { font-size: 13px; color: #94a3b8; }
     .btn-restart {
-      background: #6366f1;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 12px 28px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 6px;
-      transition: background 0.2s;
+      background: #6366f1; color: #fff; border: none;
+      border-radius: 10px; padding: 12px 28px; font-size: 14px;
+      font-weight: 700; cursor: pointer; margin-top: 6px; transition: background 0.2s;
     }
     .btn-restart:hover { background: #4f46e5; }
 
     /* 랭킹 패널 */
     .ranking-panel {
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 16px;
+      background: #fff; border: 1px solid #e2e8f0;
+      border-radius: 16px; padding: 16px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
-
-    .ranking-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #64748b;
-      margin-bottom: 12px;
-      letter-spacing: 0.3px;
-    }
-
+    .ranking-title { font-size: 13px; font-weight: 700; color: #64748b; margin-bottom: 12px; }
     .rank-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 0;
-      border-bottom: 1px solid #f1f5f9;
-      font-size: 13px;
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px;
     }
     .rank-item:last-child { border-bottom: none; }
-
     .rank-num {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #f1f5f9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      color: #94a3b8;
-      flex-shrink: 0;
+      width: 24px; height: 24px; border-radius: 50%; background: #f1f5f9;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: #94a3b8; flex-shrink: 0;
     }
     .rank-num.gold   { background: #fef9c3; color: #ca8a04; }
     .rank-num.silver { background: #f1f5f9; color: #64748b; }
     .rank-num.bronze { background: #fff7ed; color: #c2410c; }
-
     .rank-name { flex: 1; color: #334155; font-weight: 500; }
     .rank-score { font-weight: 700; color: #6366f1; }
     .rank-me { color: #16a34a !important; font-weight: 700; }
 
-    /* 반응형 */
     @media (max-width: 700px) {
       .game-area { flex-direction: column; }
       .quiz-panel { width: 100%; }
+      .control-bar { gap: 8px; }
     }
   </style>
 </head>
 <body>
 
+<!-- 헤더 -->
 <div class="header">
   <div class="header-left">
     <div class="logo">🗺️ <span>백지도</span>정복</div>
@@ -485,45 +327,54 @@
 
 <div class="main">
 
-  <div class="mode-tabs">
-    <div class="mode-tab active" data-mode="mcq">
-      <span class="icon">📝</span>
-      <div class="name">4지선다</div>
-      <div class="desc">개념 퀴즈</div>
-    </div>
-    <div class="mode-tab" data-mode="ox">
-      <span class="icon">⭕</span>
-      <div class="name">OX 퀴즈</div>
-      <div class="desc">맞다 / 틀리다</div>
-    </div>
-    <div class="mode-tab" data-mode="mapclick">
-      <span class="icon">🖱️</span>
-      <div class="name">지도 클릭</div>
-      <div class="desc">백지도에서 찾기</div>
-    </div>
-  </div>
+  <!-- 상단 컨트롤 바 (문제유형 + 지역선택 한 줄) -->
+  <div class="control-bar">
 
-  <div class="filter-bar">
+    <!-- 문제 유형 -->
+    <div class="mode-tabs">
+      <div class="mode-tab active" data-mode="mcq">
+        <span class="icon">📝</span> 4지선다
+      </div>
+      <div class="mode-tab" data-mode="ox">
+        <span class="icon">⭕</span> OX 퀴즈
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 지역 필터 -->
     <span class="filter-label">지역</span>
-    <button class="filter-btn active" data-region="전체">전체</button>
-    <button class="filter-btn" data-region="수도권">수도권</button>
-    <button class="filter-btn" data-region="강원">강원</button>
-    <button class="filter-btn" data-region="충청">충청</button>
-    <button class="filter-btn" data-region="호남">호남</button>
-    <button class="filter-btn" data-region="영남">영남</button>
-    <button class="filter-btn" data-region="제주">제주</button>
+    <div class="filter-btns">
+      <button class="filter-btn active" data-region="전체">전체</button>
+      <button class="filter-btn" data-region="수도권">수도권</button>
+      <button class="filter-btn" data-region="강원">강원</button>
+      <button class="filter-btn" data-region="충청">충청</button>
+      <button class="filter-btn" data-region="호남">호남</button>
+      <button class="filter-btn" data-region="영남">영남</button>
+      <button class="filter-btn" data-region="제주">제주</button>
+    </div>
+
   </div>
 
+  <!-- 게임 영역 -->
   <div class="game-area">
 
+    <!-- 백지도 패널 -->
     <div class="map-panel">
-      <div class="map-controls">
-        <button class="toggle-btn active" id="toggleProv">시·도</button>
-        <button class="toggle-btn" id="toggleMuni">시·군</button>
+      <div class="map-top">
+        <div class="map-hint">
+          <span id="selectedBadge" class="selected-region-badge">🌏 전체</span>
+          <span style="color:#cbd5e1; font-size:11px; margin-left:4px;">지도를 클릭해 지역 선택</span>
+        </div>
+        <div class="map-controls">
+          <button class="toggle-btn active" id="toggleProv">시·도</button>
+          <button class="toggle-btn" id="toggleMuni">시·군</button>
+        </div>
       </div>
       <svg id="map-svg" viewBox="0 0 760 806" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
 
+    <!-- 퀴즈 패널 -->
     <div class="quiz-panel">
 
       <div class="progress-wrap">
@@ -535,8 +386,9 @@
         <div class="q-meta">
           <span class="q-type-badge badge-mcq" id="qTypeBadge">4지선다</span>
           <span class="q-region" id="qRegion"></span>
+          <span class="q-count" id="qCountBadge"></span>
         </div>
-        <div class="question-text" id="questionText">모드를 선택하고 시작하세요!</div>
+        <div class="question-text" id="questionText">지역을 선택하면 문제가 시작됩니다!</div>
       </div>
 
       <div class="choices" id="choicesArea"></div>
@@ -544,10 +396,6 @@
       <div class="ox-btns" id="oxArea" style="display:none">
         <button class="ox-btn o-btn" id="oBtn">O</button>
         <button class="ox-btn x-btn" id="xBtn">X</button>
-      </div>
-
-      <div class="map-instruction" id="mapInstruction">
-        👆 백지도에서 해당 지역을 클릭하세요
       </div>
 
       <div class="exp-box" id="expBox">
@@ -578,12 +426,33 @@
 import { auth, db } from './js/firebase-config.js';
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { MCQ, OX, PROV_QUIZ } from './js/questions.js';
+import { MCQ, OX } from './js/questions.js';
+
+// ── 지역명 → region 매핑 (시도명 → 문제 region 태그) ──
+const REGION_MAP = {
+  '서울특별시':   '수도권',
+  '인천광역시':   '수도권',
+  '경기도':       '수도권',
+  '강원특별자치도': '강원',
+  '충청북도':     '충청',
+  '충청남도':     '충청',
+  '대전광역시':   '충청',
+  '세종특별자치시': '충청',
+  '전북특별자치도': '호남',
+  '전라남도':     '호남',
+  '광주광역시':   '호남',
+  '경상북도':     '영남',
+  '경상남도':     '영남',
+  '대구광역시':   '영남',
+  '부산광역시':   '영남',
+  '울산광역시':   '영남',
+  '제주특별자치도': '제주',
+};
 
 // ── 상태 ──────────────────────────────────────
 let currentUser = null;
 let currentMode = 'mcq';
-let currentRegion = '전체';
+let currentRegion = '전체';   // '전체' 또는 '수도권' 등
 let mapLevel = 'prov';
 let questionPool = [];
 let currentQ = null;
@@ -615,7 +484,7 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
   window.location.href = 'index.html';
 });
 
-// ── 모드 탭 ───────────────────────────────────
+// ── 문제 유형 탭 ──────────────────────────────
 document.querySelectorAll('.mode-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
@@ -625,15 +494,34 @@ document.querySelectorAll('.mode-tab').forEach(tab => {
   });
 });
 
-// ── 지역 필터 ─────────────────────────────────
+// ── 지역 필터 버튼 ────────────────────────────
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentRegion = btn.dataset.region;
-    startSession();
+    setRegion(btn.dataset.region);
   });
 });
+
+// 지역 설정 공통 함수
+function setRegion(region) {
+  currentRegion = region;
+
+  // 버튼 활성화 동기화
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.region === region);
+  });
+
+  // 지도 지역 강조 동기화
+  highlightMapRegion(region);
+
+  // 선택 배지 업데이트
+  const emoji = region === '전체' ? '🌏' :
+    region === '수도권' ? '🏙️' : region === '강원' ? '🏔️' :
+    region === '충청' ? '🌾' : region === '호남' ? '🌊' :
+    region === '영남' ? '⚓' : '🍊';
+  document.getElementById('selectedBadge').textContent = `${emoji} ${region}`;
+
+  startSession();
+}
 
 // ── 시도/시군 토글 ─────────────────────────────
 document.getElementById('toggleProv').addEventListener('click', () => {
@@ -669,11 +557,12 @@ function renderMap() {
       const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       el.setAttribute('d', pathD);
       el.setAttribute('data-name', name);
-      el.addEventListener('click', () => onMapClick(name, info));
+      el.setAttribute('data-region', info.region || '');
+      el.addEventListener('click', () => onMapRegionClick(name, info));
       svg.appendChild(el);
     });
 
-    // 시도 레벨에서만 지명 표시
+    // 시도 레벨에서 지명 표시
     if (mapLevel === 'prov' && info.cx) {
       const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       text.setAttribute('x', info.cx);
@@ -682,9 +571,49 @@ function renderMap() {
       text.setAttribute('font-size', '8');
       text.setAttribute('fill', '#64748b');
       text.setAttribute('pointer-events', 'none');
-      const short = name.replace(/특별자치도|특별자치시|광역시|특별시/, '').replace(/도$/, '');
+      const short = name
+        .replace(/특별자치도|특별자치시|광역시|특별시/, '')
+        .replace(/도$/, '');
       text.textContent = short;
       svg.appendChild(text);
+    }
+  });
+
+  // 현재 선택 지역 강조 유지
+  highlightMapRegion(currentRegion);
+}
+
+// ── 지도에서 시도 클릭 → 지역 선택 ──────────────
+function onMapRegionClick(name, info) {
+  // 시도 단위에서만 지역 선택 동작
+  if (mapLevel !== 'prov') return;
+
+  // 클릭한 시도 → region 태그로 변환
+  const region = REGION_MAP[name] || info.region || null;
+  if (!region) return;
+
+  setRegion(region);
+}
+
+// ── 지도 지역 강조 ────────────────────────────
+function highlightMapRegion(region) {
+  if (!window.PROVINCES) return;
+  document.querySelectorAll('#map-svg path').forEach(el => {
+    const elRegion = el.getAttribute('data-region');
+    // PROVINCES의 region 값과 비교 (영남, 호남, 수도권 등)
+    const regionTagMap = {
+      '수도권': '수도권', '강원': '강원', '충청': '충청',
+      '호남': '호남', '영남': '영남', '제주': '제주'
+    };
+    if (region === '전체') {
+      el.classList.remove('selected-region');
+    } else {
+      const tag = regionTagMap[region];
+      if (tag && elRegion === tag) {
+        el.classList.add('selected-region');
+      } else {
+        el.classList.remove('selected-region');
+      }
     }
   });
 }
@@ -697,34 +626,33 @@ function startSession() {
   document.getElementById('nextBtn').classList.remove('show');
   document.getElementById('expBox').classList.remove('show');
   document.getElementById('rankingPanel').style.display = 'none';
-  clearMapHighlight();
 
-  let pool = [];
-  if (currentMode === 'mcq') {
-    pool = MCQ;
-    document.getElementById('qTypeBadge').textContent = '4지선다';
-    document.getElementById('qTypeBadge').className = 'q-type-badge badge-mcq';
-  } else if (currentMode === 'ox') {
-    pool = OX;
-    document.getElementById('qTypeBadge').textContent = 'OX 퀴즈';
-    document.getElementById('qTypeBadge').className = 'q-type-badge badge-ox';
-  } else {
-    pool = PROV_QUIZ;
-    document.getElementById('qTypeBadge').textContent = '지도 클릭';
-    document.getElementById('qTypeBadge').className = 'q-type-badge badge-map';
+  // 문제 풀 구성
+  let pool = currentMode === 'mcq' ? MCQ : OX;
+
+  // 지역 필터
+  if (currentRegion !== '전체') {
+    pool = pool.filter(q => q.region === currentRegion);
   }
 
-  if (currentRegion !== '전체') pool = pool.filter(q => q.region === currentRegion);
-
   if (pool.length === 0) {
-    document.getElementById('questionText').textContent = '해당 지역의 문제가 없습니다.';
+    document.getElementById('questionText').textContent = '해당 지역의 문제가 없습니다. 다른 지역을 선택하세요.';
     document.getElementById('choicesArea').innerHTML = '';
     document.getElementById('oxArea').style.display = 'none';
-    document.getElementById('mapInstruction').classList.remove('show');
     return;
   }
 
   questionPool = shuffle([...pool]).slice(0, QUESTIONS_PER_SESSION);
+
+  // 배지 업데이트
+  if (currentMode === 'mcq') {
+    document.getElementById('qTypeBadge').textContent = '4지선다';
+    document.getElementById('qTypeBadge').className = 'q-type-badge badge-mcq';
+  } else {
+    document.getElementById('qTypeBadge').textContent = 'OX 퀴즈';
+    document.getElementById('qTypeBadge').className = 'q-type-badge badge-ox';
+  }
+
   loadQuestion();
 }
 
@@ -735,28 +663,21 @@ function loadQuestion() {
   answered = false;
   currentQ = questionPool[qIndex];
 
-  const pct = (qIndex / questionPool.length) * 100;
-  document.getElementById('progressFill').style.width = `${pct}%`;
+  document.getElementById('progressFill').style.width = `${(qIndex / questionPool.length) * 100}%`;
   document.getElementById('qCount').textContent = `${qIndex + 1} / ${questionPool.length}`;
+  document.getElementById('qCountBadge').textContent = `${qIndex + 1} / ${questionPool.length}`;
   document.getElementById('qRegion').textContent = currentQ.region || '';
   document.getElementById('questionText').textContent = currentQ.q;
   document.getElementById('expBox').classList.remove('show');
   document.getElementById('nextBtn').classList.remove('show');
-  clearMapHighlight();
 
   if (currentMode === 'mcq') {
     document.getElementById('oxArea').style.display = 'none';
-    document.getElementById('mapInstruction').classList.remove('show');
     renderChoices(currentQ.choices, currentQ.answer);
-  } else if (currentMode === 'ox') {
-    document.getElementById('choicesArea').innerHTML = '';
-    document.getElementById('oxArea').style.display = 'flex';
-    document.getElementById('mapInstruction').classList.remove('show');
-    resetOxBtns();
   } else {
     document.getElementById('choicesArea').innerHTML = '';
-    document.getElementById('oxArea').style.display = 'none';
-    document.getElementById('mapInstruction').classList.add('show');
+    document.getElementById('oxArea').style.display = 'flex';
+    resetOxBtns();
   }
 }
 
@@ -814,31 +735,6 @@ function handleOX(answer) {
   showExp();
 }
 
-// ── 지도 클릭 ─────────────────────────────────
-function onMapClick(name, info) {
-  if (currentMode !== 'mapclick') return;
-  if (answered) return;
-  answered = true;
-
-  const correct = name === currentQ.answer;
-  if (correct) sessionScore++;
-
-  // 클릭한 지역 색 표시
-  document.querySelectorAll('#map-svg path').forEach(el => {
-    const elName = el.getAttribute('data-name');
-    if (elName === name) el.classList.add(correct ? 'correct' : 'wrong');
-    if (!correct && elName === currentQ.answer) el.classList.add('correct');
-  });
-
-  showExp();
-}
-
-function clearMapHighlight() {
-  document.querySelectorAll('#map-svg path').forEach(el => {
-    el.classList.remove('correct', 'wrong', 'target');
-  });
-}
-
 // ── 해설 ──────────────────────────────────────
 function showExp() {
   if (currentQ.exp) {
@@ -854,11 +750,9 @@ document.getElementById('nextBtn').addEventListener('click', () => { qIndex++; l
 // ── 결과 ──────────────────────────────────────
 async function showResult() {
   document.getElementById('progressFill').style.width = '100%';
-  document.getElementById('qCount').textContent = `${questionPool.length} / ${questionPool.length}`;
   document.getElementById('questionCard').style.display = 'none';
   document.getElementById('choicesArea').innerHTML = '';
   document.getElementById('oxArea').style.display = 'none';
-  document.getElementById('mapInstruction').classList.remove('show');
   document.getElementById('expBox').classList.remove('show');
   document.getElementById('nextBtn').classList.remove('show');
 
