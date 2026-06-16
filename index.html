@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한국지리 백지도 정복</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+      overflow: hidden;
+    }
+
+    /* 배경 지도 무늬 */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle at 20% 50%, rgba(99,102,241,0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(16,185,129,0.10) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .login-wrap {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-area {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .logo-icon {
+      font-size: 52px;
+      display: block;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 0 20px rgba(99,102,241,0.6));
+    }
+
+    .logo-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #f1f5f9;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-sub {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 36px 32px;
+      backdrop-filter: blur(12px);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 24px;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 8px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .field input {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-size: 15px;
+      color: #f1f5f9;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .field input::placeholder { color: #475569; }
+
+    .field input:focus {
+      border-color: #6366f1;
+      background: rgba(99,102,241,0.08);
+    }
+
+    .btn-login {
+      width: 100%;
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s, transform 0.1s;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-login:hover { background: #4f46e5; }
+    .btn-login:active { transform: scale(0.98); }
+
+    .btn-login:disabled {
+      background: #334155;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .error-msg {
+      background: rgba(239,68,68,0.12);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #fca5a5;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+      text-align: center;
+    }
+
+    .error-msg.show { display: block; }
+
+    .hint {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #334155;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-wrap">
+  <div class="logo-area">
+    <span class="logo-icon">🗺️</span>
+    <div class="logo-title">한국지리 백지도 정복</div>
+    <div class="logo-sub">수능 한국지리 · 지역 학습 게임</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">학생 로그인</div>
+
+    <div class="field">
+      <label>아이디 (학번)</label>
+      <input type="email" id="email" placeholder="예) 10101@james.com" autocomplete="username">
+    </div>
+
+    <div class="field">
+      <label>비밀번호</label>
+      <input type="password" id="password" placeholder="비밀번호 입력" autocomplete="current-password">
+    </div>
+
+    <button class="btn-login" id="loginBtn">로그인</button>
+
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+
+  <div class="hint">선생님께 아이디와 비밀번호를 받아 입력하세요</div>
+</div>
+
+<script type="module">
+  import { auth } from './js/firebase-config.js';
+  import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  // 이미 로그인 상태면 게임으로 이동
+  onAuthStateChanged(auth, (user) => {
+    if (user) window.location.href = 'game.html';
+  });
+
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const loginBtn = document.getElementById('loginBtn');
+  const errorMsg = document.getElementById('errorMsg');
+
+  function showError(msg) {
+    errorMsg.textContent = msg;
+    errorMsg.classList.add('show');
+  }
+
+  function clearError() {
+    errorMsg.classList.remove('show');
+  }
+
+  async function doLogin() {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!email || !password) {
+      showError('아이디와 비밀번호를 모두 입력하세요.');
+      return;
+    }
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = '로그인 중...';
+    clearError();
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      // onAuthStateChanged가 game.html로 이동시킴
+    } catch (e) {
+      let msg = '로그인에 실패했습니다.';
+      if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
+        msg = '아이디 또는 비밀번호가 올바르지 않습니다.';
+      } else if (e.code === 'auth/too-many-requests') {
+        msg = '너무 많이 시도했습니다. 잠시 후 다시 해주세요.';
+      }
+      showError(msg);
+      loginBtn.disabled = false;
+      loginBtn.textContent = '로그인';
+    }
+  }
+
+  loginBtn.addEventListener('click', doLogin);
+
+  // 엔터 키로 로그인
+  passwordInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') doLogin();
+  });
+  emailInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') passwordInput.focus();
+  });
+</script>
+
+</body>
+</html>
