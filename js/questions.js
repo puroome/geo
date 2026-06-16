@@ -488,4 +488,4 @@ const PROV_QUIZ = [
   {q:'한국도로공사가 이전한 혁신도시 김천이 있는 도(道)는?', answer:'경상북도', exp:'경북 혁신도시 김천 - KTX 김천(구미)역 인근.'},
 ];
 
-export { MCQ, OX, PROV_QUIZ };
+// export for module
