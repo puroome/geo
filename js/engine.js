@@ -1118,16 +1118,103 @@ function renderExploreDots(region){
 }
 
 // ============================================================
-// 카드 시스템 (간소화)
+// 카드 시스템 (원본 동일 — cuteLandSVG 포함)
 // ============================================================
 const DRAW_COST=5,CARD_MAX_LV=3,ENHANCE_NEED=5;
 function cardLevel(name){return cardLv[name]||1;}
 function canEnhance(name){return!!cards[name]&&cardLevel(name)<CARD_MAX_LV&&cards[name]>=ENHANCE_NEED;}
 function doEnhance(name){if(!canEnhance(name))return false;cards[name]-=(ENHANCE_NEED-1);cardLv[name]=cardLevel(name)+1;store.save('geo_cards',cards);store.save('geo_cardlv',cardLv);updateGachaUI();checkAchievements();return true;}
+function starHTML(lv){let s='';for(let i=1;i<=CARD_MAX_LV;i++)s+=`<span class="cstar${i<=lv?' on':''}">★</span>`;return s;}
+
+// 권역 배경색
+const REGION_COLORS={
+  '수도권':{bg:'#D9EFFD',deep:'#1278C2',map:'#6FB7EC'},
+  '강원':  {bg:'#DDF3E1',deep:'#2FA34F',map:'#7FCB8F'},
+  '충청':  {bg:'#FFF3C9',deep:'#C77F00',map:'#F6CE5B'},
+  '호남':  {bg:'#FFE5E1',deep:'#D8554A',map:'#F08A80'},
+  '영남':  {bg:'#EAE4FB',deep:'#6A5ACD',map:'#A795E0'},
+  '제주':  {bg:'#FFE9D4',deep:'#E8740C',map:'#F9A86B'},
+};
+
+// 도(道) 짧은 이름
+const PROV_SHORT={'경기도':'경기','강원특별자치도':'강원','충청북도':'충북','충청남도':'충남','전북특별자치도':'전북','전라남도':'전남','경상북도':'경북','경상남도':'경남','제주특별자치도':'제주'};
+function cardDisplayName(loc){const mu=loc.accept[0],prov=MUNIS[mu]?.prov||'',base=loc.name.replace(/\(.+\)$/,''),short=PROV_SHORT[prov];return short?`${short} ${base}`:base;}
+
+// 스탬프 아트 라이브러리
+const STAMP_ART={
+  tea:`<ellipse cx="35" cy="55" rx="26" ry="14" fill="#2FA34F" transform="rotate(-35 35 55)"/><ellipse cx="68" cy="48" rx="24" ry="13" fill="#5CB531" transform="rotate(25 68 48)"/><path d="M35 55 Q50 30 68 48" stroke="#1F7A38" stroke-width="5" fill="none" stroke-linecap="round"/>`,
+  ship:`<path d="M15 62 L85 62 L72 84 L28 84 Z" fill="#1278C2"/><rect x="44" y="34" width="12" height="28" fill="#E2574C"/><rect x="36" y="46" width="28" height="16" rx="3" fill="#fff"/><path d="M8 70 Q18 64 28 70 T48 70 T68 70 T88 70" stroke="#7CC4F0" stroke-width="6" fill="none" stroke-linecap="round"/>`,
+  factory:`<rect x="20" y="45" width="60" height="38" rx="4" fill="#8FA6B6"/><rect x="28" y="28" width="12" height="20" fill="#6E93AE"/><rect x="52" y="22" width="12" height="26" fill="#6E93AE"/><circle cx="34" cy="18" r="8" fill="#fff" opacity=".9"/><circle cx="62" cy="12" r="10" fill="#fff" opacity=".8"/><rect x="30" y="56" width="11" height="11" fill="#FFD23F"/><rect x="56" y="56" width="11" height="11" fill="#FFD23F"/>`,
+  apple:`<circle cx="50" cy="58" r="26" fill="#E2574C"/><circle cx="40" cy="50" r="8" fill="#FF8E8E" opacity=".8"/><path d="M50 34 Q52 22 62 18" stroke="#7A4E21" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="66" cy="26" rx="12" ry="7" fill="#5CB531" transform="rotate(28 66 26)"/>`,
+  grape:`<circle cx="38" cy="46" r="11" fill="#8E7BE5"/><circle cx="60" cy="46" r="11" fill="#7E6CD9"/><circle cx="49" cy="60" r="11" fill="#6A5ACD"/><circle cx="38" cy="73" r="10" fill="#8E7BE5"/><circle cx="60" cy="73" r="10" fill="#7E6CD9"/><path d="M50 36 Q50 22 58 16" stroke="#7A4E21" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="64" cy="22" rx="11" ry="6" fill="#5CB531" transform="rotate(20 64 22)"/>`,
+  citrus:`<circle cx="50" cy="58" r="26" fill="#FF9F2E"/><circle cx="41" cy="50" r="7" fill="#FFC97C" opacity=".9"/><ellipse cx="58" cy="30" rx="12" ry="7" fill="#2FA34F" transform="rotate(-18 58 30)"/>`,
+  rice:`<path d="M50 84 Q48 52 50 30" stroke="#C7A14A" stroke-width="5" fill="none"/><g fill="#FFD23F" stroke="#C7A14A" stroke-width="2"><ellipse cx="42" cy="34" rx="7" ry="11" transform="rotate(20 42 34)"/><ellipse cx="58" cy="34" rx="7" ry="11" transform="rotate(-20 58 34)"/><ellipse cx="40" cy="50" rx="7" ry="11" transform="rotate(25 40 50)"/><ellipse cx="60" cy="50" rx="7" ry="11" transform="rotate(-25 60 50)"/><ellipse cx="50" cy="22" rx="7" ry="11"/></g>`,
+  crab:`<ellipse cx="50" cy="58" rx="24" ry="17" fill="#F08A80"/><circle cx="42" cy="50" r="4.5" fill="#fff"/><circle cx="58" cy="50" r="4.5" fill="#fff"/><circle cx="42" cy="50" r="2.2" fill="#4A3426"/><circle cx="58" cy="50" r="2.2" fill="#4A3426"/><path d="M28 46 Q14 36 18 24 M72 46 Q86 36 82 24" stroke="#E2574C" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="16" cy="22" r="7" fill="#E2574C"/><circle cx="84" cy="22" r="7" fill="#E2574C"/>`,
+  snow:`<g stroke="#7CC4F0" stroke-width="6" stroke-linecap="round"><path d="M50 18 V82 M22 34 L78 66 M78 34 L22 66"/></g><circle cx="50" cy="50" r="8" fill="#fff" stroke="#7CC4F0" stroke-width="4"/>`,
+  mountain:`<path d="M14 80 L42 32 L60 60 L72 42 L90 80 Z" fill="#2FA34F"/><path d="M42 32 L52 49 L46 49 L54 60 L34 60 L42 46 Z" fill="#fff" opacity=".9"/>`,
+  temple:`<path d="M18 46 Q50 18 82 46 L74 46 Q50 28 26 46 Z" fill="#4A6E3A"/><path d="M24 50 H76 L72 44 H28 Z" fill="#8E5A2B"/><rect x="32" y="50" width="36" height="26" fill="#F2E6D0"/><rect x="44" y="56" width="12" height="20" fill="#8E5A2B"/><rect x="28" y="76" width="44" height="7" rx="2" fill="#A8794A"/>`,
+  train:`<rect x="22" y="34" width="56" height="38" rx="14" fill="#fff" stroke="#1278C2" stroke-width="5"/><rect x="30" y="42" width="40" height="13" rx="5" fill="#7CC4F0"/><circle cx="38" cy="64" r="5" fill="#1B4F8F"/><circle cx="62" cy="64" r="5" fill="#1B4F8F"/><path d="M22 78 H78" stroke="#9CC8E8" stroke-width="5" stroke-linecap="round"/>`,
+  lighthouse:`<path d="M42 30 H58 L62 78 H38 Z" fill="#fff" stroke="#E2574C" stroke-width="4"/><path d="M40 44 H60 M39 58 H61" stroke="#E2574C" stroke-width="7"/><rect x="40" y="18" width="20" height="13" rx="4" fill="#FFD23F"/><path d="M30 84 H70" stroke="#1278C2" stroke-width="6" stroke-linecap="round"/>`,
+  ginseng:`<path d="M50 30 Q46 48 50 56 Q40 62 36 78 M50 56 Q60 64 62 80 M50 42 Q42 46 38 42" stroke="#D9B48A" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M50 30 Q44 18 34 16 M50 30 Q56 16 66 14" stroke="#2FA34F" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="32" cy="14" rx="9" ry="5" fill="#5CB531"/><ellipse cx="68" cy="12" rx="9" ry="5" fill="#5CB531"/>`,
+  cheese:`<path d="M16 64 L84 40 L84 76 L16 76 Z" fill="#FFD23F" stroke="#E8B100" stroke-width="3"/><circle cx="42" cy="62" r="6" fill="#FFF3C9"/><circle cx="62" cy="56" r="5" fill="#FFF3C9"/><circle cx="70" cy="68" r="4" fill="#FFF3C9"/>`,
+  butterfly:`<g fill="#F2889B"><ellipse cx="34" cy="42" rx="17" ry="14" transform="rotate(-20 34 42)"/><ellipse cx="66" cy="42" rx="17" ry="14" transform="rotate(20 66 42)"/><ellipse cx="36" cy="64" rx="13" ry="11" transform="rotate(15 36 64)" fill="#FF6B9D"/><ellipse cx="64" cy="64" rx="13" ry="11" transform="rotate(-15 64 64)" fill="#FF6B9D"/></g><rect x="46" y="34" width="8" height="40" rx="4" fill="#4A3426"/>`,
+  hotspring:`<ellipse cx="50" cy="68" rx="30" ry="14" fill="#7CC4F0"/><path d="M36 50 Q32 40 36 32 M50 52 Q46 40 50 30 M64 50 Q60 40 64 32" stroke="#9CC8E8" stroke-width="6" fill="none" stroke-linecap="round"/>`,
+  cow:`<ellipse cx="50" cy="56" rx="26" ry="22" fill="#C68A4F"/><ellipse cx="50" cy="66" rx="13" ry="9" fill="#F2D9BD"/><circle cx="41" cy="48" r="4" fill="#4A3426"/><circle cx="59" cy="48" r="4" fill="#4A3426"/><path d="M26 40 Q18 32 20 24 M74 40 Q82 32 80 24" stroke="#A8794A" stroke-width="6" fill="none" stroke-linecap="round"/>`,
+  fish:`<ellipse cx="46" cy="52" rx="26" ry="15" fill="#7CC4F0"/><path d="M70 52 L88 38 L88 66 Z" fill="#5BB8F0"/><circle cx="32" cy="48" r="4" fill="#1B4F8F"/>`,
+  garlic:`<path d="M50 26 Q42 36 36 50 Q30 70 50 78 Q70 70 64 50 Q58 36 50 26 Z" fill="#F6F0E4" stroke="#D9CBB0" stroke-width="3"/><path d="M50 26 Q52 16 58 12" stroke="#5CB531" stroke-width="5" fill="none" stroke-linecap="round"/>`,
+  cave:`<path d="M20 80 Q20 34 50 30 Q80 34 80 80 Z" fill="#8E7BE5"/><path d="M34 80 Q34 52 50 50 Q66 52 66 80 Z" fill="#3B2F66"/>`,
+  volcano:`<path d="M22 78 Q34 42 44 40 L56 40 Q66 42 78 78 Z" fill="#C68A4F"/><ellipse cx="50" cy="40" rx="9" ry="4" fill="#8E5A2B"/>`,
+  plane:`<path d="M22 58 L78 42 Q86 40 84 48 L80 52 L40 64 Z" fill="#fff" stroke="#1278C2" stroke-width="4"/><path d="M52 48 L42 30 L52 30 L62 45 Z" fill="#7CC4F0"/>`,
+  car:`<path d="M22 62 Q24 48 36 46 L62 44 Q74 44 78 56 L80 62 Q82 70 74 70 H28 Q20 70 22 62 Z" fill="#5BB8F0" stroke="#1278C2" stroke-width="3.5"/><circle cx="36" cy="70" r="7" fill="#1B4F8F"/><circle cx="66" cy="70" r="7" fill="#1B4F8F"/>`,
+  chip:`<rect x="30" y="30" width="40" height="40" rx="6" fill="#1B4F8F"/><rect x="40" y="40" width="20" height="20" rx="3" fill="#7CC4F0"/>`,
+  building:`<rect x="30" y="26" width="40" height="56" rx="4" fill="#9CC8E8"/><g fill="#FFF3C9"><rect x="37" y="34" width="9" height="9"/><rect x="54" y="34" width="9" height="9"/><rect x="37" y="50" width="9" height="9"/><rect x="54" y="50" width="9" height="9"/></g>`,
+};
+const STAMP_RULES=[
+  [/치즈/,'cheese'],[/녹차|차밭|다향/,'tea'],[/한우|목축|축산/,'cow'],
+  [/조선 공업|조선소|항구|항만/,'ship'],[/제철|철강|석유 화학|정유|시멘트/,'factory'],
+  [/공항/,'plane'],[/자동차/,'car'],[/반도체|전자|디스플레이|IT/,'chip'],
+  [/사과/,'apple'],[/포도|와인|복분자/,'grape'],[/감귤/,'citrus'],
+  [/인삼|홍삼/,'ginseng'],[/마늘|양파/,'garlic'],
+  [/갯벌|염전|대게|꽃게/,'crab'],[/오징어|산천어|굴비|수산/,'fish'],
+  [/동굴|카르스트|석회/,'cave'],[/화산|오름|용암|주상 절리/,'volcano'],
+  [/눈|동계|스키/,'snow'],[/온천/,'hotspring'],
+  [/청자|도자기/,'pottery'],[/나비|반딧불|생태|습지/,'butterfly'],
+  [/불국사|해인사|하회|사찰|향교|서원|한옥|고인돌|왕릉|유적/,'temple'],
+  [/KTX|철도|기차/,'train'],[/등대|다도해|섬|도서/,'lighthouse'],
+  [/벼|쌀|평야|곡창|간척/,'rice'],[/혁신도시|도청|행정|신도시/,'building'],
+  [/국립 공원|산맥|고원|지리산|설악|덕유|소백/,'mountain'],
+];
+function stampsOf(loc){
+  const text=(loc.fact||'')+' '+(loc.name||'');const found=[];
+  for(const[re,key]of STAMP_RULES){if(re.test(text)&&!found.includes(key))found.push(key);if(found.length>=2)break;}
+  if(!found.length)found.push('mountain');return found;
+}
+function stampSVG(key,x,y,size,flip){
+  const art=STAMP_ART[key]||STAMP_ART.mountain;
+  return `<g transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${(size/100*(flip?-1:1)).toFixed(4)},${(size/100).toFixed(4)}) translate(-50,-50)">${art}</g>`;
+}
+
+// 시·군 실루엣 SVG (map-data.js path 활용)
+function cuteLandSVG(mu, withFace, loc, expr){
+  const bb=muniBBox(mu),m=MUNIS[mu];
+  const s=Math.sqrt(bb.w*bb.h),er=s*0.052,gap=s*0.14;
+  const fx=m.cx,fy=m.cy,f=n=>n.toFixed(1);
+  let face='';
+  if(withFace&&expr==='happy'){
+    const L=fx-gap/2,R=fx+gap/2,eye=cx=>`<path d="M ${f(cx-er)} ${f(fy)} Q ${f(cx)} ${f(fy-er*1.35)} ${f(cx+er)} ${f(fy)}" fill="none" stroke="#4A3426" stroke-width="${(er*0.42).toFixed(2)}" stroke-linecap="round"/>`;
+    face=`<g class="land-face">${eye(L)}${eye(R)}<ellipse cx="${f(fx-gap*0.98)}" cy="${f(fy+er*1.25)}" rx="${f(er*0.92)}" ry="${f(er*0.58)}" fill="#FF8F7A" opacity=".72"/><ellipse cx="${f(fx+gap*0.98)}" cy="${f(fy+er*1.25)}" rx="${f(er*0.92)}" ry="${f(er*0.58)}" fill="#FF8F7A" opacity=".72"/><path d="M ${f(fx-er*1.15)} ${f(fy+er*0.85)} Q ${f(fx)} ${f(fy+er*2.9)} ${f(fx+er*1.15)} ${f(fy+er*0.85)} Z" fill="#4A3426"/><path d="M ${f(fx-er*0.55)} ${f(fy+er*1.95)} Q ${f(fx)} ${f(fy+er*2.55)} ${f(fx+er*0.55)} ${f(fy+er*1.95)} Z" fill="#FF8F7A"/></g>`;
+  }else if(withFace){
+    face=`<g class="land-face"><circle cx="${f(fx-gap/2)}" cy="${f(fy)}" r="${er}" fill="#4A3426"/><circle cx="${f(fx+gap/2)}" cy="${f(fy)}" r="${er}" fill="#4A3426"/><circle cx="${f(fx-gap/2+er*0.3)}" cy="${f(fy-er*0.35)}" r="${er*0.32}" fill="#fff"/><circle cx="${f(fx+gap/2+er*0.3)}" cy="${f(fy-er*0.35)}" r="${er*0.32}" fill="#fff"/><ellipse cx="${f(fx-gap*0.95)}" cy="${f(fy+er*1.1)}" rx="${f(er*0.85)}" ry="${f(er*0.5)}" fill="#FF8F7A" opacity=".65"/><ellipse cx="${f(fx+gap*0.95)}" cy="${f(fy+er*1.1)}" rx="${f(er*0.85)}" ry="${f(er*0.5)}" fill="#FF8F7A" opacity=".65"/><path d="M ${f(fx-er*0.9)} ${f(fy+er*1.15)} Q ${f(fx)} ${f(fy+er*2.3)} ${f(fx+er*0.9)} ${f(fy+er*1.15)}" fill="none" stroke="#4A3426" stroke-width="${(er*0.42).toFixed(2)}" stroke-linecap="round"/></g>`;
+  }
+  let stampG='';
+  if(withFace&&loc){const st=stampsOf(loc);stampG+=stampSVG(st[0],fx+s*0.40,fy-s*0.34,s*0.46,false);if(st[1])stampG+=stampSVG(st[1],fx-s*0.42,fy+s*0.34,s*0.36,false);}
+  return `<svg viewBox="${bb.x.toFixed(0)} ${bb.y.toFixed(0)} ${bb.w.toFixed(0)} ${bb.h.toFixed(0)}" class="card-sil"><path d="${m.d}" class="land-shadow" vector-effect="non-scaling-stroke"/><path d="${m.d}" class="land" vector-effect="non-scaling-stroke"/>${face}${stampG}</svg>`;
+}
+
 function updateGachaUI(){
   const cc=$('coin-cnt');if(cc)cc.innerHTML=`🪙 <b>${coins}</b>`;
   const cp=$('coll-progress');if(cp)cp.textContent=`카드 ${Object.keys(cards).length}/${LOCATIONS.length}장 수집`;
-  const bd=document.querySelectorAll('#btn-draw');bd.forEach(b=>{if(b)b.disabled=coins<DRAW_COST;});
+  document.querySelectorAll('[id="btn-draw"]').forEach(b=>{b.disabled=coins<DRAW_COST;});
 }
 function drawCard(){
   if(coins<DRAW_COST)return null;
@@ -1144,7 +1231,10 @@ function openGacha(){
   modal.classList.remove('hidden');
   const card=$('gacha-card');if(card)card.classList.remove('flipped');
   const gf=$('gcard-front');
-  if(gf)gf.innerHTML=`<div style="padding:20px;text-align:center"><div style="font-size:28px;margin-bottom:8px">🃏</div><div style="font-size:18px;font-weight:800">${res.loc.name}</div><div style="font-size:12px;color:var(--dim);margin-top:6px">${regionLabel(MUNIS[res.loc.accept[0]].region)}</div><div style="font-size:13px;margin-top:8px;color:var(--text)">${(res.loc.fact||'').split(',')[0]}</div></div>`;
+  if(gf){
+    const mu=res.loc.accept[0],rc=REGION_COLORS[res.loc.region]||REGION_COLORS['수도권'];
+    gf.innerHTML=`<div class="gacha-sil" style="background:${rc.bg};border-radius:12px;padding:10px">${cuteLandSVG(mu,true,res.loc,'happy')}<div style="text-align:center;font-size:14px;font-weight:800;color:${rc.deep};margin-top:4px">${cardDisplayName(res.loc)}</div><div style="text-align:center;font-size:11px;color:var(--dim);margin-top:2px">${regionLabel(res.loc.region)}</div></div>`;
+  }
   const gm=$('gacha-msg');if(gm)gm.innerHTML='';
   setTimeout(()=>{
     if(card)card.classList.add('flipped');
@@ -1157,20 +1247,34 @@ function openGacha(){
 function renderCollection(filter){
   const grid=$('cards-grid');if(!grid)return;grid.innerHTML='';
   const list=LOCATIONS.filter(l=>filter==='전체'||l.region===filter);
-  list.sort((a,b)=>(cards[b.name]?1:0)-(cards[a.name]?1:0));
-  const REGION_COLORS={'수도권':{bg:'#D9EFFD',deep:'#1278C2'},'강원':{bg:'#DDF3E1',deep:'#2FA34F'},'충청':{bg:'#FFF3C9',deep:'#C77F00'},'호남':{bg:'#FFE5E1',deep:'#D8554A'},'영남':{bg:'#EAE4FB',deep:'#6A5ACD'},'제주':{bg:'#FFE9D4',deep:'#E8740C'}};
+  const popOf=l=>MUNIS[l.accept[0]]?.pop||0;
+  list.sort((a,b)=>(cards[b.name]?1:0)-(cards[a.name]?1:0)||popOf(b)-popOf(a));
   list.forEach(l=>{
-    const owned=!!cards[l.name],lv=cardLevel(l.name),rc=REGION_COLORS[l.region]||{bg:'#f8fafc',deep:'#1278C2'};
+    const mu=l.accept[0],owned=!!cards[l.name],lv=cardLevel(l.name),rc=REGION_COLORS[l.region]||REGION_COLORS['수도권'];
     const div=document.createElement('div');
     div.className='card-item'+(owned?'':' not-owned');
-    div.style.cssText=`background:${rc.bg};border-color:${rc.deep}40`;
-    div.innerHTML=owned?
-      `<div class="card-count">×${cards[l.name]||1}</div><div class="card-stars">${'★'.repeat(lv)}${'☆'.repeat(CARD_MAX_LV-lv)}</div><div style="font-size:22px;text-align:center;margin:4px 0">🃏</div><div class="card-name" style="color:${rc.deep}">${l.name}</div><div class="card-region-chip" style="background:${rc.deep}">${regionLabel(l.region)}</div>`
-      :`<div style="font-size:22px;text-align:center;margin:8px 0;filter:grayscale(1);opacity:.4">🃏</div><div class="card-name">???</div><div class="card-region-chip" style="background:${rc.deep}">${regionLabel(l.region)}</div>`;
-    if(owned&&canEnhance(l.name)){const eb=document.createElement('button');eb.className='enh-btn';eb.textContent='⚡ 강화';eb.style.cssText='width:100%;margin-top:4px;background:var(--gold);border:none;border-radius:6px;padding:3px;font-size:11px;font-weight:700;cursor:pointer';eb.onclick=e=>{e.stopPropagation();if(doEnhance(l.name))renderCollection(filter);};div.appendChild(eb);}
+    div.style.cssText=`background:${rc.bg};border-color:${rc.deep}50`;
+    if(owned){
+      div.innerHTML=
+        `<div class="card-lv-row"><span class="card-lv">${starHTML(lv)}</span><span class="card-cnt">${cards[l.name]>1?`×${cards[l.name]}`:''}</span></div>`+
+        `<div class="card-sil-wrap">${cuteLandSVG(mu,lv>=2,lv>=2?l:null,lv>=3?'happy':undefined)}</div>`+
+        `<div class="card-name" style="color:${rc.deep}">${cardDisplayName(l)}</div>`+
+        `<div class="card-region-chip" style="background:${rc.deep}">${regionLabel(l.region)}</div>`;
+      if(canEnhance(l.name)){
+        const eb=document.createElement('button');eb.className='enh-mini';
+        eb.textContent='⚡ 강화';eb.style.cssText='width:100%;margin-top:4px;background:var(--gold);border:none;border-radius:6px;padding:3px 0;font-size:11px;font-weight:700;cursor:pointer;color:#7a4e00';
+        eb.onclick=e=>{e.stopPropagation();if(doEnhance(l.name))renderCollection(filter);};
+        div.appendChild(eb);
+      }
+    }else{
+      div.innerHTML=
+        `<div class="card-sil-wrap" style="opacity:.3;filter:grayscale(1)">${cuteLandSVG(mu,false)}</div>`+
+        `<div class="card-name">???</div>`+
+        `<div class="card-region-chip" style="background:${rc.deep}">${regionLabel(l.region)}</div>`;
+    }
     grid.appendChild(div);
   });
-  const ctp=$('coll-title-progress');if(ctp)ctp.textContent=`${list.filter(l=>cards[l.name]).length}/${list.length}`;
+  const ctp=$('coll-title-progress');if(ctp)ctp.textContent=`${list.filter(l=>cards[l.name]).length}/${list.length} 수집`;
 }
 function openCollection(){
   show('screen-cards');
