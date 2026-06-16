@@ -1,0 +1,427 @@
+// ============================================================
+// 백지도 정복 게임 - Google Apps Script
+// 기능: 1) 시트 → Firestore 동기화
+//       2) USERS 시트 → Firebase Auth 계정 관리
+// ============================================================
+
+const FIREBASE_PROJECT_ID = "geo-game-a30c1";
+const SERVICE_ACCOUNT_EMAIL = "firebase-adminsdk-fbsvc@geo-game-a30c1.iam.gserviceaccount.com";
+const PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1EkHc0M5KqHzt\nIChtNG2K1peFd5WE+b8hQ8m4WmzvKljX4sNZS+ovuiXZsgu9BIsli/mb8Q90qHQq\niqNrRp+zommVITsQEN7J/mJNG9Mr5w96kPCdmCXssJhf991dr4pnZdWb6pn4U3qC\nm/W2UcK5JWYFm1Fj9gqwd6zrlwCaw4ZJfFLf4ycKD/2IIQwY+VCBi78XbMj7Wx+g\nl4ExkBNTacsGzMviY9iN45FkKJR8iy11EW3JxaSC6AAB76WW6gXS9sSShOA9QOFI\nK09EIdeYmaWlm917dWOVvuS/r4bXImPwi6lV07oS+qKYIobhqLp7POedrk521Pq6\nRlka9QFNAgMBAAECggEAAMEXtyTDhzoWcyJsKLBMOITWUr8Bx3EG48uVfogZ5hEm\nF5ghOjD/w70hxTthoyLutXRU0Np7NwAwo7C6J4s+xQ/LIszloxZ+5xaBMFMKWSd4\nQAl0hyOIHOlLaTLuICLID9AzyJd8lrU6UGr35g+HISBPwXw5JZJzzvJgrQaPARYH\noPLOU9KA9rTbZH0J0bRb+xIVslhoXCOImu5qvs4hlhAEw+PlRG4uGmQD7tgoOrTQ\ndXMPqlpcmrkBsLRFExPKH+iia8liUoHeJwITvsh9jid9LyteIzoJeFnusyLWb29H\nlvzegGYf/7yuSw3Cfi6UPZvIGuKszyF6P5ukqg0b/QKBgQDZ0F9YfSZlky0nHj4u\nirlBK8rOPqDfftshfg5N81bCRzYZppH9LS9ODTHDkfQd4dJCnwfsVEr8skpUzqKT\nN2SFpLBDANTpnPcg+ATVguz3+yaZrTMAfSCfEt2qXjoxLq93rq1bo8AxljTvKv1Y\nUw0as++1eZ11f25qqpcNeapfhwKBgQDU0Noj/o8B+HX32RJmtIefV5FVt+DRh9pB\nNyUqmFyVUfbm6XTMhtZEk1aKb6isLte1I2GLYrL1kTcRrx5kkVk88nyVzeJ/ouxM\nJqzNV/W6cGWZ40MQ8uomm9ItMDFIRkEzRiBsY6hCSX9Xxx4a62AmorWNaan72C/R\nn0JDeh6FiwKBgCVF+jr7V6nEMNLj4wI17RPQ+ainoQH+BGPL3YjLXopqg0CKd6sa\no2C4804jWOIQNdn+uu1fU2HA5OV0Yu/MZ+BS2XLt3oGHweabasBa4lBhYy6jK/om\nb4GpSdOQwmaONarGcpYfBJG3waE3+xi1RaXPKvMkN6TWxL9uJ+E/c79bAoGBAMzr\n9sFmI0pgdyebTE69U0KpzXZewwq/5/eYJB+p6qyV6ktbTW6L/9K0lUZkUmTKDkeL\ntCfFeFFh7UcH+xoXo3g+fpy5TXpd5W9GZmqsYh+OjybpYPD3F2Tp8i41E59mlu3K\nfvof1CtQHmDliSWetE0/q9ZpgpbRCuqskd/rvWwVAoGAC4YWqwkaUlmB8D0GN3U2\nR0m7ozmneaVoeK2nLOb5uuL+dYhHMjgR2G7tFkdOxxtmDasrOo/WR2WFmnHbXbKX\n4P3vtzB11UhR1Pw4wgVuprSvxbe1eWJQV+gWgtJ72wLjdm88LPkA2bf5FK6LjI5j\nkQybY7dx4qNXchHeEwCT8Rs=\n-----END PRIVATE KEY-----\n";
+
+// ===== 메뉴 생성 =====
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('🗺️ 백지도 게임 관리')
+    .addItem('🔄 전체 시트 → Firestore 동기화', 'syncAllToFirestore')
+    .addSeparator()
+    .addItem('📝 MCQ만 동기화', 'syncMCQ')
+    .addItem('❓ OX만 동기화', 'syncOX')
+    .addItem('📍 LOCATIONS만 동기화', 'syncLocations')
+    .addItem('📊 FREQ만 동기화', 'syncFreq')
+    .addItem('📌 REGION_NOTES만 동기화', 'syncRegionNotes')
+    .addSeparator()
+    .addItem('👥 사용자 계정 동기화 (생성/수정/삭제)', 'syncUsers')
+    .addItem('👀 현재 Firebase 사용자 목록 확인', 'listFirebaseUsers')
+    .addToUi();
+}
+
+// ============================================================
+// ===== Firebase 인증 토큰 발급 =====
+// ============================================================
+function getAccessToken() {
+  const now = Math.floor(Date.now() / 1000);
+  const header = Utilities.base64EncodeWebSafe(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  const claim = Utilities.base64EncodeWebSafe(JSON.stringify({
+    iss: SERVICE_ACCOUNT_EMAIL,
+    scope: "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/firebase",
+    aud: "https://oauth2.googleapis.com/token",
+    exp: now + 3600,
+    iat: now
+  }));
+  const signature = Utilities.base64EncodeWebSafe(
+    Utilities.computeRsaSha256Signature(`${header}.${claim}`, PRIVATE_KEY)
+  );
+  const jwt = `${header}.${claim}.${signature}`;
+  const response = UrlFetchApp.fetch("https://oauth2.googleapis.com/token", {
+    method: "post",
+    contentType: "application/x-www-form-urlencoded",
+    payload: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`
+  });
+  return JSON.parse(response.getContentText()).access_token;
+}
+
+// ============================================================
+// ===== Firestore 헬퍼 함수 =====
+// ============================================================
+function firestoreUrl(path) {
+  return `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/${path}`;
+}
+
+function toFirestoreDoc(obj) {
+  const fields = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === null || v === undefined || v === '') continue;
+    if (typeof v === 'boolean') fields[k] = { booleanValue: v };
+    else if (typeof v === 'number') fields[k] = { integerValue: v };
+    else if (Array.isArray(v)) {
+      fields[k] = {
+        arrayValue: {
+          values: v.map(item => typeof item === 'string'
+            ? { stringValue: item }
+            : { integerValue: item })
+        }
+      };
+    }
+    else fields[k] = { stringValue: String(v) };
+  }
+  return { fields };
+}
+
+function firestoreSet(path, data, token) {
+  const res = UrlFetchApp.fetch(firestoreUrl(path), {
+    method: "patch",
+    contentType: "application/json",
+    headers: { Authorization: `Bearer ${token}` },
+    payload: JSON.stringify(toFirestoreDoc(data)),
+    muteHttpExceptions: true
+  });
+  return JSON.parse(res.getContentText());
+}
+
+function firestoreDelete(path, token) {
+  UrlFetchApp.fetch(firestoreUrl(path), {
+    method: "delete",
+    headers: { Authorization: `Bearer ${token}` },
+    muteHttpExceptions: true
+  });
+}
+
+function firestoreGetCollection(path, token) {
+  const res = UrlFetchApp.fetch(firestoreUrl(path), {
+    method: "get",
+    headers: { Authorization: `Bearer ${token}` },
+    muteHttpExceptions: true
+  });
+  const json = JSON.parse(res.getContentText());
+  return json.documents || [];
+}
+
+// ============================================================
+// ===== 시트 데이터 읽기 헬퍼 =====
+// ============================================================
+function getSheetData(sheetName) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(sheetName);
+  if (!sheet) {
+    SpreadsheetApp.getUi().alert(`"${sheetName}" 시트를 찾을 수 없어요!`);
+    return null;
+  }
+  const data = sheet.getDataRange().getValues();
+  if (data.length < 2) return [];
+  const headers = data[0];
+  return data.slice(1)
+    .filter(row => row.some(cell => cell !== ''))
+    .map(row => {
+      const obj = {};
+      headers.forEach((h, i) => { if (h) obj[h] = row[i]; });
+      return obj;
+    });
+}
+
+// ============================================================
+// ===== MCQ 동기화 =====
+// ============================================================
+function syncMCQ() {
+  const rows = getSheetData('MCQ');
+  if (!rows) return;
+  const token = getAccessToken();
+
+  // 기존 문서 삭제
+  const existing = firestoreGetCollection('gameData/mcq/items', token);
+  existing.forEach(doc => {
+    const id = doc.name.split('/').pop();
+    firestoreDelete(`gameData/mcq/items/${id}`, token);
+  });
+
+  // 새 데이터 업로드
+  rows.forEach((row, i) => {
+    const answer = parseInt(row.answer) - 1; // 시트: 1~4 → JS: 0~3
+    const data = {
+      region: row.region || '',
+      q: row.q || '',
+      choices: [
+        String(row.choice1 || ''),
+        String(row.choice2 || ''),
+        String(row.choice3 || ''),
+        String(row.choice4 || '')
+      ],
+      answer: answer,
+      exp: row.exp || ''
+    };
+    firestoreSet(`gameData/mcq/items/q${String(i).padStart(4,'0')}`, data, token);
+    if (i % 20 === 0) Utilities.sleep(500);
+  });
+
+  firestoreSet('gameData/mcq/meta', { count: rows.length, updatedAt: new Date().toISOString() }, token);
+  SpreadsheetApp.getUi().alert(`✅ MCQ ${rows.length}개 동기화 완료!`);
+}
+
+// ============================================================
+// ===== OX 동기화 =====
+// ============================================================
+function syncOX() {
+  const rows = getSheetData('OX');
+  if (!rows) return;
+  const token = getAccessToken();
+
+  const existing = firestoreGetCollection('gameData/ox/items', token);
+  existing.forEach(doc => {
+    const id = doc.name.split('/').pop();
+    firestoreDelete(`gameData/ox/items/${id}`, token);
+  });
+
+  rows.forEach((row, i) => {
+    const answerVal = String(row.answer).toUpperCase().trim();
+    const data = {
+      region: row.region || '',
+      q: row.q || '',
+      answer: answerVal === 'TRUE' || answerVal === '참' || answerVal === 'O',
+      exp: row.exp || ''
+    };
+    firestoreSet(`gameData/ox/items/ox${String(i).padStart(4,'0')}`, data, token);
+    if (i % 20 === 0) Utilities.sleep(500);
+  });
+
+  firestoreSet('gameData/ox/meta', { count: rows.length, updatedAt: new Date().toISOString() }, token);
+  SpreadsheetApp.getUi().alert(`✅ OX ${rows.length}개 동기화 완료!`);
+}
+
+// ============================================================
+// ===== LOCATIONS 동기화 =====
+// ============================================================
+function syncLocations() {
+  const rows = getSheetData('LOCATIONS');
+  if (!rows) return;
+  const token = getAccessToken();
+
+  const existing = firestoreGetCollection('gameData/locations/items', token);
+  existing.forEach(doc => {
+    const id = doc.name.split('/').pop();
+    firestoreDelete(`gameData/locations/items/${id}`, token);
+  });
+
+  rows.forEach((row, i) => {
+    const acceptStr = String(row.accept || '');
+    const acceptArr = acceptStr.split(',').map(s => s.trim()).filter(s => s);
+    const data = {
+      name: row.name || '',
+      x: parseFloat(row.x) || 0,
+      y: parseFloat(row.y) || 0,
+      region: row.region || '',
+      fact: row.fact || '',
+      accept: acceptArr
+    };
+    const id = (row.name || `loc${i}`).replace(/[^a-zA-Z0-9가-힣]/g, '_');
+    firestoreSet(`gameData/locations/items/${id}`, data, token);
+    if (i % 20 === 0) Utilities.sleep(500);
+  });
+
+  firestoreSet('gameData/locations/meta', { count: rows.length, updatedAt: new Date().toISOString() }, token);
+  SpreadsheetApp.getUi().alert(`✅ LOCATIONS ${rows.length}개 동기화 완료!`);
+}
+
+// ============================================================
+// ===== FREQ 동기화 =====
+// ============================================================
+function syncFreq() {
+  const rows = getSheetData('FREQ');
+  if (!rows) return;
+  const token = getAccessToken();
+
+  const freqObj = {};
+  rows.forEach(row => {
+    if (!row.name) return;
+    freqObj[String(row.name)] = {
+      count: parseInt(row.count) || 0,
+      exams: parseInt(row.exams) || 0
+    };
+  });
+
+  firestoreSet('gameData/freq/data', {
+    json: JSON.stringify(freqObj),
+    updatedAt: new Date().toISOString()
+  }, token);
+  SpreadsheetApp.getUi().alert(`✅ FREQ ${rows.length}개 동기화 완료!`);
+}
+
+// ============================================================
+// ===== REGION_NOTES 동기화 =====
+// ============================================================
+function syncRegionNotes() {
+  const rows = getSheetData('REGION_NOTES');
+  if (!rows) return;
+  const token = getAccessToken();
+
+  const notesObj = {};
+  rows.forEach(row => {
+    if (!row.name) return;
+    notesObj[String(row.name)] = row.note || '';
+  });
+
+  firestoreSet('gameData/regionNotes/data', {
+    json: JSON.stringify(notesObj),
+    updatedAt: new Date().toISOString()
+  }, token);
+  SpreadsheetApp.getUi().alert(`✅ REGION_NOTES ${rows.length}개 동기화 완료!`);
+}
+
+// ============================================================
+// ===== 전체 동기화 =====
+// ============================================================
+function syncAllToFirestore() {
+  const ui = SpreadsheetApp.getUi();
+  const result = ui.alert(
+    '전체 동기화',
+    '모든 시트 데이터를 Firestore에 동기화할까요?\n(기존 데이터는 덮어씌워집니다)',
+    ui.ButtonSet.YES_NO
+  );
+  if (result !== ui.Button.YES) return;
+
+  syncMCQ();
+  Utilities.sleep(1000);
+  syncOX();
+  Utilities.sleep(1000);
+  syncLocations();
+  Utilities.sleep(1000);
+  syncFreq();
+  Utilities.sleep(1000);
+  syncRegionNotes();
+
+  ui.alert('✅ 전체 동기화 완료!');
+}
+
+// ============================================================
+// ===== Firebase Auth - 사용자 관리 =====
+// ============================================================
+function listFirebaseUsers() {
+  const token = getAccessToken();
+  const res = UrlFetchApp.fetch(
+    `https://identitytoolkit.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/accounts:query`,
+    {
+      method: "post",
+      contentType: "application/json",
+      headers: { Authorization: `Bearer ${token}` },
+      payload: JSON.stringify({}),
+      muteHttpExceptions: true
+    }
+  );
+  const json = JSON.parse(res.getContentText());
+  const users = json.userInfo || [];
+
+  let msg = `Firebase 등록 사용자 ${users.length}명:\n\n`;
+  users.forEach(u => { msg += `• ${u.email}\n`; });
+  SpreadsheetApp.getUi().alert(msg || '등록된 사용자가 없어요.');
+}
+
+function syncUsers() {
+  const rows = getSheetData('USERS');
+  if (!rows) return;
+
+  const ui = SpreadsheetApp.getUi();
+  const result = ui.alert(
+    '사용자 동기화',
+    `USERS 시트의 ${rows.length}명을 Firebase Auth와 동기화합니다.\n` +
+    '• 시트에 있는 사용자 → 생성 또는 비밀번호 업데이트\n' +
+    '• 시트에 없는 기존 사용자 → 삭제\n\n계속할까요?',
+    ui.ButtonSet.YES_NO
+  );
+  if (result !== ui.Button.YES) return;
+
+  const token = getAccessToken();
+
+  // 현재 Firebase 사용자 목록
+  const existingRes = UrlFetchApp.fetch(
+    `https://identitytoolkit.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/accounts:query`,
+    {
+      method: "post",
+      contentType: "application/json",
+      headers: { Authorization: `Bearer ${token}` },
+      payload: JSON.stringify({}),
+      muteHttpExceptions: true
+    }
+  );
+  const existingJson = JSON.parse(existingRes.getContentText());
+  const existingUsers = existingJson.userInfo || [];
+  const existingEmailMap = {};
+  existingUsers.forEach(u => { existingEmailMap[u.email] = u.localId; });
+  const sheetEmails = new Set(rows.map(r => String(r.id || '').trim()).filter(e => e));
+
+  let created = 0, updated = 0, deleted = 0, errors = 0;
+
+  // 생성 또는 업데이트
+  for (const row of rows) {
+    const email = String(row.id || '').trim();
+    const password = String(row.pw || '').trim();
+    const displayName = String(row.name || '').trim();
+    if (!email || !password) continue;
+
+    if (existingEmailMap[email]) {
+      // 기존 사용자 업데이트
+      const updateRes = UrlFetchApp.fetch(
+        `https://identitytoolkit.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/accounts:update`,
+        {
+          method: "post",
+          contentType: "application/json",
+          headers: { Authorization: `Bearer ${token}` },
+          payload: JSON.stringify({
+            localId: existingEmailMap[email],
+            password,
+            displayName
+          }),
+          muteHttpExceptions: true
+        }
+      );
+      JSON.parse(updateRes.getContentText()).localId ? updated++ : errors++;
+    } else {
+      // 신규 생성
+      const createRes = UrlFetchApp.fetch(
+        `https://identitytoolkit.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/accounts`,
+        {
+          method: "post",
+          contentType: "application/json",
+          headers: { Authorization: `Bearer ${token}` },
+          payload: JSON.stringify({ email, password, displayName }),
+          muteHttpExceptions: true
+        }
+      );
+      JSON.parse(createRes.getContentText()).localId ? created++ : errors++;
+    }
+    Utilities.sleep(100);
+  }
+
+  // 시트에 없는 사용자 삭제
+  for (const u of existingUsers) {
+    if (!sheetEmails.has(u.email)) {
+      UrlFetchApp.fetch(
+        `https://identitytoolkit.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/accounts:delete`,
+        {
+          method: "post",
+          contentType: "application/json",
+          headers: { Authorization: `Bearer ${token}` },
+          payload: JSON.stringify({ localId: u.localId }),
+          muteHttpExceptions: true
+        }
+      );
+      deleted++;
+      Utilities.sleep(100);
+    }
+  }
+
+  ui.alert(
+    `✅ 사용자 동기화 완료!\n\n` +
+    `• 신규 생성: ${created}명\n` +
+    `• 업데이트: ${updated}명\n` +
+    `• 삭제: ${deleted}명\n` +
+    `• 오류: ${errors}건`
+  );
+}
