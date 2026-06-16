@@ -6,3 +6,4 @@ const LOCATIONS = [{"name": "서울", "x": 284.9, "y": 155.4, "region": "수도�
 // ← 파일 맨 끝에 이 두 줄 추가
 window.PROVINCES = PROVINCES;
 window.MUNIS = MUNIS;
+window.LOCATIONS = LOCATIONS;
