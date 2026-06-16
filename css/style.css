@@ -1,0 +1,588 @@
+/* ============================================================
+   한국지리 백지도 정복 — 공통 스타일
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sea:#1278C2;--sea-d:#0F5EA8;--sea-l:#5BB8F0;
+  --green:#2FA34F;--gold:#FFD23F;
+  --accent:#6A5ACD;--accent-l:#A795E0;
+  --red:#E2574C;--orange:#E8740C;
+  --bg:#F0F4F8;--card:#FFFFFF;--border:#E2E8F0;
+  --text:#1E293B;--dim:#64748B;--dim2:#94A3B8;
+  --mode-c:#1278C2;
+}
+
+/* ── 공통 ── */
+body{font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+button{cursor:pointer;font-family:inherit;transition:all .15s}
+input{font-family:inherit}
+
+/* ── 로그인 ── */
+.login-wrap{max-width:420px;margin:0 auto;padding:24px 20px;min-height:100vh;display:flex;flex-direction:column;justify-content:center;gap:20px}
+.logo-area{text-align:center}
+.logo-icon{font-size:52px;display:block;margin-bottom:10px}
+.logo-title{font-size:24px;font-weight:800;color:var(--text)}
+.logo-title span{color:var(--sea)}
+.logo-sub{font-size:13px;color:var(--dim2);margin-top:5px}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px 24px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.card-title{font-size:14px;font-weight:700;color:var(--dim);margin-bottom:20px;text-align:center;letter-spacing:.5px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--dim);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase}
+.field input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;color:var(--text);outline:none;transition:border-color .2s}
+.field input:focus{border-color:var(--sea)}
+.btn-login{width:100%;background:var(--sea);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;margin-top:6px}
+.btn-login:hover{background:var(--sea-d)}
+.btn-login:disabled{background:#94a3b8;cursor:not-allowed}
+.error-msg{background:#fff1f2;border:1px solid #fca5a5;color:#b91c1c;border-radius:8px;padding:10px 14px;font-size:13px;margin-top:10px;display:none;text-align:center}
+.hint{text-align:center;font-size:12px;color:var(--dim2)}
+
+/* ── 게임 레이아웃 ── */
+.screen{display:none}
+.screen.active{display:flex;flex-direction:column;min-height:100vh}
+
+/* 헤더 */
+.top-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:stretch;height:52px;box-shadow:0 1px 4px rgba(0,0,0,.05);flex-shrink:0;z-index:100;position:sticky;top:0}
+.top-bar-left{display:flex;align-items:center;gap:10px}
+.logo-sm{font-size:16px;font-weight:800;color:var(--text)}
+.logo-sm span{color:var(--sea)}
+.region-chips{display:flex;align-items:center;gap:5px;overflow-x:auto;padding:4px 0;scrollbar-width:none}
+.region-chips::-webkit-scrollbar{display:none}
+.chip{background:#f1f5f9;border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--dim);white-space:nowrap}
+.chip.on{background:var(--sea);border-color:var(--sea);color:#fff}
+.top-bar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.hud{display:flex;align-items:center;gap:6px}
+.hud-item{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--text)}
+.hud-item.score{color:var(--sea)}
+.hud-item.combo{color:var(--orange)}
+.score-pop{position:absolute;font-size:13px;font-weight:800;color:var(--green);animation:pop .9s forwards;pointer-events:none}
+.score-pop.minus{color:var(--red)}
+@keyframes pop{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-28px);opacity:0}}
+.btn-icon{background:none;border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--dim);font-weight:600}
+.btn-icon:hover{background:var(--bg)}
+
+/* 타이머 바 */
+#timer-bar-wrap{height:4px;background:#e2e8f0;flex-shrink:0}
+#timer-bar{height:4px;background:var(--mode-c);width:100%;transition:width .12s linear}
+
+/* 메인 게임 영역 */
+#screen-game.active{display:flex;flex-direction:column}
+.game-inner{display:flex;flex:1;gap:0;overflow:hidden}
+
+/* 지도 패널 */
+#map-pane{width:55%;min-width:280px;position:relative;display:flex;flex-direction:column;background:#fff;border-right:1px solid var(--border)}
+.map-toolbar{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.game-title-bar{font-size:13px;font-weight:700;color:var(--dim);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.zoom-btns{display:flex;gap:4px}
+.zoom-btn{background:#f8fafc;border:1px solid var(--border);border-radius:7px;width:28px;height:28px;font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--dim)}
+.zoom-btn:hover{background:var(--bg)}
+#map-svg-wrap{flex:1;overflow:hidden;position:relative;touch-action:none}
+#map-svg{width:100%;height:100%;display:block;touch-action:none}
+/* 시·군 경계 */
+.muni{fill:#DBEAFE;stroke:#93C5FD;stroke-width:.7;cursor:pointer;transition:fill .12s}
+.muni:hover{fill:#BFDBFE}
+.muni.correct{fill:#BBF7D0!important;stroke:#16A34A!important;stroke-width:1.5}
+.muni.wrong{fill:#FECACA!important;stroke:#DC2626!important;stroke-width:1.5}
+.muni.flash{fill:#FEF3C7;stroke:#F59E0B;stroke-width:1.5}
+.muni.pulse{animation:pulse .7s infinite alternate}
+.muni.dim-region{fill:#E8F4FD!important;stroke:#B3D7F0!important;opacity:.5}
+.muni.hit{animation:hitFlash .5s}
+@keyframes pulse{from{fill:#FEF3C7}to{fill:#FCD34D}}
+@keyframes hitFlash{0%{filter:brightness(1.6)}100%{filter:brightness(1)}}
+/* 시·도 경계 overlay */
+.prov-border{fill:none;stroke:#93C5FD;stroke-width:1.2;pointer-events:none}
+/* 지도 위 요소 */
+.loc-dot{fill:var(--sea);stroke:#fff;stroke-width:2;pointer-events:none}
+.loc-dot.target-reveal{fill:var(--green)}
+.loc-label{fill:var(--text);font-size:9px;font-weight:700;pointer-events:none}
+.loc-label.bad{fill:var(--red)}
+.tap-ripple{fill:none;stroke:var(--sea-l);stroke-width:2;animation:ripple .5s forwards}
+@keyframes ripple{0%{r:6;opacity:.9}100%{r:22;opacity:0}}
+.match-mark{pointer-events:none}
+.click-mark{pointer-events:none}
+/* 워밍업 팁 */
+.warmup-tip{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.95);border:1px solid var(--border);border-radius:10px;padding:6px 14px;font-size:12px;color:var(--dim);text-align:center;pointer-events:none;z-index:10}
+.warmup-tip.hidden{display:none}
+
+/* 게임 우측 패널 */
+.game-panel{flex:1;display:flex;flex-direction:column;overflow-y:auto;padding:10px}
+.game-body.no-map{flex-direction:column}
+.game-body.no-map #map-pane{display:none!important}
+.game-body.no-map .game-panel{width:100%;max-width:520px;margin:0 auto;padding:14px}
+
+/* HUD 상세 */
+.hud-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0;font-size:13px}
+.hud-bar .qnum{color:var(--dim);font-weight:700}
+.hud-bar .score{color:var(--sea);font-weight:800;font-size:15px}
+.hud-bar .combo-area{color:var(--orange);font-weight:700}
+.boss-bar{background:linear-gradient(90deg,var(--red),var(--orange));padding:4px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0;font-size:12px;color:#fff;font-weight:700}
+.boss-hp-bar{flex:1;height:8px;background:rgba(255,255,255,.3);border-radius:4px;overflow:hidden}
+.boss-hp-fill{height:100%;background:#fff;border-radius:4px;transition:width .4s}
+.boss-bar.hidden,.turn-indicator.hidden,.warmup-tip.hidden{display:none!important}
+.turn-indicator{background:var(--sea);color:#fff;text-align:center;padding:4px;font-size:12px;font-weight:700;flex-shrink:0}
+
+/* 문제 박스 */
+#question-box{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.7;color:var(--text);font-weight:500;flex-shrink:0;margin-bottom:8px}
+.q-region{display:inline-block;background:var(--mode-c);color:#fff;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;margin-right:6px;vertical-align:middle}
+.map-hint{font-size:11px;color:var(--dim2);margin-top:6px;line-height:1.5}
+
+/* 선택지 */
+#choices-box{display:flex;flex-direction:column;gap:7px;margin-bottom:8px}
+.choice-btn{background:#f8fafc;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:13px;color:var(--text);text-align:left;font-weight:500;width:100%}
+.choice-btn:hover:not(:disabled){background:#f0f9ff;border-color:var(--sea-l);color:var(--sea-d)}
+.choice-btn.correct{background:#f0fdf4;border-color:#16a34a;color:#15803d}
+.choice-btn.wrong{background:#fff1f2;border-color:#dc2626;color:#b91c1c}
+.choice-btn:disabled{cursor:not-allowed}
+.choices-grid2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.ghost-btn{background:none;border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;font-size:13px;color:var(--dim);width:100%}
+.ghost-btn:hover{background:var(--bg);border-color:var(--sea-l)}
+.hint-btn{color:var(--sea)}
+.ox-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ox-row .choice-btn{font-size:28px;text-align:center;padding:16px}
+.stat-card{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-top:8px;font-size:13px;line-height:1.6}
+
+/* 피드백 */
+.feedback-box{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.6;margin-bottom:8px}
+.feedback-box.hidden{display:none}
+.feedback-box.good{border-color:#16a34a;background:#f0fdf4}
+.feedback-box.bad{border-color:#dc2626;background:#fff1f2}
+.feedback-box.pop{animation:fbPop .35s}
+@keyframes fbPop{0%{transform:scale(.97)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+.fb-head{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:6px}
+.fb-mascot{width:36px;height:36px;object-fit:contain;flex-shrink:0}
+.fb-pts{display:inline-block;background:var(--gold);color:#7a4e00;border-radius:20px;padding:1px 9px;font-size:12px;font-weight:800;margin-left:6px}
+.fb-pts.minus{background:#fca5a5;color:#b91c1c}
+.fb-note{margin-top:6px;font-size:11px;color:var(--dim);background:var(--bg);border-radius:7px;padding:6px 10px}
+.fb-extra{font-size:12px;color:var(--dim);margin-top:5px;line-height:1.5}
+.fb-extra a{color:var(--sea);text-decoration:none}
+
+/* 다음 버튼 */
+#btn-next{background:var(--mode-c);color:#fff;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:700;width:100%;margin-bottom:8px}
+#btn-next:hover{filter:brightness(1.08)}
+#btn-next.hidden{display:none!important}
+
+/* 빙고 */
+.bingo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:8px 0}
+.bingo-cell{background:#f8fafc;border:1.5px solid var(--border);border-radius:7px;padding:5px 2px;font-size:11px;font-weight:700;text-align:center;line-height:1.3;min-height:46px;display:flex;align-items:center;justify-content:center;word-break:keep-all}
+.bingo-cell.active{background:var(--sea);border-color:var(--sea);color:#fff;animation:cellPop .3s}
+.bingo-cell.correct{background:#f0fdf4;border-color:#16a34a}
+.bingo-cell.wrong{background:#fff1f2;border-color:#dc2626}
+.bingo-cell.line{background:var(--gold);border-color:#d97706}
+@keyframes cellPop{0%{transform:scale(.92)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+
+/* 기후/통계 그래프 */
+.climate-graph{width:100%;max-width:340px;height:auto;display:block;margin:6px auto}
+.dual-climate{display:flex;gap:6px}
+.dual-climate > div{flex:1;min-width:0}
+.dual-label{font-size:11px;font-weight:800;color:var(--sea-d);text-align:center;margin-bottom:2px}
+.pair-table{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0}
+.pair-table th,.pair-table td{padding:5px 8px;border:1px solid var(--border);text-align:center}
+.pair-table th{background:#f8fafc;font-weight:700}
+
+/* 힌트 목록 */
+.hint-list{padding-left:18px;margin:8px 0;font-size:13px;line-height:1.7}
+.hint-list li{margin-bottom:3px}
+
+/* 카드 실루엣 */
+.card-sil{display:block;width:100%;height:auto}
+.land{fill:#2FA34F;stroke:#fff;stroke-width:.8;vector-effect:non-scaling-stroke}
+.land-shadow{fill:#1F7A38;stroke:none;transform:translate(3px,4px)}
+.land-face{pointer-events:none}
+
+/* 탐색 모드 */
+.explore-controls{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.exp-info{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;font-size:13px;line-height:1.7;min-height:80px}
+.exp-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.exp-head b{font-size:16px;font-weight:800}
+.reg-chip{display:inline-block;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;color:#fff}
+.exp-popline{font-size:12px;color:var(--dim);margin-bottom:6px}
+.exp-text{font-size:13px;color:var(--text);line-height:1.6}
+.pop-badge{display:inline-block;background:#e0e7ff;color:var(--accent);border-radius:20px;padding:1px 8px;font-size:11px;font-weight:700;margin:0 2px}
+
+/* 홈 화면 */
+#screen-home.active{display:flex;flex-direction:column}
+.home-header{background:#fff;border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.home-logo{font-size:18px;font-weight:800}
+.home-logo span{color:var(--sea)}
+.home-body{flex:1;overflow-y:auto;padding:14px 14px 80px}
+
+/* 계급·XP */
+.rank-section{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:12px}
+#rank-badge{font-size:15px;font-weight:800;margin-bottom:6px}
+.streak-chip{background:#fff3e0;color:var(--orange);border-radius:20px;padding:2px 10px;font-size:12px;font-weight:700;margin-left:6px}
+.xp-bar-wrap{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:6px 0}
+#xp-bar{height:100%;background:var(--gold);border-radius:4px;transition:width .5s}
+#xp-text{font-size:11px;color:var(--dim2)}
+
+/* 플레이 히어로 */
+.play-hero{background:var(--sea);color:#fff;border-radius:12px;padding:14px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+#ph-start{background:#fff;color:var(--sea);border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:800;width:100%}
+#ph-mission{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.4);border-radius:8px;padding:8px;font-size:12px;font-weight:700;width:100%;text-align:left}
+
+/* 모드 카드 캐러셀 */
+.mode-row{display:flex;align-items:center;gap:6px;margin-bottom:12px;overflow:hidden}
+#car-prev,#car-next{background:#fff;border:1px solid var(--border);border-radius:8px;width:30px;height:34px;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--dim)}
+#car-prev:disabled,#car-next:disabled{opacity:.3}
+#mode-carousel{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;flex:1;padding:2px 0;scroll-behavior:smooth}
+#mode-carousel::-webkit-scrollbar{display:none}
+#mode-carousel.dragging{cursor:grabbing}
+.mode-card{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;min-width:110px;flex-shrink:0;text-align:center;cursor:pointer}
+.mode-card:hover{border-color:var(--sea-l);background:#f0f9ff}
+.mode-card .m-icon{font-size:22px;display:block;margin-bottom:4px}
+.mode-card .m-name{font-size:12px;font-weight:700;color:var(--text)}
+.mode-card .m-desc{font-size:11px;color:var(--dim2);margin-top:2px}
+
+/* 랭킹 보드 */
+.board-section{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:12px}
+.board-title{font-size:13px;font-weight:700;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.board-tabs{display:flex;gap:4px;margin-bottom:10px;overflow-x:auto;scrollbar-width:none}
+.board-tabs::-webkit-scrollbar{display:none}
+.btab{background:#f8fafc;border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--dim);white-space:nowrap}
+.btab.on{background:var(--sea);border-color:var(--sea);color:#fff}
+.board-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg);font-size:13px}
+.board-row:last-child{border-bottom:none}
+.b-rank{width:22px;height:22px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--dim);flex-shrink:0}
+.b-rank.r1{background:#FEF9C3;color:#CA8A04}
+.b-rank.r2{background:#F1F5F9;color:var(--dim)}
+.b-rank.r3{background:#FFF7ED;color:#C2410C}
+.b-name{flex:1;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.b-score{font-weight:700;color:var(--sea)}
+
+/* 빈출 분석 */
+.freq-section{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:12px}
+#freq-span{font-size:11px;color:var(--dim2);display:block;margin-bottom:8px;line-height:1.5}
+.freq-row{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12px}
+.f-rank{width:18px;text-align:right;font-weight:700;color:var(--dim);flex-shrink:0}
+.f-name{width:68px;font-weight:600;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.f-bar{flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
+.f-fill{height:100%;background:var(--sea);border-radius:4px}
+.f-val{font-size:11px;color:var(--dim2);white-space:nowrap}
+
+/* 숙련도 */
+.mastery-section{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:12px}
+.sec-title{font-size:13px;font-weight:700;color:var(--dim);margin-bottom:10px}
+.mastery-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px}
+.m-name{width:52px;font-weight:600;flex-shrink:0}
+.m-bar{flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
+.m-fill{height:100%;background:var(--green);border-radius:4px;transition:width .5s}
+.m-val{font-size:11px;color:var(--dim2);white-space:nowrap}
+
+/* 오늘의 도전 */
+.daily-section{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:12px}
+#daily-body{font-size:13px;color:var(--dim)}
+
+/* 미션 */
+.mission-section{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:12px}
+.mission-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--bg);font-size:13px}
+.mission-row:last-child{border-bottom:none}
+.mission-row.done .m-label{text-decoration:line-through;color:var(--dim2)}
+.m-label{flex:1;line-height:1.4}
+.m-prog{font-size:11px;color:var(--dim2);white-space:nowrap}
+.claim-btn{background:var(--green);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700}
+
+/* 약점 보고서 */
+.weak-section{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:12px}
+.wr-row{display:flex;align-items:center;gap:8px;font-size:13px;padding:5px 0;border-bottom:1px solid var(--bg)}
+.wr-row:last-child{border-bottom:none}
+.wr-name{flex:1;font-weight:600}
+.wr-stat{font-size:11px;color:var(--red)}
+.wr-btn-row{display:flex;gap:8px;margin-top:8px}
+.text-btn{background:none;border:1.5px solid var(--border);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--dim)}
+.text-btn:hover{background:var(--bg);border-color:var(--sea-l);color:var(--sea)}
+
+/* 보스 섹션 */
+.boss-section{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:12px}
+.boss-cards{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+.boss-cards::-webkit-scrollbar{display:none}
+.boss-card{min-width:110px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:10px;text-align:center;flex-shrink:0;cursor:pointer}
+.boss-card:hover:not(.locked){border-color:var(--red);background:#fff1f0}
+.boss-card.locked{opacity:.5;cursor:not-allowed}
+.boss-card .bc-icon{font-size:22px;margin-bottom:4px}
+.boss-card .bc-name{font-size:12px;font-weight:700}
+.boss-card .bc-pct{font-size:11px;color:var(--green);margin-top:2px}
+.boss-card.cleared .bc-icon::after{content:' ✅';font-size:14px}
+
+/* 업적 */
+.ach-section{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:12px}
+.ach-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--bg);font-size:13px}
+.ach-row:last-child{border-bottom:none}
+.ach-row.locked{opacity:.45}
+.ach-icon{font-size:20px;width:28px;text-align:center;flex-shrink:0}
+.ach-info{flex:1}
+.ach-name{font-weight:700}
+.ach-desc{font-size:11px;color:var(--dim2)}
+.ach-reward{font-size:11px;color:var(--orange);font-weight:700;white-space:nowrap}
+
+/* 결과 화면 */
+#screen-result.active{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+.result-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%;max-width:420px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.08);position:relative;overflow:hidden}
+#result-title{font-size:14px;font-weight:700;color:var(--dim);margin-bottom:8px}
+#result-main{font-size:44px;font-weight:900;color:var(--sea);margin-bottom:8px}
+#result-detail{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:16px}
+.result-btns{display:flex;flex-direction:column;gap:8px}
+.result-btns button{border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;width:100%}
+#btn-retry{background:var(--sea);color:#fff}
+#btn-home{background:#f1f5f9;color:var(--text)}
+#btn-quit{position:absolute;top:12px;right:12px;background:none;border:none;font-size:16px;color:var(--dim2);padding:4px}
+.name-entry{margin-bottom:12px}
+.name-entry input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;margin-bottom:6px}
+.name-entry button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px;font-size:13px;font-weight:700;width:100%}
+.vs-table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+.vs-table td{padding:7px 10px;border:1px solid var(--border)}
+.vs-table td:first-child{font-weight:700}
+
+/* 카드 도감 화면 */
+#screen-cards.active{display:flex;flex-direction:column;min-height:100vh}
+.cards-header{background:#fff;border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px}
+.cards-header h2{font-size:16px;font-weight:800;flex:1}
+.coll-chips{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding:8px 14px;background:#fff;border-bottom:1px solid var(--border)}
+.coll-chips::-webkit-scrollbar{display:none}
+.coll-progress{font-size:12px;color:var(--dim2);padding:6px 14px;background:#fff;border-bottom:1px solid var(--border)}
+#coll-title-progress{font-weight:700;color:var(--text)}
+#cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;padding:12px 14px 80px}
+.card-item{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:10px;cursor:pointer;transition:all .15s}
+.card-item:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.card-item.not-owned{opacity:.4;filter:grayscale(.8)}
+.card-count{font-size:10px;font-weight:700;color:var(--dim);margin-bottom:4px}
+.card-stars{font-size:10px;margin-bottom:4px;color:#D1D5DB}
+.cstar.on{color:var(--gold)}
+.card-name{font-size:12px;font-weight:800;text-align:center;margin-top:6px}
+.card-region-chip{display:inline-block;border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700;color:#fff;margin-top:3px}
+
+/* 가챠 모달 */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
+.modal.hidden{display:none!important}
+.modal-box{background:#fff;border-radius:20px;padding:24px;width:100%;max-width:380px;max-height:90vh;overflow-y:auto}
+.modal-box h3{font-size:18px;font-weight:800;margin-bottom:14px;text-align:center}
+#coin-cnt{font-size:13px;color:var(--orange);font-weight:700;text-align:center;margin-bottom:12px}
+#gacha-card{min-height:180px;display:flex;align-items:center;justify-content:center;margin:12px 0}
+#gacha-msg{text-align:center;font-size:13px;color:var(--dim);margin-bottom:10px}
+.gacha-btns{display:flex;gap:8px;flex-direction:column}
+.gacha-btns button{border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:700}
+#btn-draw{background:var(--gold);color:#7a4e00}
+#btn-draw-again{background:var(--sea);color:#fff}
+#btn-gacha-close{background:var(--bg);color:var(--text)}
+.gacha-flip{perspective:400px}
+.gacha-flip .gcard-front{transform-style:preserve-3d;animation:flipIn .6s forwards}
+@keyframes flipIn{0%{transform:rotateY(90deg) scale(.8)}60%{transform:rotateY(-10deg)}100%{transform:rotateY(0) scale(1)}}
+
+/* 로그인/선생님 모달 */
+.login-modal .modal-box,.teacher-modal .modal-box{padding:24px 20px}
+.modal-field{margin-bottom:12px}
+.modal-field label{display:block;font-size:12px;font-weight:700;color:var(--dim);margin-bottom:5px}
+.modal-field input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px}
+.modal-field input:focus{outline:none;border-color:var(--sea)}
+.modal-submit{background:var(--sea);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;width:100%;margin-top:4px}
+.modal-submit:disabled{background:#94a3b8}
+.modal-msg{font-size:13px;color:var(--red);margin-top:8px;text-align:center;min-height:18px}
+.modal-row{display:flex;gap:8px;margin-top:8px}
+.modal-row button{flex:1;border:1.5px solid var(--border);background:#f8fafc;border-radius:8px;padding:10px;font-size:12px;font-weight:700;color:var(--dim)}
+.modal-row button:hover{background:var(--bg)}
+.modal-close{position:absolute;top:12px;right:12px;background:none;border:none;font-size:18px;color:var(--dim2)}
+.text-link{background:none;border:none;color:var(--sea);font-size:12px;font-weight:600;padding:0;text-decoration:underline}
+.t-msg{font-size:13px;color:var(--dim);margin-bottom:8px;line-height:1.5}
+.t-table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+.t-table th,.t-table td{padding:6px 10px;border:1px solid var(--border);text-align:left}
+.t-table th{background:#f8fafc;font-weight:700}
+.t-foot{display:flex;gap:8px;margin-top:10px;justify-content:flex-end}
+.t-foot button{font-size:12px;font-weight:600;color:var(--sea);background:none;border:1px solid var(--border);border-radius:7px;padding:5px 12px}
+
+/* 모드 선택 모달 */
+#modes-modal .modal-box{max-width:460px}
+#modes-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:60vh;overflow-y:auto}
+.mode-list-item{background:#f8fafc;border:1.5px solid var(--border);border-radius:10px;padding:10px;cursor:pointer;text-align:center}
+.mode-list-item:hover{border-color:var(--sea-l);background:#f0f9ff}
+.mode-list-item .mi-icon{font-size:20px;margin-bottom:4px}
+.mode-list-item .mi-name{font-size:13px;font-weight:700}
+.mode-list-item .mi-desc{font-size:11px;color:var(--dim2);margin-top:2px}
+
+/* 테마 모달 */
+#theme-modal .modal-box{max-width:460px}
+#theme-list{display:flex;flex-direction:column;gap:7px;max-height:60vh;overflow-y:auto}
+.theme-item{background:#f8fafc;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:10px}
+.theme-item:hover{border-color:var(--accent-l);background:#f5f3ff}
+.theme-item .ti-icon{font-size:18px;flex-shrink:0}
+.theme-item .ti-info{flex:1}
+.theme-item .ti-label{font-size:13px;font-weight:700}
+.theme-item .ti-count{font-size:11px;color:var(--dim2);margin-top:2px}
+
+/* 테마 학습 모달 */
+#themelearn-modal .modal-box{max-width:480px}
+#themelearn-list .tl-item{padding:8px 0;border-bottom:1px solid var(--bg);font-size:13px;line-height:1.6}
+#tl-back{background:var(--bg);color:var(--dim);border:1.5px solid var(--border);border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;margin-bottom:10px}
+#tl-quiz{background:var(--sea);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;margin-left:8px}
+
+/* 하단 탭 */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;height:56px;z-index:100;max-width:100%}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:none;font-size:10px;font-weight:600;color:var(--dim2)}
+.tab-btn.active{color:var(--sea)}
+.tab-btn .t-icon{font-size:20px}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* 계정 칩 */
+#account-chip{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--dim)}
+
+/* 추천 */
+.rec-wrap{position:relative;margin-bottom:12px}
+#rec-bubble{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--text);margin-bottom:6px}
+#rec-btn{background:var(--sea);color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:700;width:100%}
+
+/* 초보자 가이드 */
+.beginner-guide{background:linear-gradient(135deg,var(--sea) 0%,var(--accent) 100%);border-radius:12px;padding:14px;color:#fff;margin-bottom:12px}
+.beginner-guide h3{font-size:15px;font-weight:800;margin-bottom:6px}
+.beginner-guide p{font-size:12px;line-height:1.6;opacity:.9}
+.guide-steps{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.guide-step{background:rgba(255,255,255,.2);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700}
+
+/* 정복 지도 */
+.conquest-wrap{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:12px}
+#conquest-wrap svg{width:100%;height:auto;max-height:180px}
+
+/* 컨페티 */
+.confetti-piece{position:absolute;width:8px;height:8px;border-radius:50%;animation:conf 1.2s ease-out forwards;pointer-events:none;top:20px}
+@keyframes conf{to{transform:translate(var(--dx),var(--dy)) rotate(720deg);opacity:0}}
+
+/* 반응형 */
+@media(max-width:640px){
+  .game-inner{flex-direction:column}
+  #map-pane{width:100%;height:48vh;border-right:none;border-bottom:1px solid var(--border)}
+  .game-panel{height:52vh;overflow-y:auto}
+  .dual-climate{gap:3px}
+  #modes-list{grid-template-columns:1fr 1fr}
+}
+@media(min-width:900px){
+  .home-body{max-width:720px;margin:0 auto}
+  #screen-game .game-inner{flex-direction:row}
+}
+
+/* ── 추가 스타일 (engine.js 참조) ── */
+/* 업적 토스트 */
+.ach-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e293b;color:#fff;border-radius:12px;padding:14px 20px;font-size:13px;box-shadow:0 4px 20px rgba(0,0,0,.25);z-index:300;opacity:0;transition:all .3s}
+.ach-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.at-title{font-weight:800;margin-bottom:6px;color:var(--gold)}
+.at-row{display:flex;align-items:center;gap:8px;margin:3px 0}
+.at-ic{font-size:18px}
+.at-bonus{margin-top:6px;font-size:12px;color:var(--gold)}
+/* 게임 UI 추가 */
+.ach-item{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--bg);font-size:13px}
+.ach-item:last-child{border-bottom:none}
+.ach-item.on .ach-ic{filter:none}
+.ach-ic{font-size:20px;width:28px;text-align:center;filter:grayscale(1);opacity:.4}
+.ach-txt b{display:block;font-weight:700}
+.ach-txt small{color:var(--dim2);font-size:11px}
+/* 타이머 위험 */
+#timer-bar.danger{background:var(--red)}
+/* 보스바 */
+.boss-bar{background:linear-gradient(90deg,var(--red),var(--orange));padding:6px 12px;flex-shrink:0;font-size:12px;color:#fff;font-weight:700}
+.boss-hp-bar{height:8px;background:rgba(255,255,255,.3);border-radius:4px;overflow:hidden;margin-top:4px}
+.boss-hp-fill{height:100%;background:#fff;border-radius:4px;transition:width .4s}
+/* 모드 카드 스타일 */
+.mode-card{border-left:3px solid var(--mc,var(--sea))}
+.mode-card .m-icon{font-size:20px;margin-bottom:4px}
+.mode-card .m-name{font-size:12px;font-weight:700;color:var(--text)}
+.mode-card .m-desc{font-size:10px;color:var(--dim2);margin-top:1px}
+/* 모드 모달 타일 */
+#modes-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:60vh;overflow-y:auto}
+.mode-tile{background:#f8fafc;border:1.5px solid var(--mc,var(--border));border-radius:10px;padding:12px;cursor:pointer;text-align:center;border-left-width:4px}
+.mode-tile:hover{background:var(--bg)}
+.mt-name{display:block;font-size:13px;font-weight:700;margin-bottom:3px}
+.mt-desc{display:block;font-size:11px;color:var(--dim2)}
+/* 테마 선택 */
+.theme-pick{width:100%;background:#f8fafc;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:13px;margin-bottom:6px}
+.theme-pick:hover{border-color:var(--accent-l);background:#f5f3ff}
+.tp-label{font-weight:700}
+.tp-count{font-size:11px;color:var(--dim2)}
+/* 태마 학습 */
+.tl-list{max-height:50vh;overflow-y:auto}
+.tl-item{padding:8px 0;border-bottom:1px solid var(--bg);font-size:13px;line-height:1.5}
+.tl-top{display:flex;gap:8px;margin-bottom:2px}
+.tl-prov{font-size:11px;color:var(--dim2)}
+.tl-desc{color:var(--dim)}
+.tl-actions{display:flex;gap:8px;margin-top:12px}
+/* 오답 수배 칩 */
+.wanted-chip{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:12px;margin:2px;cursor:default}
+.wanted-chip.danger{background:#fff1f0;border-color:var(--red);color:var(--red)}
+.wanted-chip small{font-size:10px;color:var(--dim2);margin-left:4px}
+.wanted-chips{margin:6px 0}
+.wanted-sub{font-size:12px;color:var(--dim);margin-bottom:6px}
+.wanted-empty{font-size:13px;color:var(--dim2)}
+/* 약점 리포트 */
+.wr-head{font-size:12px;font-weight:700;color:var(--dim);margin-bottom:6px}
+.wr-bar{flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
+.wr-fill{height:100%;border-radius:4px}
+.wr-val{font-size:12px;color:var(--dim2);min-width:30px;text-align:right}
+.wr-btn{background:var(--sea);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;margin-top:8px;cursor:pointer;width:100%}
+.wr-btn.ghost{background:none;border:1.5px solid var(--border);color:var(--dim);margin-top:4px}
+.wr-chips{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+.wr-chip{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:12px}
+/* 보스 카드 */
+.boss-btn{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;cursor:pointer;width:100%;margin-bottom:6px;font-size:13px}
+.boss-btn:hover:not(.locked){border-color:var(--red);background:#fff1f0}
+.boss-btn.locked{opacity:.5;cursor:not-allowed}
+.boss-btn.cleared{border-color:var(--gold);background:#fffbeb}
+.boss-name{font-weight:700}
+.boss-tag{color:var(--gold);font-size:12px}
+.boss-go{color:var(--red);font-size:12px;font-weight:700}
+.boss-lock{color:var(--dim2);font-size:12px}
+/* 미션 */
+.ms-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px}
+.ms-label{flex:1;font-size:13px}
+.ms-prog{font-size:12px;color:var(--dim2)}
+.ms-claim{background:var(--green);color:#fff;border:none;border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer}
+.ms-claimed{font-size:12px;color:var(--green)}
+.ms-bar{height:5px;background:var(--bg);border-radius:3px;overflow:hidden}
+.ms-fill{height:100%;background:var(--sea);border-radius:3px;transition:width .3s}
+/* 빈출 분석 */
+.bd-group{margin-bottom:12px}
+.bd-head{font-size:12px;font-weight:700;color:var(--dim);margin-bottom:6px}
+.bd-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--bg);font-size:13px}
+.bd-row:last-child{border-bottom:none}
+.bd-rk{width:24px;height:24px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--dim);flex-shrink:0}
+.bd-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bd-score{font-weight:700;color:var(--sea)}
+/* 탐색 모드 추가 */
+.exp-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.exp-count{font-size:12px;color:var(--dim2)}
+.exp-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:16px;font-weight:800}
+.exp-text{font-size:13px;color:var(--text);line-height:1.6}
+/* 마스코트 힌트 */
+.mascot-clue{display:flex;flex-direction:column;align-items:center;margin-top:8px}
+.mascot-clue img{max-width:120px;max-height:120px;border-radius:10px;object-fit:contain}
+.mascot-cap{font-size:11px;color:var(--dim2);margin-top:4px}
+/* primary-btn */
+.primary-btn{background:var(--sea);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;width:100%}
+.primary-btn:hover{filter:brightness(1.08)}
+/* 빙고 추가 */
+.bingo-strike{display:inline-block;background:#fff1f2;color:var(--red);border-radius:20px;padding:2px 10px;font-size:12px;font-weight:700;margin-left:8px}
+.bingo-cell.done{background:#BBF7D0;border-color:#16a34a;color:#15803d}
+.bingo-cell.miss-pick{background:#FECACA!important;border-color:#dc2626!important}
+.bingo-cell.target{background:#FEF3C7!important;border-color:#F59E0B!important}
+/* 일일 기록 */
+.daily-mine{font-size:13px;color:var(--sea);font-weight:700;margin:8px 0;text-align:center}
+/* 도감 강화 버튼 */
+.enh-btn{padding:3px 8px;font-size:11px}
+/* BG 단계 */
+.bg-title{font-size:12px;font-weight:700;color:var(--dim);margin-bottom:8px}
+.bg-steps{display:flex;gap:6px;flex-wrap:wrap}
+.bg-step{background:#f8fafc;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;cursor:pointer;text-align:left}
+.bg-step:hover{border-color:var(--sea-l);background:#f0f9ff}
+.bg-step b{display:block;font-size:12px;font-weight:700;margin-bottom:2px}
+.bg-step small{display:block;font-size:10px;color:var(--dim2)}
+/* 홈 헤더 */
+#screen-home .home-header{display:flex;align-items:center;gap:10px;background:#fff;border-bottom:1px solid var(--border);padding:12px 16px;box-shadow:0 1px 4px rgba(0,0,0,.05);position:sticky;top:0;z-index:50}
+.home-logo{font-size:18px;font-weight:800;flex:1}
+.home-logo span{color:var(--sea)}
+/* 계급 섹션 */
+.rank-section,.mastery-section,.board-section,.freq-section,.weak-section,.daily-section,.boss-section,.mission-section,.ach-section{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:12px}
+.sec-title{font-size:13px;font-weight:700;color:var(--dim);margin-bottom:10px}
+/* 오늘의 연속 */
+.streak-chip{background:#fff3e0;color:var(--orange);border-radius:20px;padding:2px 10px;font-size:12px;font-weight:700;margin-left:6px}
+/* 플레이 히어로 */
+.play-hero{background:var(--sea);color:#fff;border-radius:12px;padding:14px;margin-bottom:12px}
+.ph-label{font-size:11px;opacity:.7;margin-bottom:4px}
+.ph-text{font-size:13px;margin-bottom:10px;line-height:1.5}
+.ph-btn{background:#fff;color:var(--sea);border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:800;width:100%;cursor:pointer;margin-bottom:6px}
+.ph-mission{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.4);border-radius:8px;padding:8px;font-size:12px;font-weight:700;width:100%;cursor:pointer;text-align:left}
+/* 추천 */
+#rec-bubble{background:#f0f9ff;border:1px solid var(--sea-l);border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:6px}
+#rec-btn{background:var(--sea);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;width:100%;cursor:pointer;margin-bottom:12px}
