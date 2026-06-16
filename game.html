@@ -8,73 +8,66 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: #0f172a;
-      color: #f1f5f9;
+      background: #f0f4f8;
+      color: #1e293b;
       font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
-    /* ── 상단 헤더 ── */
+    /* ── 헤더 ── */
     .header {
-      background: rgba(255,255,255,0.03);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
       padding: 12px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
 
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
 
-    .logo { font-size: 20px; font-weight: 800; color: #f1f5f9; }
+    .logo { font-size: 20px; font-weight: 800; color: #1e293b; }
     .logo span { color: #6366f1; }
 
     .user-badge {
-      background: rgba(99,102,241,0.15);
-      border: 1px solid rgba(99,102,241,0.3);
+      background: #ede9fe;
       border-radius: 20px;
       padding: 4px 12px;
       font-size: 12px;
-      color: #a5b4fc;
+      color: #6366f1;
+      font-weight: 600;
     }
 
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .header-right { display: flex; align-items: center; gap: 10px; }
 
     .score-badge {
-      background: rgba(16,185,129,0.15);
-      border: 1px solid rgba(16,185,129,0.3);
+      background: #dcfce7;
       border-radius: 20px;
       padding: 4px 14px;
       font-size: 13px;
-      color: #6ee7b7;
+      color: #16a34a;
       font-weight: 700;
     }
 
     .btn-sm {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: #94a3b8;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
       border-radius: 8px;
       padding: 6px 14px;
       font-size: 12px;
       cursor: pointer;
       transition: background 0.2s;
+      font-weight: 600;
     }
-    .btn-sm:hover { background: rgba(255,255,255,0.12); color: #f1f5f9; }
+    .btn-sm:hover { background: #e2e8f0; color: #1e293b; }
 
-    /* ── 메인 레이아웃 ── */
+    /* ── 메인 ── */
     .main {
       flex: 1;
       display: flex;
@@ -86,39 +79,32 @@
       margin: 0 auto;
     }
 
-    /* ── 모드 선택 탭 ── */
-    .mode-tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    /* ── 모드 탭 ── */
+    .mode-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
 
     .mode-tab {
       flex: 1;
       min-width: 120px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
+      background: #fff;
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
       padding: 12px 16px;
       cursor: pointer;
       transition: all 0.2s;
       text-align: center;
     }
 
-    .mode-tab:hover {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(255,255,255,0.15);
-    }
+    .mode-tab:hover { border-color: #a5b4fc; background: #f5f3ff; }
 
     .mode-tab.active {
-      background: rgba(99,102,241,0.2);
+      background: #f5f3ff;
       border-color: #6366f1;
     }
 
     .mode-tab .icon { font-size: 22px; display: block; margin-bottom: 4px; }
-    .mode-tab .name { font-size: 13px; font-weight: 700; color: #e2e8f0; }
-    .mode-tab .desc { font-size: 11px; color: #64748b; margin-top: 2px; }
-    .mode-tab.active .desc { color: #a5b4fc; }
+    .mode-tab .name { font-size: 13px; font-weight: 700; color: #1e293b; }
+    .mode-tab .desc { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .mode-tab.active .desc { color: #6366f1; }
 
     /* ── 지역 필터 ── */
     .filter-bar {
@@ -128,25 +114,26 @@
       align-items: center;
     }
 
-    .filter-label { font-size: 12px; color: #64748b; margin-right: 4px; }
+    .filter-label { font-size: 12px; color: #94a3b8; margin-right: 4px; font-weight: 600; }
 
     .filter-btn {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: #fff;
+      border: 1px solid #e2e8f0;
       border-radius: 20px;
       padding: 5px 14px;
       font-size: 12px;
-      color: #94a3b8;
+      color: #64748b;
       cursor: pointer;
       transition: all 0.2s;
+      font-weight: 500;
     }
 
-    .filter-btn:hover { background: rgba(255,255,255,0.08); }
+    .filter-btn:hover { background: #f5f3ff; border-color: #a5b4fc; }
 
     .filter-btn.active {
-      background: rgba(99,102,241,0.2);
+      background: #6366f1;
       border-color: #6366f1;
-      color: #a5b4fc;
+      color: #fff;
       font-weight: 700;
     }
 
@@ -160,62 +147,59 @@
     /* 백지도 패널 */
     .map-panel {
       flex: 1;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
+      background: #fff;
+      border: 1px solid #e2e8f0;
       border-radius: 16px;
-      padding: 12px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
       min-height: 400px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
 
-    .map-controls {
-      display: flex;
-      gap: 8px;
-      align-self: flex-end;
-    }
+    .map-controls { display: flex; gap: 8px; align-self: flex-end; }
 
     .toggle-btn {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
       border-radius: 8px;
-      padding: 5px 12px;
-      font-size: 11px;
-      color: #94a3b8;
+      padding: 5px 14px;
+      font-size: 12px;
+      color: #64748b;
       cursor: pointer;
       transition: all 0.2s;
+      font-weight: 600;
     }
+
     .toggle-btn.active {
-      background: rgba(16,185,129,0.2);
-      border-color: #10b981;
-      color: #6ee7b7;
+      background: #6366f1;
+      border-color: #6366f1;
+      color: #fff;
     }
 
     #map-svg {
       width: 100%;
-      max-width: 500px;
+      max-width: 480px;
       height: auto;
       display: block;
     }
 
-    /* SVG 지도 스타일 */
     #map-svg path {
-      fill: #1e293b;
-      stroke: #334155;
-      stroke-width: 0.8;
+      fill: #dbeafe;
+      stroke: #93c5fd;
+      stroke-width: 0.7;
       cursor: pointer;
       transition: fill 0.15s;
     }
 
-    #map-svg path:hover { fill: #334155; }
-    #map-svg path.highlight { fill: #6366f1 !important; stroke: #818cf8; }
-    #map-svg path.correct { fill: #059669 !important; stroke: #10b981; }
-    #map-svg path.wrong { fill: #dc2626 !important; stroke: #ef4444; }
-    #map-svg path.target { fill: rgba(99,102,241,0.3) !important; stroke: #6366f1; stroke-width: 2; }
+    #map-svg path:hover { fill: #bfdbfe; }
+    #map-svg path.correct { fill: #bbf7d0 !important; stroke: #16a34a !important; stroke-width: 1.5; }
+    #map-svg path.wrong   { fill: #fecaca !important; stroke: #dc2626 !important; stroke-width: 1.5; }
+    #map-svg path.target  { fill: #e0e7ff !important; stroke: #6366f1 !important; stroke-width: 2; }
 
-    /* 문제 패널 */
+    /* 퀴즈 패널 */
     .quiz-panel {
       width: 340px;
       display: flex;
@@ -223,12 +207,31 @@
       gap: 12px;
     }
 
+    /* 진행바 */
+    .progress-wrap { display: flex; align-items: center; gap: 8px; }
+    .progress-bar {
+      flex: 1;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #6366f1;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+    .progress-text { font-size: 12px; color: #94a3b8; white-space: nowrap; }
+
     /* 문제 카드 */
     .question-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: #fff;
+      border: 1px solid #e2e8f0;
       border-radius: 16px;
       padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
 
     .q-meta {
@@ -243,135 +246,126 @@
       font-weight: 700;
       padding: 3px 10px;
       border-radius: 20px;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
 
-    .badge-mcq { background: rgba(99,102,241,0.2); color: #a5b4fc; }
-    .badge-ox  { background: rgba(245,158,11,0.2); color: #fcd34d; }
-    .badge-map { background: rgba(16,185,129,0.2); color: #6ee7b7; }
+    .badge-mcq { background: #ede9fe; color: #6366f1; }
+    .badge-ox  { background: #fef3c7; color: #d97706; }
+    .badge-map { background: #dcfce7; color: #16a34a; }
 
-    .q-region {
-      font-size: 11px;
-      color: #64748b;
-    }
-
-    .q-count {
-      margin-left: auto;
-      font-size: 11px;
-      color: #475569;
-    }
+    .q-region { font-size: 11px; color: #94a3b8; font-weight: 600; }
+    .q-count  { margin-left: auto; font-size: 11px; color: #cbd5e1; }
 
     .question-text {
       font-size: 15px;
-      line-height: 1.7;
-      color: #e2e8f0;
+      line-height: 1.75;
+      color: #1e293b;
       font-weight: 500;
     }
 
     /* 보기 (MCQ) */
-    .choices {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    .choices { display: flex; flex-direction: column; gap: 8px; }
 
     .choice-btn {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
       border-radius: 10px;
       padding: 11px 16px;
       font-size: 13px;
-      color: #cbd5e1;
+      color: #334155;
       cursor: pointer;
       text-align: left;
       transition: all 0.15s;
       display: flex;
       align-items: center;
       gap: 10px;
+      font-weight: 500;
     }
 
     .choice-btn:hover:not(:disabled) {
-      background: rgba(99,102,241,0.15);
-      border-color: rgba(99,102,241,0.4);
-      color: #e2e8f0;
+      background: #f5f3ff;
+      border-color: #a5b4fc;
+      color: #4338ca;
     }
 
     .choice-btn .num {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.08);
+      background: #e2e8f0;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 11px;
       font-weight: 700;
       flex-shrink: 0;
+      color: #64748b;
     }
 
     .choice-btn.correct {
-      background: rgba(5,150,105,0.2);
-      border-color: #059669;
-      color: #6ee7b7;
+      background: #f0fdf4;
+      border-color: #16a34a;
+      color: #15803d;
     }
+    .choice-btn.correct .num { background: #bbf7d0; color: #15803d; }
 
     .choice-btn.wrong {
-      background: rgba(220,38,38,0.15);
+      background: #fff1f2;
       border-color: #dc2626;
-      color: #fca5a5;
+      color: #b91c1c;
     }
+    .choice-btn.wrong .num { background: #fecaca; color: #b91c1c; }
 
     .choice-btn:disabled { cursor: not-allowed; }
 
     /* OX 버튼 */
-    .ox-btns {
-      display: flex;
-      gap: 10px;
-    }
+    .ox-btns { display: flex; gap: 10px; }
 
     .ox-btn {
       flex: 1;
       padding: 20px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 2px solid transparent;
-      font-size: 32px;
+      font-size: 36px;
       cursor: pointer;
       transition: all 0.15s;
       font-weight: 900;
     }
 
-    .ox-btn.o-btn {
-      background: rgba(16,185,129,0.1);
-      border-color: rgba(16,185,129,0.3);
-      color: #10b981;
-    }
-
-    .ox-btn.x-btn {
-      background: rgba(239,68,68,0.1);
-      border-color: rgba(239,68,68,0.3);
-      color: #ef4444;
-    }
-
+    .ox-btn.o-btn { background: #f0fdf4; border-color: #86efac; color: #16a34a; }
+    .ox-btn.x-btn { background: #fff1f2; border-color: #fca5a5; color: #dc2626; }
     .ox-btn:hover:not(:disabled) { transform: scale(1.04); }
     .ox-btn:disabled { cursor: not-allowed; opacity: 0.5; }
+    .ox-btn.correct { border-width: 2.5px; filter: brightness(0.92); opacity: 1 !important; }
+    .ox-btn.wrong   { opacity: 0.25 !important; }
 
-    .ox-btn.correct { border-width: 2px; filter: brightness(1.3); }
-    .ox-btn.wrong   { opacity: 0.3; }
+    /* 지도클릭 안내 */
+    .map-instruction {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #15803d;
+      text-align: center;
+      font-weight: 600;
+      display: none;
+    }
+    .map-instruction.show { display: block; }
 
-    /* 해설 박스 */
+    /* 해설 */
     .exp-box {
-      background: rgba(99,102,241,0.08);
-      border: 1px solid rgba(99,102,241,0.2);
+      background: #f5f3ff;
+      border: 1px solid #c4b5fd;
       border-radius: 10px;
       padding: 12px 14px;
       font-size: 12px;
-      line-height: 1.6;
-      color: #a5b4fc;
+      line-height: 1.65;
+      color: #4c1d95;
       display: none;
     }
-
     .exp-box.show { display: block; }
-    .exp-label { font-weight: 700; margin-bottom: 4px; color: #818cf8; }
+    .exp-label { font-weight: 700; margin-bottom: 4px; color: #6366f1; }
 
     /* 다음 버튼 */
     .btn-next {
@@ -386,42 +380,26 @@
       cursor: pointer;
       transition: background 0.2s;
       display: none;
+      letter-spacing: 0.3px;
     }
-
     .btn-next.show { display: block; }
     .btn-next:hover { background: #4f46e5; }
 
-    /* 지도 클릭 모드 안내 */
-    .map-instruction {
-      background: rgba(16,185,129,0.08);
-      border: 1px solid rgba(16,185,129,0.2);
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 13px;
-      color: #6ee7b7;
-      text-align: center;
-      display: none;
-    }
-
-    .map-instruction.show { display: block; }
-
     /* 결과 카드 */
     .result-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: #fff;
+      border: 1px solid #e2e8f0;
       border-radius: 16px;
-      padding: 24px;
+      padding: 28px 24px;
       text-align: center;
       display: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
-
-    .result-card.show { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-
-    .result-emoji { font-size: 48px; }
-    .result-title { font-size: 20px; font-weight: 800; }
-    .result-score { font-size: 36px; font-weight: 900; color: #6366f1; }
-    .result-sub { font-size: 13px; color: #64748b; }
-
+    .result-card.show { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .result-emoji { font-size: 52px; }
+    .result-title { font-size: 18px; font-weight: 800; color: #1e293b; }
+    .result-score { font-size: 40px; font-weight: 900; color: #6366f1; }
+    .result-sub { font-size: 13px; color: #94a3b8; }
     .btn-restart {
       background: #6366f1;
       color: #fff;
@@ -431,15 +409,18 @@
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 4px;
+      margin-top: 6px;
+      transition: background 0.2s;
     }
+    .btn-restart:hover { background: #4f46e5; }
 
     /* 랭킹 패널 */
     .ranking-panel {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
+      background: #fff;
+      border: 1px solid #e2e8f0;
       border-radius: 16px;
       padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
 
     .ranking-title {
@@ -447,7 +428,7 @@
       font-weight: 700;
       color: #64748b;
       margin-bottom: 12px;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
 
     .rank-item {
@@ -455,50 +436,31 @@
       align-items: center;
       gap: 10px;
       padding: 8px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid #f1f5f9;
       font-size: 13px;
     }
-
     .rank-item:last-child { border-bottom: none; }
 
     .rank-num {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.06);
+      background: #f1f5f9;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 11px;
       font-weight: 700;
-      color: #64748b;
+      color: #94a3b8;
       flex-shrink: 0;
     }
+    .rank-num.gold   { background: #fef9c3; color: #ca8a04; }
+    .rank-num.silver { background: #f1f5f9; color: #64748b; }
+    .rank-num.bronze { background: #fff7ed; color: #c2410c; }
 
-    .rank-num.gold   { background: rgba(251,191,36,0.2); color: #fbbf24; }
-    .rank-num.silver { background: rgba(148,163,184,0.2); color: #94a3b8; }
-    .rank-num.bronze { background: rgba(180,83,9,0.2); color: #b45309; }
-
-    .rank-name { flex: 1; color: #cbd5e1; }
+    .rank-name { flex: 1; color: #334155; font-weight: 500; }
     .rank-score { font-weight: 700; color: #6366f1; }
-    .rank-me { color: #6ee7b7 !important; font-weight: 700; }
-
-    /* 진행바 */
-    .progress-bar {
-      height: 3px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 2px;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: #6366f1;
-      border-radius: 2px;
-      transition: width 0.4s ease;
-      width: 0%;
-    }
+    .rank-me { color: #16a34a !important; font-weight: 700; }
 
     /* 반응형 */
     @media (max-width: 700px) {
@@ -509,7 +471,6 @@
 </head>
 <body>
 
-<!-- 헤더 -->
 <div class="header">
   <div class="header-left">
     <div class="logo">🗺️ <span>백지도</span>정복</div>
@@ -522,10 +483,8 @@
   </div>
 </div>
 
-<!-- 메인 -->
 <div class="main">
 
-  <!-- 모드 탭 -->
   <div class="mode-tabs">
     <div class="mode-tab active" data-mode="mcq">
       <span class="icon">📝</span>
@@ -544,7 +503,6 @@
     </div>
   </div>
 
-  <!-- 지역 필터 -->
   <div class="filter-bar">
     <span class="filter-label">지역</span>
     <button class="filter-btn active" data-region="전체">전체</button>
@@ -556,69 +514,57 @@
     <button class="filter-btn" data-region="제주">제주</button>
   </div>
 
-  <!-- 게임 영역 -->
   <div class="game-area">
 
-    <!-- 백지도 -->
     <div class="map-panel">
       <div class="map-controls">
         <button class="toggle-btn active" id="toggleProv">시·도</button>
         <button class="toggle-btn" id="toggleMuni">시·군</button>
       </div>
-      <svg id="map-svg" viewBox="0 0 760 806" xmlns="http://www.w3.org/2000/svg">
-        <!-- JS에서 동적으로 채움 -->
-      </svg>
+      <svg id="map-svg" viewBox="0 0 760 806" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
 
-    <!-- 퀴즈 패널 -->
     <div class="quiz-panel">
 
-      <!-- 진행바 -->
-      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-text" id="qCount">0 / 10</div>
+      </div>
 
-      <!-- 문제 카드 -->
       <div class="question-card" id="questionCard">
         <div class="q-meta">
           <span class="q-type-badge badge-mcq" id="qTypeBadge">4지선다</span>
           <span class="q-region" id="qRegion"></span>
-          <span class="q-count" id="qCount"></span>
         </div>
         <div class="question-text" id="questionText">모드를 선택하고 시작하세요!</div>
       </div>
 
-      <!-- 보기들 (MCQ) -->
       <div class="choices" id="choicesArea"></div>
 
-      <!-- OX 버튼 -->
       <div class="ox-btns" id="oxArea" style="display:none">
         <button class="ox-btn o-btn" id="oBtn">O</button>
         <button class="ox-btn x-btn" id="xBtn">X</button>
       </div>
 
-      <!-- 지도클릭 안내 -->
       <div class="map-instruction" id="mapInstruction">
         👆 백지도에서 해당 지역을 클릭하세요
       </div>
 
-      <!-- 해설 -->
       <div class="exp-box" id="expBox">
         <div class="exp-label">📖 해설</div>
         <div id="expText"></div>
       </div>
 
-      <!-- 다음 버튼 -->
       <button class="btn-next" id="nextBtn">다음 문제 →</button>
 
-      <!-- 결과 카드 -->
       <div class="result-card" id="resultCard">
         <div class="result-emoji" id="resultEmoji">🎉</div>
-        <div class="result-title">결과</div>
+        <div class="result-title">세션 결과</div>
         <div class="result-score" id="resultScore"></div>
         <div class="result-sub" id="resultSub"></div>
         <button class="btn-restart" id="restartBtn">다시 하기</button>
       </div>
 
-      <!-- 랭킹 패널 -->
       <div class="ranking-panel" id="rankingPanel" style="display:none">
         <div class="ranking-title">🏆 TOP 랭킹</div>
         <div id="rankList"></div>
@@ -634,14 +580,11 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 import { doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { MCQ, OX, PROV_QUIZ } from './js/questions.js';
 
-// ── map-data는 전역 변수로 로드
-const MAP_W = 760, MAP_H = 806;
-
 // ── 상태 ──────────────────────────────────────
 let currentUser = null;
-let currentMode = 'mcq';       // mcq | ox | mapclick
+let currentMode = 'mcq';
 let currentRegion = '전체';
-let mapLevel = 'prov';          // prov | muni
+let mapLevel = 'prov';
 let questionPool = [];
 let currentQ = null;
 let qIndex = 0;
@@ -649,38 +592,24 @@ let sessionScore = 0;
 let answered = false;
 const QUESTIONS_PER_SESSION = 10;
 
-// ── Firebase 인증 ──────────────────────────────
+// ── 인증 ──────────────────────────────────────
 onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.href = 'index.html';
-    return;
-  }
+  if (!user) { window.location.href = 'index.html'; return; }
   currentUser = user;
-  const emailId = user.email.split('@')[0];
-  document.getElementById('userBadge').textContent = emailId;
+  document.getElementById('userBadge').textContent = user.email.split('@')[0];
 
-  // Firestore에서 총점 불러오기
   const userRef = doc(db, 'users', user.uid);
   const snap = await getDoc(userRef);
   if (snap.exists()) {
     document.getElementById('totalScore').textContent = snap.data().totalScore || 0;
   } else {
-    // 신규 사용자 문서 생성
-    await setDoc(userRef, {
-      email: user.email,
-      totalScore: 0,
-      playCount: 0,
-      createdAt: new Date()
-    });
+    await setDoc(userRef, { email: user.email, totalScore: 0, playCount: 0, createdAt: new Date() });
   }
-
-  // 지도 렌더링
   renderMap();
-  // 첫 문제 로드
   startSession();
 });
 
-// ── 로그아웃 ───────────────────────────────────
+// ── 로그아웃 ──────────────────────────────────
 document.getElementById('logoutBtn').addEventListener('click', async () => {
   await signOut(auth);
   window.location.href = 'index.html';
@@ -713,7 +642,6 @@ document.getElementById('toggleProv').addEventListener('click', () => {
   document.getElementById('toggleMuni').classList.remove('active');
   renderMap();
 });
-
 document.getElementById('toggleMuni').addEventListener('click', () => {
   mapLevel = 'muni';
   document.getElementById('toggleMuni').classList.add('active');
@@ -721,50 +649,41 @@ document.getElementById('toggleMuni').addEventListener('click', () => {
   renderMap();
 });
 
-// ── 랭킹 버튼 ─────────────────────────────────
+// ── 랭킹 ──────────────────────────────────────
 document.getElementById('rankBtn').addEventListener('click', () => {
   const panel = document.getElementById('rankingPanel');
-  if (panel.style.display === 'none') {
-    loadRanking();
-    panel.style.display = 'block';
-  } else {
-    panel.style.display = 'none';
-  }
+  if (panel.style.display === 'none') { loadRanking(); panel.style.display = 'block'; }
+  else panel.style.display = 'none';
 });
 
 // ── 지도 렌더링 ───────────────────────────────
 function renderMap() {
   const svg = document.getElementById('map-svg');
   svg.innerHTML = '';
-
-  // map-data.js의 PROVINCES, MUNIS 사용 (전역에서 불러옴)
   const data = mapLevel === 'prov' ? window.PROVINCES : window.MUNIS;
   if (!data) return;
 
   Object.entries(data).forEach(([name, info]) => {
-    // 멀티 path 지원 (M으로 분리)
     const paths = info.d.split(/(?=M)/).filter(Boolean);
     paths.forEach(pathD => {
       const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       el.setAttribute('d', pathD);
       el.setAttribute('data-name', name);
-      el.setAttribute('data-region', info.region || '');
       el.addEventListener('click', () => onMapClick(name, info));
       svg.appendChild(el);
     });
 
-    // 시도 모드에서 이름 텍스트 표시
+    // 시도 레벨에서만 지명 표시
     if (mapLevel === 'prov' && info.cx) {
       const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       text.setAttribute('x', info.cx);
       text.setAttribute('y', info.cy);
       text.setAttribute('text-anchor', 'middle');
-      text.setAttribute('font-size', '9');
+      text.setAttribute('font-size', '8');
       text.setAttribute('fill', '#64748b');
       text.setAttribute('pointer-events', 'none');
-      // 지역명 줄이기
-      const shortName = name.replace(/특별자치도|특별자치시|광역시|특별시|도$/, '').replace('제주', '제주');
-      text.textContent = shortName;
+      const short = name.replace(/특별자치도|특별자치시|광역시|특별시/, '').replace(/도$/, '');
+      text.textContent = short;
       svg.appendChild(text);
     }
   });
@@ -772,18 +691,14 @@ function renderMap() {
 
 // ── 세션 시작 ─────────────────────────────────
 function startSession() {
-  sessionScore = 0;
-  qIndex = 0;
-  answered = false;
-
-  // 결과 카드 숨기기
+  sessionScore = 0; qIndex = 0; answered = false;
   document.getElementById('resultCard').classList.remove('show');
   document.getElementById('questionCard').style.display = 'block';
   document.getElementById('nextBtn').classList.remove('show');
   document.getElementById('expBox').classList.remove('show');
   document.getElementById('rankingPanel').style.display = 'none';
+  clearMapHighlight();
 
-  // 문제 풀 구성
   let pool = [];
   if (currentMode === 'mcq') {
     pool = MCQ;
@@ -793,16 +708,13 @@ function startSession() {
     pool = OX;
     document.getElementById('qTypeBadge').textContent = 'OX 퀴즈';
     document.getElementById('qTypeBadge').className = 'q-type-badge badge-ox';
-  } else if (currentMode === 'mapclick') {
+  } else {
     pool = PROV_QUIZ;
     document.getElementById('qTypeBadge').textContent = '지도 클릭';
     document.getElementById('qTypeBadge').className = 'q-type-badge badge-map';
   }
 
-  // 지역 필터
-  if (currentRegion !== '전체') {
-    pool = pool.filter(q => q.region === currentRegion);
-  }
+  if (currentRegion !== '전체') pool = pool.filter(q => q.region === currentRegion);
 
   if (pool.length === 0) {
     document.getElementById('questionText').textContent = '해당 지역의 문제가 없습니다.';
@@ -812,30 +724,24 @@ function startSession() {
     return;
   }
 
-  // 셔플 후 10개 선택
   questionPool = shuffle([...pool]).slice(0, QUESTIONS_PER_SESSION);
   loadQuestion();
 }
 
 // ── 문제 로드 ─────────────────────────────────
 function loadQuestion() {
-  if (qIndex >= questionPool.length) {
-    showResult();
-    return;
-  }
+  if (qIndex >= questionPool.length) { showResult(); return; }
 
   answered = false;
   currentQ = questionPool[qIndex];
 
-  // 진행바
-  document.getElementById('progressFill').style.width = `${(qIndex / questionPool.length) * 100}%`;
+  const pct = (qIndex / questionPool.length) * 100;
+  document.getElementById('progressFill').style.width = `${pct}%`;
   document.getElementById('qCount').textContent = `${qIndex + 1} / ${questionPool.length}`;
   document.getElementById('qRegion').textContent = currentQ.region || '';
   document.getElementById('questionText').textContent = currentQ.q;
   document.getElementById('expBox').classList.remove('show');
   document.getElementById('nextBtn').classList.remove('show');
-
-  // 지도 초기화
   clearMapHighlight();
 
   if (currentMode === 'mcq') {
@@ -847,16 +753,14 @@ function loadQuestion() {
     document.getElementById('oxArea').style.display = 'flex';
     document.getElementById('mapInstruction').classList.remove('show');
     resetOxBtns();
-  } else if (currentMode === 'mapclick') {
+  } else {
     document.getElementById('choicesArea').innerHTML = '';
     document.getElementById('oxArea').style.display = 'none';
     document.getElementById('mapInstruction').classList.add('show');
-    // 지도에서 정답 지역 살짝 표시 (힌트)
-    highlightTarget(currentQ.answer);
   }
 }
 
-// ── MCQ 보기 렌더링 ───────────────────────────
+// ── MCQ 보기 ──────────────────────────────────
 function renderChoices(choices, answerIdx) {
   const area = document.getElementById('choicesArea');
   area.innerHTML = '';
@@ -868,15 +772,11 @@ function renderChoices(choices, answerIdx) {
       if (answered) return;
       answered = true;
       const correct = i === answerIdx;
-      if (correct) {
-        btn.classList.add('correct');
-        sessionScore++;
-      } else {
+      if (correct) { btn.classList.add('correct'); sessionScore++; }
+      else {
         btn.classList.add('wrong');
-        // 정답 표시
         area.querySelectorAll('.choice-btn')[answerIdx].classList.add('correct');
       }
-      // 모두 비활성화
       area.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
       showExp();
     });
@@ -884,13 +784,13 @@ function renderChoices(choices, answerIdx) {
   });
 }
 
-// ── OX 처리 ───────────────────────────────────
+// ── OX ────────────────────────────────────────
 function resetOxBtns() {
-  const oBtn = document.getElementById('oBtn');
-  const xBtn = document.getElementById('xBtn');
-  oBtn.disabled = false; xBtn.disabled = false;
-  oBtn.className = 'ox-btn o-btn';
-  xBtn.className = 'ox-btn x-btn';
+  const o = document.getElementById('oBtn');
+  const x = document.getElementById('xBtn');
+  o.disabled = false; x.disabled = false;
+  o.className = 'ox-btn o-btn';
+  x.className = 'ox-btn x-btn';
 }
 
 document.getElementById('oBtn').addEventListener('click', () => handleOX(true));
@@ -901,58 +801,45 @@ function handleOX(answer) {
   answered = true;
   const correct = answer === currentQ.answer;
   if (correct) sessionScore++;
-
-  const oBtn = document.getElementById('oBtn');
-  const xBtn = document.getElementById('xBtn');
-
+  const o = document.getElementById('oBtn');
+  const x = document.getElementById('xBtn');
   if (correct) {
-    (answer ? oBtn : xBtn).classList.add('correct');
-    (!answer ? oBtn : xBtn).classList.add('wrong');
+    (answer ? o : x).classList.add('correct');
+    (!answer ? o : x).classList.add('wrong');
   } else {
-    (answer ? oBtn : xBtn).classList.add('wrong');
-    (currentQ.answer ? oBtn : xBtn).classList.add('correct');
+    (answer ? o : x).classList.add('wrong');
+    (currentQ.answer ? o : x).classList.add('correct');
   }
-
-  oBtn.disabled = true; xBtn.disabled = true;
+  o.disabled = true; x.disabled = true;
   showExp();
 }
 
-// ── 지도 클릭 처리 ────────────────────────────
+// ── 지도 클릭 ─────────────────────────────────
 function onMapClick(name, info) {
   if (currentMode !== 'mapclick') return;
   if (answered) return;
   answered = true;
 
-  // PROV_QUIZ의 answer는 광역시도 이름 문자열
   const correct = name === currentQ.answer;
   if (correct) sessionScore++;
 
-  // 지도 색 표시
+  // 클릭한 지역 색 표시
   document.querySelectorAll('#map-svg path').forEach(el => {
-    if (el.getAttribute('data-name') === name) {
-      el.classList.add(correct ? 'correct' : 'wrong');
-    }
-    if (!correct && el.getAttribute('data-name') === currentQ.answer) {
-      el.classList.add('correct');
-    }
+    const elName = el.getAttribute('data-name');
+    if (elName === name) el.classList.add(correct ? 'correct' : 'wrong');
+    if (!correct && elName === currentQ.answer) el.classList.add('correct');
   });
 
   showExp();
 }
 
-// ── 지도 타겟 표시 (지도클릭 모드 힌트 없음) ──
-function highlightTarget(answerName) {
-  // 지도클릭 모드에서는 힌트 없이 클릭만 가능
-  clearMapHighlight();
-}
-
 function clearMapHighlight() {
   document.querySelectorAll('#map-svg path').forEach(el => {
-    el.classList.remove('highlight', 'correct', 'wrong', 'target');
+    el.classList.remove('correct', 'wrong', 'target');
   });
 }
 
-// ── 해설 표시 ─────────────────────────────────
+// ── 해설 ──────────────────────────────────────
 function showExp() {
   if (currentQ.exp) {
     document.getElementById('expText').textContent = currentQ.exp;
@@ -962,14 +849,12 @@ function showExp() {
 }
 
 // ── 다음 버튼 ─────────────────────────────────
-document.getElementById('nextBtn').addEventListener('click', () => {
-  qIndex++;
-  loadQuestion();
-});
+document.getElementById('nextBtn').addEventListener('click', () => { qIndex++; loadQuestion(); });
 
-// ── 결과 표시 ─────────────────────────────────
+// ── 결과 ──────────────────────────────────────
 async function showResult() {
   document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('qCount').textContent = `${questionPool.length} / ${questionPool.length}`;
   document.getElementById('questionCard').style.display = 'none';
   document.getElementById('choicesArea').innerHTML = '';
   document.getElementById('oxArea').style.display = 'none';
@@ -979,59 +864,45 @@ async function showResult() {
 
   const total = questionPool.length;
   const pct = Math.round((sessionScore / total) * 100);
-
-  let emoji = '😢';
-  if (pct >= 90) emoji = '🏆';
-  else if (pct >= 70) emoji = '🎉';
-  else if (pct >= 50) emoji = '😊';
+  const emoji = pct >= 90 ? '🏆' : pct >= 70 ? '🎉' : pct >= 50 ? '😊' : '😢';
 
   document.getElementById('resultEmoji').textContent = emoji;
   document.getElementById('resultScore').textContent = `${sessionScore} / ${total}`;
   document.getElementById('resultSub').textContent = `정답률 ${pct}%`;
   document.getElementById('resultCard').classList.add('show');
 
-  // Firestore에 점수 저장
   if (currentUser) {
     const userRef = doc(db, 'users', currentUser.uid);
-    await updateDoc(userRef, {
-      totalScore: increment(sessionScore),
-      playCount: increment(1),
-      lastPlayed: new Date()
-    });
-    // 총점 업데이트
+    await updateDoc(userRef, { totalScore: increment(sessionScore), playCount: increment(1), lastPlayed: new Date() });
     const snap = await getDoc(userRef);
     document.getElementById('totalScore').textContent = snap.data().totalScore || 0;
   }
 }
 
-// ── 다시하기 ──────────────────────────────────
-document.getElementById('restartBtn').addEventListener('click', () => {
-  startSession();
-});
+document.getElementById('restartBtn').addEventListener('click', startSession);
 
-// ── 랭킹 로드 ─────────────────────────────────
+// ── 랭킹 ──────────────────────────────────────
 async function loadRanking() {
   const q = query(collection(db, 'users'), orderBy('totalScore', 'desc'), limit(10));
   const snap = await getDocs(q);
   const list = document.getElementById('rankList');
   list.innerHTML = '';
-
-  snap.forEach((docSnap, i) => {
+  let i = 0;
+  snap.forEach(docSnap => {
     const data = docSnap.data();
     const isMe = currentUser && docSnap.id === currentUser.uid;
-    const numClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
-    const emailId = (data.email || '').split('@')[0];
+    const cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
     list.innerHTML += `
       <div class="rank-item">
-        <div class="rank-num ${numClass}">${i + 1}</div>
-        <div class="rank-name ${isMe ? 'rank-me' : ''}">${emailId}${isMe ? ' ★' : ''}</div>
-        <div class="rank-score ${isMe ? 'rank-me' : ''}">${data.totalScore || 0}점</div>
-      </div>
-    `;
+        <div class="rank-num ${cls}">${i + 1}</div>
+        <div class="rank-name ${isMe ? 'rank-me' : ''}">${(data.email||'').split('@')[0]}${isMe?' ★':''}</div>
+        <div class="rank-score ${isMe ? 'rank-me' : ''}">${data.totalScore||0}점</div>
+      </div>`;
+    i++;
   });
 }
 
-// ── 유틸: 셔플 ────────────────────────────────
+// ── 셔플 ──────────────────────────────────────
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -1041,8 +912,6 @@ function shuffle(arr) {
 }
 </script>
 
-<!-- map-data.js는 전역 변수로 로드 -->
 <script src="./js/map-data.js"></script>
-
 </body>
 </html>
