@@ -6,148 +6,151 @@
   <title>한국지리 백지도 정복</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body oncontextmenu="return false">
 
 <!-- ===================== 홈 화면 ===================== -->
 <div id="screen-home" class="screen">
   <div class="home-header">
     <div class="home-logo">🗺️ <span>백지도</span>정복</div>
     <button id="account-chip">로그인 중...</button>
-    <button class="btn-icon" id="btn-collection">🃏 도감</button>
   </div>
 
-  <!-- 하단 탭 컨텐츠 -->
   <div class="home-body">
 
-    <!-- 플레이 탭 -->
+    <!-- ── 플레이 탭 ── -->
     <div class="tab-panel active" id="tab-play">
-      <!-- 계급 / XP -->
-      <div class="rank-section">
-        <div id="rank-badge">🌱 신참 지리학자</div>
-        <div class="xp-bar-wrap"><div id="xp-bar" style="width:0%"></div></div>
-        <div id="xp-text">첫 게임을 시작해 보세요!</div>
-      </div>
-
-      <!-- 추천 액션 -->
-      <div class="rec-wrap">
-        <div id="rec-bubble">👋 지도를 탭해 지역을 찾아보세요!</div>
-        <button id="rec-btn" onclick="openModesModal()">🎮 게임 시작</button>
-      </div>
-
-      <!-- 초보자 가이드 (첫 방문) -->
-      <div class="beginner-guide" id="beginner-guide" style="display:none">
-        <h3>🗺️ 백지도 정복에 오신 걸 환영해요!</h3>
-        <p>수능 한국지리 시·군 위치 + 개념 퀴즈를 한 번에! 지도에서 직접 탭해 지역을 찾고, 기후·통계 그래프 비교도 도전해 보세요.</p>
-        <div class="guide-steps">
-          <div class="guide-step">① 게임 모드 선택</div>
-          <div class="guide-step">② 지역 필터 설정</div>
-          <div class="guide-step">③ 백지도에서 탭!</div>
-        </div>
-      </div>
 
       <!-- 게임 모드 캐러셀 -->
-      <div class="board-title" style="margin-bottom:6px">🎮 게임 모드</div>
+      <div class="section-title">🎮 게임 모드 <span class="section-sub">밀거나 화살표로 선택</span></div>
       <div class="mode-row">
-        <button id="car-prev">‹</button>
+        <button id="car-prev" class="car-arrow">‹</button>
         <div id="mode-carousel"></div>
-        <button id="car-next">›</button>
+        <button id="car-next" class="car-arrow">›</button>
+      </div>
+      <button class="ghost-btn full-btn" id="btn-all-modes" style="margin-bottom:14px">📋 전체 모드 한눈에 보기 (11종)</button>
+
+      <!-- 출제 범위 -->
+      <div class="section-title">🌏 출제 범위</div>
+      <div id="region-chips" class="region-chips" style="margin-bottom:14px"></div>
+
+      <!-- 오늘의 도전 -->
+      <div class="home-card">
+        <div class="card-head">🔁 오늘의 도전 <span class="card-badge">매일 자정 갱신 · 전국 같은 문제</span></div>
+        <div id="daily-body"><button class="primary-btn" id="btn-daily">🔁 오늘의 도전 시작 (10문제)</button></div>
       </div>
 
-      <!-- 지역 선택 -->
-      <div class="board-title" style="margin-bottom:6px">🌏 지역 선택</div>
-      <div id="region-chips" class="region-chips" style="margin-bottom:12px"></div>
-
-      <!-- 플레이 히어로 (오늘의 도전) -->
-      <div class="play-hero">
-        <div id="ph-start-wrap">
-          <button id="ph-start">▶ 게임 시작</button>
-        </div>
-        <button id="ph-mission" style="display:none"></button>
+      <!-- 오늘의 미션 -->
+      <div class="home-card">
+        <div class="card-head">🎯 오늘의 지리 미션 <span class="card-badge">매일 자정 갱신</span></div>
+        <div id="mission-body">로딩 중...</div>
       </div>
 
-      <!-- 숙련도 -->
-      <div class="mastery-section">
-        <div class="sec-title">📊 권역 숙련도</div>
-        <div id="mastery-list"></div>
+      <!-- 보스전 -->
+      <div class="home-card">
+        <div class="card-head">👹 권역 보스전 <span class="card-badge">숙련도 60%↑ 도전</span></div>
+        <div id="boss-body"></div>
       </div>
 
-      <!-- 약점 보고서 -->
-      <div class="weak-section">
-        <div class="sec-title">🔴 약점 지역</div>
+      <!-- 오답 수배서 -->
+      <div class="home-card">
+        <div class="card-head">🔍 오답 지역 수배서</div>
+        <div id="wanted-body"><div style="font-size:13px;color:var(--dim2)">틀린 지역이 없어요! 🎉</div></div>
+      </div>
+
+    </div>
+
+    <!-- ── 미션 탭 ── -->
+    <div class="tab-panel" id="tab-mission">
+      <!-- 업적 -->
+      <div class="home-card">
+        <div class="card-head">🏅 업적 <span id="ach-count" class="card-badge"></span></div>
+        <div id="ach-list"></div>
+      </div>
+      <!-- 약점 리포트 -->
+      <div class="home-card">
+        <div class="card-head">🩹 내 약점 리포트</div>
         <div id="weak-body"><div style="font-size:13px;color:var(--dim2)">아직 기록이 없어요. 게임을 해보세요!</div></div>
       </div>
     </div>
 
-    <!-- 챌린지 탭 -->
-    <div class="tab-panel" id="tab-challenge">
-      <!-- 오늘의 도전 -->
-      <div class="daily-section">
-        <div class="sec-title">🔁 오늘의 도전</div>
-        <div id="daily-body">로딩 중...</div>
+    <!-- ── 도감 탭 ── -->
+    <div class="tab-panel" id="tab-cards">
+      <div class="home-card" style="text-align:center;padding:20px">
+        <div style="font-size:32px;margin-bottom:8px">🏞️</div>
+        <div style="font-weight:700;margin-bottom:6px">지역 도감 열기</div>
+        <div style="font-size:12px;color:var(--dim2);margin-bottom:14px">수집한 지역으로 백지도 채우기</div>
+        <button class="primary-btn" id="btn-collection">🃏 도감 열기</button>
       </div>
-
-      <!-- 보스전 -->
-      <div class="boss-section">
-        <div class="sec-title">👹 권역 보스전</div>
-        <div class="boss-cards" id="boss-body"></div>
-      </div>
-
-      <!-- 미션 -->
-      <div class="mission-section">
-        <div class="sec-title">🎯 오늘의 미션</div>
-        <div id="mission-body">로딩 중...</div>
-      </div>
-
-      <!-- 업적 -->
-      <div class="ach-section">
-        <div class="sec-title">🏅 업적 <span id="ach-count" style="font-size:12px;color:var(--dim2)"></span></div>
-        <div id="ach-list"></div>
-      </div>
-
-      <!-- 오답 수배서 -->
-      <div class="weak-section" id="wanted-section">
-        <div class="sec-title">🔍 오답 수배서</div>
-        <div id="wanted-body"><div style="font-size:13px;color:var(--dim2)">틀린 지역이 없어요! 🎉</div></div>
+      <!-- 가챠 -->
+      <div class="home-card">
+        <div class="card-head">🎁 카드 뽑기</div>
+        <div style="font-size:13px;color:var(--dim);margin-bottom:10px">게임 점수 200점당 1🪙 — 전국 지역 카드를 모아 보세요! (★전설 = 기출 최다 빈출 지역)</div>
+        <div style="display:flex;gap:8px">
+          <button class="primary-btn" id="btn-draw" style="flex:1">🎲 뽑기 <span id="coin-display">0🪙</span></button>
+          <button class="ghost-btn" id="btn-draw10" style="flex:1">10연속 50🪙</button>
+        </div>
       </div>
     </div>
 
-    <!-- 분석 탭 -->
-    <div class="tab-panel" id="tab-analyze">
-      <!-- 빈출 분석 -->
-      <div class="freq-section">
-        <div class="sec-title">📈 수능 빈출 분석</div>
-        <span id="freq-span"></span>
-        <div id="freq-list"></div>
+    <!-- ── 학습 탭 ── -->
+    <div class="tab-panel" id="tab-study">
+      <div class="home-card" style="text-align:center;padding:20px">
+        <div style="font-size:28px;margin-bottom:6px">🔍</div>
+        <div style="font-weight:700;margin-bottom:4px">백지도 탐색</div>
+        <div style="font-size:12px;color:var(--dim2);margin-bottom:12px">시·군 경계와 위치를 자유롭게 학습</div>
+        <button class="primary-btn" onclick="startGame('explore')">탐색 시작</button>
       </div>
-
-      <!-- 랭킹 보드 -->
-      <div class="board-section">
-        <div class="board-title">🏆 명예의 전당</div>
-        <div class="board-tabs" id="board-tabs"></div>
-        <div id="home-board"></div>
+      <div class="home-card" style="text-align:center;padding:20px">
+        <div style="font-size:28px;margin-bottom:6px">🗂️</div>
+        <div style="font-weight:700;margin-bottom:4px">테마별 학습</div>
+        <div style="font-size:12px;color:var(--dim2);margin-bottom:12px">도청·축제·특산물 등 테마로 지역 훑어보기</div>
+        <button class="primary-btn" id="btn-theme-learn">테마 학습 열기</button>
       </div>
+    </div>
 
-      <!-- 정복 지도 -->
-      <div class="conquest-wrap">
-        <div class="sec-title" style="margin-bottom:8px">🗺️ 정복 현황</div>
+    <!-- ── 기록 탭 ── -->
+    <div class="tab-panel" id="tab-record">
+      <!-- 숙련도 -->
+      <div class="home-card">
+        <div class="card-head">📊 권역 숙련도</div>
+        <div id="rank-badge" style="font-size:15px;font-weight:800;margin-bottom:8px">🌱 신참 지리학자</div>
+        <div class="xp-bar-wrap"><div id="xp-bar" style="width:0%"></div></div>
+        <div id="xp-text" style="font-size:11px;color:var(--dim2);margin-top:4px">첫 게임을 시작해 보세요!</div>
+        <div id="mastery-list" style="margin-top:10px"></div>
+      </div>
+      <!-- 정복도 -->
+      <div class="home-card">
+        <div class="card-head">🗺️ 나의 정복도</div>
         <div id="conquest-wrap"></div>
       </div>
-
-      <!-- 데이터 초기화 -->
+      <!-- 빈출 -->
+      <div class="home-card">
+        <div class="card-head">🔥 5개년 기출 빈출 지역</div>
+        <span id="freq-span" style="font-size:11px;color:var(--dim2);display:block;margin-bottom:8px"></span>
+        <div id="freq-list"></div>
+      </div>
+      <!-- 랭킹 -->
+      <div class="home-card">
+        <div class="card-head">🏆 명예의 전당</div>
+        <div id="home-board"></div>
+      </div>
+      <!-- 초기화 -->
       <div style="text-align:center;padding:10px 0">
         <button id="reset-data" class="text-btn" style="font-size:11px;color:var(--dim2)">⚠️ 게임 데이터 초기화</button>
       </div>
     </div>
 
-  </div>
+  </div><!-- /home-body -->
 
   <!-- 하단 탭 바 -->
   <div class="tab-bar">
     <button class="tab-btn active" data-tab="play"><span class="t-icon">🎮</span>플레이</button>
-    <button class="tab-btn" data-tab="challenge"><span class="t-icon">🏆</span>챌린지</button>
-    <button class="tab-btn" data-tab="analyze"><span class="t-icon">📊</span>분석</button>
+    <button class="tab-btn" data-tab="mission"><span class="t-icon">🎯</span>미션</button>
+    <button class="tab-btn" data-tab="cards"><span class="t-icon">📖</span>도감</button>
+    <button class="tab-btn" data-tab="study"><span class="t-icon">📚</span>학습</button>
+    <button class="tab-btn" data-tab="record"><span class="t-icon">🏆</span>기록</button>
   </div>
-</div>
+</div><!-- /screen-home -->
 
 <!-- ===================== 게임 화면 ===================== -->
 <div id="screen-game" class="screen">
@@ -173,7 +176,6 @@
   </div>
   <div class="turn-indicator hidden" id="turn-indicator"></div>
   <div class="game-inner" id="game-body">
-    <!-- 지도 패널 -->
     <div id="map-pane">
       <div class="map-toolbar">
         <div class="game-title-bar" id="game-title">게임</div>
@@ -188,13 +190,11 @@
       </div>
       <div class="warmup-tip hidden" id="warmup-tip">💡 첫 몇 문제는 워밍업 — 느긋하게 위치를 익혀 봐요!</div>
     </div>
-    <!-- 퀴즈 패널 -->
     <div class="game-panel">
       <div id="question-box">문제 로딩 중...</div>
       <div id="choices-box"></div>
       <div class="feedback-box hidden" id="feedback-box"></div>
       <button id="btn-next" class="hidden">다음 문제 →</button>
-      <!-- 빙고 그리드 (빙고 모드 전용) -->
       <div id="bingo-grid" class="bingo-grid" style="display:none"></div>
     </div>
   </div>
@@ -203,7 +203,7 @@
 <!-- ===================== 결과 화면 ===================== -->
 <div id="screen-result" class="screen">
   <div class="result-card">
-    <button id="btn-quit" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:18px;color:var(--dim2);cursor:pointer">✕</button>
+    <button id="btn-quit-result" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:18px;color:var(--dim2);cursor:pointer">✕</button>
     <div id="result-title">결과</div>
     <div id="result-main">0점</div>
     <div id="result-detail"></div>
@@ -223,7 +223,7 @@
   <div class="cards-header">
     <button id="btn-cards-back" class="btn-icon">← 뒤로</button>
     <h2>🃏 지역 카드 도감</h2>
-    <button id="btn-draw">🎲 뽑기</button>
+    <button id="btn-draw-cards">🎲 뽑기</button>
   </div>
   <div class="coll-chips" id="coll-chips"></div>
   <div class="coll-progress" id="coll-progress">
@@ -240,58 +240,10 @@
     <div id="gacha-card" class="gacha-flip"><div id="gcard-front"></div></div>
     <div id="gacha-msg">코인 5개로 랜덤 카드를 뽑아요!</div>
     <div class="gacha-btns">
-      <button id="btn-draw">🎲 뽑기 (코인 5)</button>
+      <button id="btn-draw-modal">🎲 뽑기 (코인 5)</button>
       <button id="btn-draw-again" class="hidden">🔄 한 번 더</button>
       <button id="btn-gacha-close">닫기</button>
     </div>
-  </div>
-</div>
-
-<!-- ===================== 로그인 모달 ===================== -->
-<div class="modal hidden login-modal" id="login-modal">
-  <div class="modal-box" style="position:relative">
-    <button class="modal-close" id="login-close">✕</button>
-    <h3>👤 계정 동기화</h3>
-    <p style="font-size:13px;color:var(--dim);margin-bottom:14px">반 이름·닉네임·PIN으로 기기 간 기록을 동기화할 수 있어요.</p>
-    <div class="modal-field">
-      <label>학교/반 이름</label>
-      <input type="text" id="login-class" placeholder="예: 3학년 7반">
-    </div>
-    <div class="modal-field">
-      <label>닉네임</label>
-      <input type="text" id="login-nick" placeholder="예: 지리왕">
-    </div>
-    <div class="modal-field">
-      <label>비밀번호 (숫자 4~8자리)</label>
-      <input type="password" id="login-pin" placeholder="숫자만">
-    </div>
-    <button class="modal-submit" id="login-submit">동기화 시작</button>
-    <div class="modal-row">
-      <button id="login-guest">게스트로 계속</button>
-      <button id="login-teacher">선생님 대시보드</button>
-    </div>
-    <div class="modal-msg" id="login-msg"></div>
-  </div>
-</div>
-
-<!-- ===================== 선생님 모달 ===================== -->
-<div class="modal hidden teacher-modal" id="teacher-modal">
-  <div class="modal-box" style="position:relative">
-    <button class="modal-close" id="teacher-close">✕</button>
-    <h3>👩‍🏫 선생님 대시보드</h3>
-    <p class="t-msg" id="teacher-sub">학교명·닉네임·비밀번호로 로그인하면 학생 기록을 확인할 수 있습니다.</p>
-    <div id="teacher-auth">
-      <div class="modal-field"><label>학교명</label><input type="text" id="teacher-school" placeholder="예: 한국고등학교"></div>
-      <div class="modal-field"><label>교사 닉네임</label><input type="text" id="teacher-nick" placeholder="예: 지리선생님"></div>
-      <div class="modal-field"><label>비밀번호</label><input type="password" id="teacher-pw" placeholder="비밀번호"></div>
-      <div class="modal-field hidden" id="teacher-code"><label>교사 등록 코드</label><input type="text" id="teacher-code-input" placeholder="관리자에게 받은 코드"></div>
-      <button class="modal-submit" id="teacher-submit">로그인</button>
-      <div style="text-align:center;margin-top:8px">
-        <button class="text-link" id="teacher-toggle">처음이신가요? 교사 등록하기 →</button>
-      </div>
-    </div>
-    <div id="teacher-result"></div>
-    <div class="modal-msg" id="teacher-msg"></div>
   </div>
 </div>
 
@@ -299,7 +251,7 @@
 <div class="modal hidden" id="modes-modal">
   <div class="modal-box" style="position:relative">
     <button class="modal-close" id="modes-close">✕</button>
-    <h3>🎮 게임 모드 선택</h3>
+    <h3>🎮 전체 게임 모드</h3>
     <div id="modes-list"></div>
   </div>
 </div>
@@ -318,13 +270,21 @@
   <div class="modal-box" style="position:relative">
     <button class="modal-close" id="themelearn-close">✕</button>
     <h3 id="themelearn-title">테마 학습</h3>
-    <button id="tl-back">← 테마 목록</button>
-    <button id="tl-quiz">🎮 이 테마로 퀴즈</button>
     <div id="themelearn-list" style="margin-top:10px"></div>
   </div>
 </div>
 
-<!-- 데이터 스크립트 -->
+<!-- ===================== 데이터 로딩 오버레이 ===================== -->
+<div id="loading-overlay" style="position:fixed;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px">
+  <div style="font-size:48px">🗺️</div>
+  <div style="font-size:16px;font-weight:700;color:var(--text)">한국지리 백지도 정복</div>
+  <div id="loading-msg" style="font-size:13px;color:var(--dim)">데이터 불러오는 중...</div>
+  <div style="width:200px;height:4px;background:#e2e8f0;border-radius:2px;overflow:hidden">
+    <div id="loading-bar" style="height:100%;background:var(--sea);border-radius:2px;width:0%;transition:width .3s"></div>
+  </div>
+</div>
+
+<!-- 데이터 스크립트 (로컬 fallback) -->
 <script src="js/map-data.js"></script>
 <script src="js/stats-data.js"></script>
 <script src="js/match-sets.js"></script>
