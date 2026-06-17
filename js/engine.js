@@ -5,6 +5,11 @@
 import { auth, db } from './firebase-config.js';
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { doc, getDoc, setDoc, updateDoc, increment, collection, query, orderBy, limit, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+// Firestore 덮어쓰기 가능한 let 변수
+let MCQ = window.MCQ || [];
+let OX  = window.OX  || [];
+// LOCATIONS / FREQ / REGION_NOTES 는 window.* 로 참조 중이므로 그대로 두되
+// window.LOCATIONS 재할당으로 교체됨 (locPool 캐시 초기화 필요)
 
 const $ = id => document.getElementById(id);
 const REGIONS = ['전체','북한','수도권','강원','충청','호남','영남','제주'];
@@ -15,6 +20,112 @@ const store = {
   save(key,v){ try{localStorage.setItem(key,JSON.stringify(v));}catch(e){} },
   remove(key){ try{localStorage.removeItem(key);}catch(e){} }
 };
+
+
+// ============================================================
+// [engine.js 삽입용] Firestore 게임 데이터 로더
+// 위치: onAuthStateChanged 콜백 내부, buildMap() 호출 전
+// ============================================================
+
+// 게임 데이터를 Firestore에서 읽어 로컬 변수에 덮어씌웁니다.
+// 실패 시 로컬 js 파일(questions.js 등)의 값을 그대로 사용합니다.
+async function loadGameData() {
+  const overlay = document.getElementById('loading-overlay');
+  const loadMsg = document.getElementById('loading-msg');
+  const loadBar = document.getElementById('loading-bar');
+
+  const progress = (pct, msg) => {
+    if (loadBar) loadBar.style.width = pct + '%';
+    if (loadMsg) loadMsg.textContent = msg;
+  };
+
+  try {
+    // ── MCQ ──────────────────────────────────────────────────
+    progress(10, '개념 퀴즈 불러오는 중...');
+    const mcqSnap = await getDocs(collection(db, 'gameData/mcq/items'));
+    if (!mcqSnap.empty) {
+      const arr = [];
+      mcqSnap.forEach(d => {
+        const v = d.data();
+        arr.push({
+          region: v.region || '',
+          q: v.q || '',
+          choices: Array.isArray(v.choices) ? v.choices : [],
+          answer: typeof v.answer === 'number' ? v.answer : 0,
+          exp: v.exp || ''
+        });
+      });
+      if (arr.length) MCQ = arr;   // ← engine.js 스코프 let 변수 재할당
+    }
+
+    // ── OX ───────────────────────────────────────────────────
+    progress(28, 'OX 문제 불러오는 중...');
+    const oxSnap = await getDocs(collection(db, 'gameData/ox/items'));
+    if (!oxSnap.empty) {
+      const arr = [];
+      oxSnap.forEach(d => {
+        const v = d.data();
+        arr.push({ region: v.region || '', q: v.q || '', answer: !!v.answer, exp: v.exp || '' });
+      });
+      if (arr.length) OX = arr;
+    }
+
+    // ── LOCATIONS ────────────────────────────────────────────
+    progress(46, '위치 데이터 불러오는 중...');
+    const locSnap = await getDocs(collection(db, 'gameData/locations/items'));
+    if (!locSnap.empty) {
+      const arr = [];
+      locSnap.forEach(d => {
+        const v = d.data();
+        arr.push({
+          name: v.name || '',
+          x: parseFloat(v.x) || 0,
+          y: parseFloat(v.y) || 0,
+          region: v.region || '',
+          fact: v.fact || '',
+          accept: Array.isArray(v.accept) ? v.accept : []
+        });
+      });
+      if (arr.length) {
+        // LOCATIONS는 window.LOCATIONS(map-data.js)를 재정의
+        window.LOCATIONS = arr;
+        LOC_POOL = null; // locPool() 캐시 초기화
+      }
+    }
+
+    // ── FREQ ─────────────────────────────────────────────────
+    progress(68, '빈출 분석 불러오는 중...');
+    const freqDocSnap = await getDoc(doc(db, 'gameData/freq/data'));
+    if (freqDocSnap.exists()) {
+      try {
+        const parsed = JSON.parse(freqDocSnap.data().json || '{}');
+        if (Object.keys(parsed).length) window.FREQ = parsed;
+      } catch (e) {}
+    }
+
+    // ── REGION_NOTES ─────────────────────────────────────────
+    progress(84, '지역 메모 불러오는 중...');
+    const notesSnap = await getDoc(doc(db, 'gameData/regionNotes/data'));
+    if (notesSnap.exists()) {
+      try {
+        const parsed = JSON.parse(notesSnap.data().json || '{}');
+        if (Object.keys(parsed).length) window.REGION_NOTES = parsed;
+      } catch (e) {}
+    }
+
+    progress(100, '준비 완료!');
+
+  } catch (err) {
+    console.warn('[Firestore 로딩 실패 — 로컬 데이터 사용]', err);
+    progress(100, '로컬 데이터로 시작합니다.');
+  }
+
+  setTimeout(() => { if (overlay) overlay.style.display = 'none'; }, 350);
+}
+
+
+
+
 
 let stats=store.load('geo_stats',{}), xp=store.load('geo_xp',0), board=store.load('geo_board',{});
 let wanted=store.load('geo_wanted',{}), titles=store.load('geo_titles',{});
@@ -35,6 +146,10 @@ onAuthStateChanged(auth, async (user)=>{
   const userRef=doc(db,'users',user.uid);
   const snap=await getDoc(userRef);
   if(!snap.exists()) await setDoc(userRef,{email:user.email,totalScore:0,playCount:0,createdAt:serverTimestamp()});
+
+  // ★ Firestore에서 게임 데이터 로딩 (로컬 fallback 포함)
+  await loadGameData();
+
   buildMap(); initMapGestures(); initHome();
   show('screen-home');
 });
