@@ -2414,7 +2414,8 @@ function renderExploreDots(region){
   EXP.list=LOCATIONS.filter(l=>region==='전체'||l.region===region);
   EXP.i=-1;
   $('exp-info').innerHTML='지역을 선택하거나 ◀ ▶ 로 넘겨 보세요.'+
-    `<div class="exp-nav" style="margin-top:8px"><button class="ghost-btn" onclick="expShow(0)">첫 지역부터 보기 ▶</button></div>`;
+    `<div class="exp-nav" style="margin-top:8px"><button class="ghost-btn" id="exp-first">첫 지역부터 보기 ▶</button></div>`;
+  $('exp-info').querySelector('#exp-first').onclick=()=>expShow(0);
   // 지도 위 빨간 지점 점은 표시하지 않음(시·군 폴리곤을 직접 탭해 학습) — 어수선함 제거
 }
 function positionTip(e,tip){
