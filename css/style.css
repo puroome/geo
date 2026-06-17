@@ -241,23 +241,13 @@ button { font-family:inherit; }
 .account-chip:hover { border-color:var(--sea); }
 .account-chip.on { background:var(--navy); color:#fff; border-color:var(--navy); }
 .account-chip small { opacity:.8; font-weight:700; margin-left:3px; }
-.teacher-link { display:inline-block; margin-top:8px; color:var(--sea-d); font-weight:700; text-decoration:none; font-size:.78rem; }
-.teacher-link:hover { text-decoration:underline; }
 .dialog { position:relative; background:#fff; border-radius:18px; padding:22px 20px;
   width:min(360px,92vw); box-shadow:0 18px 50px rgba(14,42,64,.4); text-align:left; }
-.dialog-mascot { display:block; width:auto; height:62px; margin:2px auto 4px; }
 .dialog h2 { font-size:1.05rem; font-weight:900; color:var(--navy); margin-bottom:5px; text-align:center; }
 .dialog-sub { font-size:.78rem; color:var(--dim); line-height:1.5; margin-bottom:14px; }
 .dialog-x { position:absolute; top:12px; right:13px; border:none; background:none; font-size:1.1rem;
   color:var(--faint); cursor:pointer; }
-.dialog-input { width:100%; padding:11px 13px; margin-bottom:9px; border:1.5px solid var(--line2);
-  border-radius:11px; font-size:.92rem; font-family:inherit; color:var(--text); }
-.dialog-input:focus { outline:none; border-color:var(--sea); }
-.dialog-msg { font-size:.78rem; color:var(--red); font-weight:700; min-height:18px; margin-bottom:6px; }
-.dialog-btn { width:100%; margin:4px 0 8px; }
 .dialog .text-btn { display:block; width:100%; text-align:center; color:var(--dim); }
-.dialog-div { height:1px; background:var(--line); margin:8px 0 6px; }
-.dialog .teacher-entry { color:var(--navy); font-weight:800; }
 .theme-list { display:flex; flex-direction:column; gap:8px; margin-top:4px; }
 .theme-pick { display:flex; align-items:center; justify-content:space-between; gap:8px;
   padding:13px 15px; border:1.5px solid var(--line2); border-radius:13px; background:#fff; cursor:pointer; transition:.13s; }
@@ -266,14 +256,7 @@ button { font-family:inherit; }
 .theme-pick .tp-label { font-weight:800; color:var(--navy); font-size:.96rem; }
 .theme-pick .tp-count { font-size:.72rem; color:var(--faint); font-weight:700; white-space:nowrap; }
 
-.teacher-result { margin-top:12px; max-height:46vh; overflow:auto; }
 .t-msg { font-size:.8rem; color:var(--dim); font-weight:700; margin-bottom:8px; }
-.t-table { width:100%; border-collapse:collapse; font-size:.82rem; }
-.t-table th { text-align:left; color:var(--faint); font-weight:700; padding:4px 6px; border-bottom:1.5px solid var(--line); }
-.t-table td { padding:5px 6px; border-bottom:1px solid var(--line); color:var(--text); }
-.t-table td:nth-child(3) { font-weight:800; color:var(--sea-d); font-variant-numeric:tabular-nums; }
-.t-foot { display:flex; justify-content:space-between; gap:10px; margin-top:12px; }
-.t-foot .text-btn { margin:0; }
 
 /* 🎰 빙고 게임 5×5 판 */
 .bingo-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; width:100%; max-width:440px; margin:0 auto; }
