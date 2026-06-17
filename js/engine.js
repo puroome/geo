@@ -29,12 +29,8 @@ let board = store.load('geo_board', {});
 let wanted = store.load('geo_wanted', {});   // 오답 지역 수배서 {accept키: {miss, streak}}
 let titles = store.load('geo_titles', {});   // 권역 보스전 클리어 칭호 {권역: true}
 let serverBoard = null;   // 서버 공유 명예의 전당(있으면 우선 표시, 없으면 로컬 fallback)
-let boardScope = 'school';   // 'school'(우리 학교) | 'all'(전체) — 로그인 시 토글
 
 // ---------- Firebase 명예의 전당 ----------
-let serverBoard = null;
-let boardScope = 'all';
-
 async function fetchServerBoard(){
   try{
     const q = query(collection(db,'users'), orderBy('totalScore','desc'), limit(10));
