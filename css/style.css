@@ -76,12 +76,10 @@ button { font-family:inherit; }
 .tb-chip.account-chip:hover { border-color:var(--sea); }
 .tb-chip.account-chip.on { background:var(--navy); color:#fff; border-color:var(--navy); }
 .tb-chip.account-chip small { opacity:.8; font-weight:700; margin-left:2px; }
-.progress-strip {
-  display:flex; align-items:center; gap:9px; max-width:680px; margin:0 auto; padding:8px 16px 0; overflow:hidden;
-}
-.progress-strip .rank-badge { font-size:.74rem; font-weight:800; color:var(--navy); white-space:nowrap; margin:0; flex-shrink:0; }
-.progress-strip .xp-bar-wrap { flex:1 1 auto; min-width:30px; height:8px; }
-.progress-strip .xp-text { font-size:.64rem; color:var(--faint); white-space:nowrap; font-weight:700; overflow:hidden; text-overflow:ellipsis; min-width:0; flex-shrink:1; }
+.tb-progress { display:flex; align-items:center; gap:7px; flex:1 1 auto; min-width:40px; max-width:380px; overflow:hidden; }
+.tb-progress .rank-badge { font-size:.7rem; font-weight:800; color:var(--navy); white-space:nowrap; margin:0; flex-shrink:0; }
+.tb-progress .xp-bar-wrap { flex:1 1 auto; min-width:24px; height:7px; }
+.tb-progress .xp-text { font-size:.62rem; color:var(--faint); white-space:nowrap; font-weight:700; overflow:hidden; text-overflow:ellipsis; min-width:0; flex-shrink:1; max-width:96px; }
 
 /* 하단 탭 네비게이션 홈 */
 .home-tabs { max-width:680px; margin:0 auto; padding:10px 16px calc(104px + env(safe-area-inset-bottom)); }
