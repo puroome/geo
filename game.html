@@ -50,8 +50,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  justify-content: flex-start;
+  gap: 8px;
   text-align: center;
   background: linear-gradient(135deg, #F3FBFF, #E2F3FE);
   border: 2px solid var(--line2);
@@ -60,11 +60,13 @@
   color: var(--text);
   transition: .15s;
   aspect-ratio: 1 / 1;
-  padding: 16px;
+  padding: 0 16px 16px;
+  overflow: hidden;
 }
 .learn-btn-sq:hover { border-color: var(--sea); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.learn-btn-sq:hover .learn-art { transform: scale(1.04); }
 .learn-btn-sq:active { transform: scale(.97); }
-.learn-btn-sq .mode-icon { font-size: 2.4rem; line-height: 1; }
+.learn-btn-sq .learn-art { width: calc(100% + 32px); margin: 0 -16px 10px; display: block; height: auto; transition: transform .25s ease; }
 .learn-btn-sq b { color: var(--navy); font-size: 1.05rem; display: block; }
 .learn-btn-sq small { color: var(--dim); font-size: .76rem; line-height: 1.4; display: block; margin-top: 3px; }
 </style>
@@ -108,12 +110,34 @@
         <h2>🗺️ 지도 학습</h2>
         <div class="learn-sq-row">
           <button class="learn-btn-sq" id="btn-explore">
-            <span class="mode-icon">🔍</span>
+            <svg class="learn-art" viewBox="0 0 160 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="100" fill="#DFF5F3"/>
+              <path d="M0 80 Q20 74 40 80 T80 80 T120 80 T160 80 V100 H0 Z" fill="#B8E8E3"/>
+              <path d="M30 30 Q40 14 64 18 Q84 8 102 22 Q124 20 128 42 Q140 54 124 64 Q120 80 98 76 Q78 88 58 74 Q36 76 30 58 Q18 46 30 30 Z" fill="#fff" stroke="#0D9488" stroke-width="2.4" stroke-dasharray="4 4"/>
+              <circle cx="58" cy="42" r="3" fill="#0D9488"/>
+              <circle cx="86" cy="34" r="3" fill="#0D9488"/>
+              <circle cx="98" cy="58" r="3" fill="#0D9488"/>
+              <circle cx="68" cy="62" r="3" fill="#0D9488"/>
+              <path d="M44 18 Q44 5 57 5 Q70 5 70 18 Q70 29 57 42 Q44 29 44 18 Z" fill="#F97362" stroke="#fff" stroke-width="2.5"/>
+              <circle cx="57" cy="17" r="5" fill="#fff"/>
+              <circle cx="110" cy="60" r="17" fill="#FFFFFFCC" stroke="#0D9488" stroke-width="4.5"/>
+              <line x1="122" y1="72" x2="136" y2="86" stroke="#0D9488" stroke-width="7" stroke-linecap="round"/>
+            </svg>
             <b>지도 탐색</b>
             <small>시·군 경계와 위치를 자유롭게 학습</small>
           </button>
           <button class="learn-btn-sq" id="btn-theme-learn">
-            <span class="mode-icon">🗂️</span>
+            <svg class="learn-art" viewBox="0 0 160 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="100" fill="#FFF3DC"/>
+              <path d="M0 80 Q20 74 40 80 T80 80 T120 80 T160 80 V100 H0 Z" fill="#FCE2AE"/>
+              <g stroke="#fff" stroke-width="2.5" stroke-linejoin="round">
+                <rect x="38" y="10" width="24" height="32" rx="5" fill="#34D399" transform="rotate(-12 50 26)"/>
+                <rect x="68" y="3" width="24" height="36" rx="5" fill="#F87171" transform="rotate(4 80 21)"/>
+                <rect x="97" y="11" width="24" height="30" rx="5" fill="#60A5FA" transform="rotate(16 109 26)"/>
+              </g>
+              <path d="M22 78 V42 Q22 36 28 36 H58 L66 46 H132 Q138 46 138 52 V78 Q138 84 132 84 H28 Q22 84 22 78 Z" fill="#FBBF24" stroke="#fff" stroke-width="3"/>
+              <path d="M22 52 H138" stroke="#F59E0B" stroke-width="2" opacity=".55"/>
+            </svg>
             <b>테마별 학습</b>
             <small>도청·축제·특산물 등 테마로 지역 훑어보기</small>
           </button>
@@ -131,7 +155,6 @@
         <div id="region-chips" class="chips"></div>
       </div>
 
-      <h2>🎮 게임 모드 <span class="swipe-hint">밀거나 화살표로 선택</span></h2>
       <div class="carousel-wrap">
         <button class="car-arrow car-prev" id="car-prev" aria-label="이전">‹</button>
         <button class="car-arrow car-next" id="car-next" aria-label="다음">›</button>
