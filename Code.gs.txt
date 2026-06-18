@@ -1,5 +1,5 @@
 // ============================================================
-// 백지도 정복 게임 - Google Apps Script
+// 지도 정복 게임 - Google Apps Script
 // 기능: 1) 시트 → Firestore 동기화
 //       2) USERS 시트 → Firebase Auth 계정 관리
 // ============================================================
@@ -11,7 +11,7 @@ const PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAA
 // ===== 메뉴 생성 =====
 function onOpen() {
   SpreadsheetApp.getUi()
-    .createMenu('🗺️ 백지도 게임 관리')
+    .createMenu('🗺️ 지도 게임 관리')
     .addItem('🔄 전체 시트 → Firestore 동기화', 'syncAllToFirestore')
     .addSeparator()
     .addItem('📝 MCQ만 동기화', 'syncMCQ')
@@ -19,6 +19,9 @@ function onOpen() {
     .addItem('📍 LOCATIONS만 동기화', 'syncLocations')
     .addItem('📊 FREQ만 동기화', 'syncFreq')
     .addItem('📌 REGION_NOTES만 동기화', 'syncRegionNotes')
+    .addItem('👤 POPULATION만 동기화', 'syncPopulation')
+    .addItem('🌤️ CLIMATE만 동기화', 'syncClimate')
+    .addItem('📈 SIDO_KOSIS만 동기화', 'syncSidoKosis')
     .addSeparator()
     .addItem('👥 사용자 계정 동기화 (생성/수정/삭제)', 'syncUsers')
     .addItem('👀 현재 Firebase 사용자 목록 확인', 'listFirebaseUsers')
@@ -62,13 +65,19 @@ function toFirestoreDoc(obj) {
   for (const [k, v] of Object.entries(obj)) {
     if (v === null || v === undefined || v === '') continue;
     if (typeof v === 'boolean') fields[k] = { booleanValue: v };
-    else if (typeof v === 'number') fields[k] = { integerValue: v };
+    else if (typeof v === 'number') {
+      fields[k] = Number.isInteger(v) ? { integerValue: v } : { doubleValue: v };
+    }
     else if (Array.isArray(v)) {
       fields[k] = {
         arrayValue: {
-          values: v.map(item => typeof item === 'string'
-            ? { stringValue: item }
-            : { integerValue: item })
+          values: v.map(item => {
+            if (typeof item === 'string') return { stringValue: item };
+            if (typeof item === 'number') {
+              return Number.isInteger(item) ? { integerValue: item } : { doubleValue: item };
+            }
+            return { stringValue: String(item) };
+          })
         }
       };
     }
@@ -247,7 +256,7 @@ function syncFreq() {
     };
   });
 
-  firestoreSet('gameData/freq/data', {
+  firestoreSet('gameData/freq', {
     json: JSON.stringify(freqObj),
     updatedAt: new Date().toISOString()
   }, token);
@@ -268,11 +277,108 @@ function syncRegionNotes() {
     notesObj[String(row.name)] = row.note || '';
   });
 
-  firestoreSet('gameData/regionNotes/data', {
+  firestoreSet('gameData/regionNotes', {
     json: JSON.stringify(notesObj),
     updatedAt: new Date().toISOString()
   }, token);
   SpreadsheetApp.getUi().alert(`✅ REGION_NOTES ${rows.length}개 동기화 완료!`);
+}
+
+// ============================================================
+// ===== POPULATION 동기화 =====
+// ============================================================
+function syncPopulation() {
+  const rows = getSheetData('POPULATION');
+  if (!rows) return;
+  const token = getAccessToken();
+
+  const popObj = {};
+  rows.forEach(row => {
+    if (!row.name) return;
+    popObj[String(row.name)] = parseInt(row.pop) || 0;
+  });
+
+  firestoreSet('gameData/population', {
+    json: JSON.stringify(popObj),
+    updatedAt: new Date().toISOString()
+  }, token);
+  SpreadsheetApp.getUi().alert(`✅ POPULATION ${rows.length}개 동기화 완료!`);
+}
+
+// ============================================================
+// ===== CLIMATE 동기화 =====
+// ============================================================
+function syncClimate() {
+  const rows = getSheetData('CLIMATE');
+  if (!rows) return;
+  const token = getAccessToken();
+
+  const existing = firestoreGetCollection('gameData/climate/items', token);
+  existing.forEach(doc => {
+    const id = doc.name.split('/').pop();
+    firestoreDelete(`gameData/climate/items/${id}`, token);
+  });
+
+  rows.forEach((row, i) => {
+    const p = [], t = [];
+    for (let m = 1; m <= 12; m++) {
+      p.push(parseFloat(row['p' + m]) || 0);
+      t.push(parseFloat(row['t' + m]) || 0);
+    }
+    const nkVal = String(row.nk).toUpperCase().trim();
+    const data = {
+      name: row.name || '',
+      src: row.src || '',
+      region: row.region || '',
+      nk: nkVal === 'TRUE' || nkVal === '참' || nkVal === 'O',
+      x: (row.x === '' || row.x === undefined) ? null : parseFloat(row.x),
+      y: (row.y === '' || row.y === undefined) ? null : parseFloat(row.y),
+      alt: parseFloat(row.alt) || 0,
+      p: p,
+      t: t
+    };
+    const id = (row.name || `clim${i}`).replace(/[^a-zA-Z0-9가-힣]/g, '_');
+    firestoreSet(`gameData/climate/items/${id}`, data, token);
+    if (i % 20 === 0) Utilities.sleep(500);
+  });
+
+  firestoreSet('gameData/climate/meta', { count: rows.length, updatedAt: new Date().toISOString() }, token);
+  SpreadsheetApp.getUi().alert(`✅ CLIMATE ${rows.length}개 동기화 완료!`);
+}
+
+// ============================================================
+// ===== SIDO_KOSIS 동기화 (등수 자동 계산) =====
+// ============================================================
+function syncSidoKosis() {
+  const rows = getSheetData('SIDO_KOSIS');
+  if (!rows) return;
+  const token = getAccessToken();
+
+  const keys = ['pop2025','aging','tfr','agingIdx','empRate','unemp','grdp','grdpPer'];
+  const list = rows.map(row => {
+    const obj = { name: row.name || '' };
+    keys.forEach(k => { obj[k] = parseFloat(row[k]) || 0; });
+    return obj;
+  }).filter(o => o.name);
+
+  keys.forEach(key => {
+    const sorted = list.filter(o => o[key] != null).sort((a, b) => b[key] - a[key]);
+    sorted.forEach((o, i) => { o[key + 'Rank'] = i + 1; });
+  });
+
+  const kosisObj = {};
+  list.forEach(o => {
+    const name = o.name;
+    const rest = Object.assign({}, o);
+    delete rest.name;
+    kosisObj[name] = rest;
+  });
+
+  firestoreSet('gameData/sidoKosis', {
+    json: JSON.stringify(kosisObj),
+    updatedAt: new Date().toISOString()
+  }, token);
+  SpreadsheetApp.getUi().alert(`✅ SIDO_KOSIS ${list.length}개 동기화 완료!`);
 }
 
 // ============================================================
@@ -296,6 +402,12 @@ function syncAllToFirestore() {
   syncFreq();
   Utilities.sleep(1000);
   syncRegionNotes();
+  Utilities.sleep(1000);
+  syncPopulation();
+  Utilities.sleep(1000);
+  syncClimate();
+  Utilities.sleep(1000);
+  syncSidoKosis();
 
   ui.alert('✅ 전체 동기화 완료!');
 }
