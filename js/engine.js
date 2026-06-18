@@ -57,6 +57,7 @@ async function postServerScore(mode, name, score){
 // 👤 Firebase Auth 계정
 // ============================================================
 let currentUser = null;
+let userDisplayName = null;   // 구글시트 USERS 시트에서 동기화된 name 필드 (Firestore users/{uid}.name)
 let account = null;   // {cls, nickname} — email에서 파생
 
 function scheduleSync(){ /* Firebase는 실시간 저장이므로 별도 sync 불필요 */ }
@@ -417,8 +418,9 @@ function renderAccount(){
   const el=$('account-chip'); if(!el) return;
   if(currentUser){
     const emailId = currentUser.email.split('@')[0];
-    el.innerHTML=`👤 ${emailId}`; el.classList.add('on');
-    el.onclick=()=>{ if(confirm(`${emailId} 로그아웃?`)) signOut(auth).then(()=>window.location.href='index.html'); };
+    const shown = userDisplayName || emailId;
+    el.innerHTML=`👤 ${shown}`; el.classList.add('on');
+    el.onclick=()=>{ if(confirm(`${shown} 로그아웃?`)) signOut(auth).then(()=>window.location.href='index.html'); };
   }
   else { el.innerHTML='👤 로그인'; el.classList.remove('on'); }
 }
@@ -3808,14 +3810,16 @@ onAuthStateChanged(auth, async (user) => {
   const emailId = user.email.split('@')[0];
   const chip = $('account-chip');
   if (chip) {
-    chip.textContent = `👤 ${emailId}`;
-    chip.onclick = () => { if (confirm(`${emailId} 로그아웃?`)) signOut(auth).then(() => window.location.href = 'index.html'); };
+    const shown = userDisplayName || emailId;
+    chip.textContent = `👤 ${shown}`;
+    chip.onclick = () => { if (confirm(`${shown} 로그아웃?`)) signOut(auth).then(() => window.location.href = 'index.html'); };
   }
   // Firestore 사용자 문서 초기화 (첫 접속 시)
   try {
     const userRef = doc(db, 'users', user.uid);
     const snap = await getDoc(userRef);
     if (!snap.exists()) await setDoc(userRef, { email: user.email, totalScore: 0, playCount: 0, createdAt: serverTimestamp() });
+    else { const nm = snap.data().name; if (nm && String(nm).trim()) { userDisplayName = String(nm).trim(); renderAccount(); } }
   } catch(e) {}
 
   await loadGameData();
