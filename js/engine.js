@@ -3640,7 +3640,7 @@ $('btn-home').onclick=()=>{ initHome(); show('screen-home'); resetHomeTab(); };
 (function initCarousel(){
   const car=$('mode-carousel'); if(!car) return;
   const prev=$('car-prev'), next=$('car-next');
-  const step=()=>car.querySelector('.mode-card').offsetWidth+11;
+  const step=()=>car.querySelector('.mode-card').offsetWidth+8;
   const updateArrows=()=>{
     if(!prev||!next) return;
     prev.disabled=car.scrollLeft<=2;
