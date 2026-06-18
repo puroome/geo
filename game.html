@@ -14,6 +14,40 @@
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="css/style.css">
 <style>
+/* ── 전역 고정 레이아웃 ──
+   topbar + progress-strip : 항상 상단 고정
+   tabbar                  : 항상 하단 고정
+   모든 .screen             : 상하 고정 메뉴 높이만큼 패딩
+*/
+.topbar {
+  position: fixed !important;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+}
+.progress-strip {
+  position: fixed !important;
+  top: 52px; left: 0; right: 0;
+  z-index: 99;
+  background: #FFFFFFF0;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 6px;
+}
+.tabbar {
+  position: fixed !important;
+  bottom: 0; left: 0; right: 0;
+  z-index: 100;
+}
+/* 모든 화면: 상단(topbar+progress-strip) + 하단(tabbar) 여백 확보 */
+.screen {
+  padding-top: calc(52px + 38px + env(safe-area-inset-top)) !important;
+  padding-bottom: calc(64px + env(safe-area-inset-bottom)) !important;
+}
+/* home-tabs는 screen-home 안에서 자연스럽게 스크롤 */
+.home-tabs {
+  padding-bottom: 0;
+}
+
 /* 정사각형 지도학습 버튼 */
 .learn-sq-row {
   display: grid;
@@ -46,23 +80,22 @@
 </head>
 <body>
 
-<!-- ===== 홈 화면 ===== -->
-<div id="screen-home" class="screen active">
-
-  <!-- 고정 상단 topbar -->
-  <header class="topbar">
+<!-- ===== 항상 고정: 상단 topbar ===== -->
+<header class="topbar">
     <div class="tb-brand"><b>지리</b></div>
     <div class="tb-stats">
       <span class="tb-chip coin-chip"><span id="coin-cnt" class="coin-cnt"><span class="coin-ico"></span> <b>0</b></span></span>
       <button id="account-chip" class="tb-chip account-chip" type="button">👤 로그인</button>
     </div>
-  </header>
-  <div class="progress-strip">
+</header>
+<div class="progress-strip">
     <span id="rank-badge" class="rank-badge"></span>
     <div id="xp-bar-wrap" class="xp-bar-wrap"><div id="xp-bar"></div></div>
     <span id="xp-text" class="xp-text"></span>
-  </div>
+</div>
 
+<!-- ===== 홈 화면 ===== -->
+<div id="screen-home" class="screen active">
   <!-- 탭 콘텐츠 영역 -->
   <div class="home-tabs">
 
@@ -392,17 +425,17 @@
     </section>
 
   </div><!-- home-tabs -->
+</div><!-- screen-home -->
 
-  <!-- 고정 하단 탭바 -->
-  <nav class="tabbar" id="tabbar">
+<!-- ===== 항상 고정: 하단 탭바 ===== -->
+<nav class="tabbar" id="tabbar">
     <div class="tabbar-inner">
       <button class="tab-btn active" data-tab="study"><span class="ic">📖</span><span>학습</span></button>
       <button class="tab-btn" data-tab="quiz"><span class="ic">🎮</span><span>퀴즈</span></button>
       <button class="tab-btn" data-tab="collection"><span class="ic">🏞️</span><span>도감</span></button>
       <button class="tab-btn" data-tab="record"><span class="ic">🏆</span><span>기록</span></button>
     </div>
-  </nav>
-</div>
+</nav>
 
 <!-- ===== 테마별 학습 모달 ===== -->
 <div id="themelearn-modal" class="modal hidden">
