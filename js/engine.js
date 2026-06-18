@@ -12,6 +12,7 @@ let MCQ = window.MCQ || [];
 let OX  = window.OX  || [];
 
 const $ = id => document.getElementById(id);
+document.addEventListener('contextmenu', e => e.preventDefault());
 const REGIONS = ['전체','북한','수도권','강원','충청','호남','영남','제주'];
 const MAP_REGIONS = ['수도권','강원','충청','호남','영남','제주'];
 
@@ -3814,5 +3815,23 @@ onAuthStateChanged(auth, async (user) => {
   buildMap();
   initMapGestures();
   initHome();
+  history.pushState(null, '');
+  window.addEventListener('popstate', () => {
+    history.pushState(null, '');
+    const active = document.querySelector('.screen.active');
+    const id = active ? active.id : 'screen-home';
+    if (id === 'screen-home') {
+      signOut(auth).then(() => { window.location.href = 'index.html'; });
+    } else if (id === 'screen-game') {
+      stopArcade(); stopTimer(); clearMapTap();
+      $('map-svg').onclick = null;
+      ['hud-qnum','hud-combo','hud-score'].forEach(i => {
+        const el = $(i); if (el && el.parentElement) el.parentElement.style.visibility = '';
+      });
+      initHome(); show('screen-home'); resetHomeTab();
+    } else {
+      initHome(); show('screen-home'); resetHomeTab();
+    }
+  });
   show('screen-home');
 });
