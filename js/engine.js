@@ -3742,12 +3742,12 @@ async function loadGameData() {
       if (arr.length) { window.LOCATIONS = arr; LOC_POOL = null; }
     }
     progress(68, '빈출 분석 불러오는 중...');
-    const freqSnap = await getDoc(doc(db, 'gameData/freq/data'));
+    const freqSnap = await getDoc(doc(db, 'gameData/freq'));
     if (freqSnap.exists()) {
       try { const p=JSON.parse(freqSnap.data().json||'{}'); if(Object.keys(p).length) window.FREQ=p; } catch(e){}
     }
     progress(84, '지역 메모 불러오는 중...');
-    const notesSnap = await getDoc(doc(db, 'gameData/regionNotes/data'));
+    const notesSnap = await getDoc(doc(db, 'gameData/regionNotes'));
     if (notesSnap.exists()) {
       try { const p=JSON.parse(notesSnap.data().json||'{}'); if(Object.keys(p).length) window.REGION_NOTES=p; } catch(e){}
     }
@@ -3755,7 +3755,7 @@ async function loadGameData() {
     // ponytail: MUNIS/CLIMATE/SIDO_STATS는 map-data.js·stats-data.js에서 const로 선언돼 있어
     // window.X = ... 로 통째로 갈아치우면 다른 곳의 맨 이름(bare) 참조에 반영 안 될 수 있음.
     // 그래서 기존 객체·배열을 그 자리에서 직접 고치는 방식으로 처리(재할당 없음).
-    const popSnap = await getDoc(doc(db, 'gameData/population/data'));
+    const popSnap = await getDoc(doc(db, 'gameData/population'));
     if (popSnap.exists()) {
       try {
         const p = JSON.parse(popSnap.data().json || '{}');
@@ -3778,7 +3778,7 @@ async function loadGameData() {
       });
       if (arr.length) { CLIMATE.length = 0; arr.forEach(c => CLIMATE.push(c)); }
     }
-    const kosisSnap = await getDoc(doc(db, 'gameData/sidoKosis/data'));
+    const kosisSnap = await getDoc(doc(db, 'gameData/sidoKosis'));
     if (kosisSnap.exists()) {
       try {
         const p = JSON.parse(kosisSnap.data().json || '{}');
