@@ -3,7 +3,8 @@
    하늘 #B6EAFD · 바다 #20A2EE · 풀 #A4CE4E · 네이비 #1B4F8F
    포인트: 옐로 #FFD23F · 핑크 #F2889B · 핀 레드 #E2574C
    ============================================================ */
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none; -webkit-user-select:none; }
+input, textarea { user-select:text; -webkit-user-select:text; }
 :root {
   --bg:#EAF7FE; --bg2:#DCF2FE;
   --panel:#FFFFFF; --panel2:#F3FBFF;
