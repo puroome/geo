@@ -100,11 +100,11 @@ button { font-family:inherit; }
 .tab-btn {
   flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:2px;
   background:none; border:none; cursor:pointer; padding:8px 2px 7px;
-  font-weight:800; position:relative; transition:color .15s;
+  font-weight:400; position:relative; transition:color .15s;
 }
 .tab-btn .ic { display:none; }
 .tab-btn .tb-label {
-  display:inline-block; font-size:1.056rem; font-weight:800;
+  display:inline-block; font-size:1.056rem; font-weight:400;
   padding:4px 14px; border-radius:14px; border:none; opacity:.6;
   transition:opacity .15s, transform .15s;
 }
