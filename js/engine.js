@@ -375,20 +375,24 @@ function initHome(){
   renderWeakReport();
   renderAchievements();
   checkAchievements();   // 기존 진척에 대한 업적 소급 해금
-  // 빈출 지역 TOP 12 — 특별·광역시 제외, 시·군 단위만
-  $('freq-span').textContent=`${FREQ_SPAN.span} 고3 학평·모평·수능 ${FREQ_SPAN.files}회분 언급 횟수(시·군 기준) — 빈출 지역은 게임에서 더 자주 출제됩니다`;
-  const fl=$('freq-list'); fl.innerHTML='';
-  const METRO_RE=/(특별시|광역시|특별자치시)$/;
-  const top=Object.entries(FREQ)
-    .filter(([name])=>MUNIS[name] && !METRO_RE.test(name))
-    .sort((a,b)=>b[1].count-a[1].count).slice(0,12);
-  const max=top.length?top[0][1].count:1;
-  top.forEach(([name,v],i)=>{
-    fl.insertAdjacentHTML('beforeend',
-      `<div class="freq-row"><span class="f-rank">${i+1}</span><span class="f-name">${name.replace(/\(.+\)$/,'')}</span>
-       <div class="f-bar"><div class="f-fill" style="width:${Math.round(v.count/max*100)}%"></div></div>
-       <span class="f-val">${v.count}회·${v.exams}개 시험</span></div>`);
-  });
+  // 빈출 지역 TOP 12 — 특별·광역시 제외, 시·군 단위만 (해당 섹션이 HTML에 없으면 안전하게 건너뜀)
+  const fs=$('freq-span');
+  if(fs) fs.textContent=`${FREQ_SPAN.span} 고3 학평·모평·수능 ${FREQ_SPAN.files}회분 언급 횟수(시·군 기준) — 빈출 지역은 게임에서 더 자주 출제됩니다`;
+  const fl=$('freq-list');
+  if(fl){
+    fl.innerHTML='';
+    const METRO_RE=/(특별시|광역시|특별자치시)$/;
+    const top=Object.entries(FREQ)
+      .filter(([name])=>MUNIS[name] && !METRO_RE.test(name))
+      .sort((a,b)=>b[1].count-a[1].count).slice(0,12);
+    const max=top.length?top[0][1].count:1;
+    top.forEach(([name,v],i)=>{
+      fl.insertAdjacentHTML('beforeend',
+        `<div class="freq-row"><span class="f-rank">${i+1}</span><span class="f-name">${name.replace(/\(.+\)$/,'')}</span>
+         <div class="f-bar"><div class="f-fill" style="width:${Math.round(v.count/max*100)}%"></div></div>
+         <span class="f-val">${v.count}회·${v.exams}개 시험</span></div>`);
+    });
+  }
 }
 
 // 🎯 오늘의 지리 미션 렌더
