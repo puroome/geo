@@ -100,11 +100,19 @@ button { font-family:inherit; }
 .tab-btn {
   flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:2px;
   background:none; border:none; cursor:pointer; padding:8px 2px 7px;
-  color:var(--faint); font-weight:800; font-size:1.05rem; position:relative; transition:color .15s;
+  font-weight:800; position:relative; transition:color .15s;
 }
 .tab-btn .ic { display:none; }
-.tab-btn.active { color:var(--sea-d); }
-.tab-btn.active .ic { filter:none; opacity:1; transform:translateY(-1px); }
+.tab-btn .tb-label {
+  display:inline-block; font-size:1.056rem; font-weight:800;
+  padding:4px 14px; border-radius:14px; border:none; opacity:.6;
+  transition:opacity .15s, transform .15s;
+}
+.tab-btn.active .tb-label { opacity:1; transform:translateY(-1px); }
+.tb-label.tb-y { background:#FFE9A8; color:#1E3A8A; }   /* 옅은 노랑 + 보색(남색) */
+.tb-label.tb-b { background:#8EC9FB; color:#B45309; }   /* 파랑 + 보색(주황) */
+.tb-label.tb-r { background:#FCA5A5; color:#15803D; }   /* 빨강 + 보색(녹색) */
+.tb-label.tb-g { background:#86EFAC; color:#9D174D; }   /* 녹색 + 보색(자홍) */
 .tab-btn.active::after {
   content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
   width:32px; height:3px; border-radius:0 0 3px 3px; background:var(--sea);
