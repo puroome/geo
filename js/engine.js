@@ -3751,6 +3751,40 @@ async function loadGameData() {
     if (notesSnap.exists()) {
       try { const p=JSON.parse(notesSnap.data().json||'{}'); if(Object.keys(p).length) window.REGION_NOTES=p; } catch(e){}
     }
+    progress(90, '인구·기후·통계 보강 중...');
+    // ponytail: MUNIS/CLIMATE/SIDO_STATS는 map-data.js·stats-data.js에서 const로 선언돼 있어
+    // window.X = ... 로 통째로 갈아치우면 다른 곳의 맨 이름(bare) 참조에 반영 안 될 수 있음.
+    // 그래서 기존 객체·배열을 그 자리에서 직접 고치는 방식으로 처리(재할당 없음).
+    const popSnap = await getDoc(doc(db, 'gameData/population/data'));
+    if (popSnap.exists()) {
+      try {
+        const p = JSON.parse(popSnap.data().json || '{}');
+        Object.entries(p).forEach(([name, pop]) => {
+          const v = parseInt(pop);
+          if (MUNIS[name] && Number.isFinite(v)) MUNIS[name].pop = v;
+        });
+      } catch(e) {}
+    }
+    const climSnap = await getDocs(collection(db, 'gameData/climate/items'));
+    if (!climSnap.empty) {
+      const arr = [];
+      climSnap.forEach(d => {
+        const v = d.data();
+        arr.push({
+          name: v.name||'', src: v.src||'', region: v.region||'', nk: !!v.nk,
+          x: (v.x==null)?null:parseFloat(v.x), y: (v.y==null)?null:parseFloat(v.y), alt: parseFloat(v.alt)||0,
+          p: Array.isArray(v.p)?v.p.map(Number):[], t: Array.isArray(v.t)?v.t.map(Number):[]
+        });
+      });
+      if (arr.length) { CLIMATE.length = 0; arr.forEach(c => CLIMATE.push(c)); }
+    }
+    const kosisSnap = await getDoc(doc(db, 'gameData/sidoKosis/data'));
+    if (kosisSnap.exists()) {
+      try {
+        const p = JSON.parse(kosisSnap.data().json || '{}');
+        SIDO_STATS.forEach(s => { const k = p[s.name]; if (k) Object.assign(s, k); });
+      } catch(e) {}
+    }
     progress(100, '준비 완료!');
   } catch(err) {
     console.warn('[Firestore 로딩 실패 — 로컬 데이터 사용]', err);
