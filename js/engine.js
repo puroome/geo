@@ -3691,6 +3691,9 @@ $('btn-explore').onclick=()=>startGame('explore');
 document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>{
   const t=b.dataset.tab;
   if(!$('screen-home').classList.contains('active')){
+    // 점수가 아직 저장되지 않은 라운드 중(지도 탐색처럼 점수 없는 모드는 제외) 나가는 경우만 확인
+    const inUnsavedRound = $('screen-game').classList.contains('active') && G.mode && G.mode!=='explore';
+    if(inUnsavedRound && !confirm('지금 나가면 이번 라운드 점수는 저장되지 않아요. 그래도 나가시겠어요?')) return;
     stopArcade(); stopTimer(); clearMapTap();
     const ms=$('map-svg'); if(ms) ms.onclick=null;
     ['hud-qnum','hud-combo','hud-score'].forEach(id=>{ const el=$(id); if(el&&el.parentElement) el.parentElement.style.visibility=''; });
