@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -13,11 +13,43 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* 정사각형 지도학습 버튼 */
+.learn-sq-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+.learn-btn-sq {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  background: linear-gradient(135deg, #F3FBFF, #E2F3FE);
+  border: 2px solid var(--line2);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  color: var(--text);
+  transition: .15s;
+  aspect-ratio: 1 / 1;
+  padding: 16px;
+}
+.learn-btn-sq:hover { border-color: var(--sea); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.learn-btn-sq:active { transform: scale(.97); }
+.learn-btn-sq .mode-icon { font-size: 2.4rem; line-height: 1; }
+.learn-btn-sq b { color: var(--navy); font-size: 1.05rem; display: block; }
+.learn-btn-sq small { color: var(--dim); font-size: .76rem; line-height: 1.4; display: block; margin-top: 3px; }
+</style>
 </head>
 <body>
 
 <!-- ===== 홈 화면 ===== -->
 <div id="screen-home" class="screen active">
+
+  <!-- 고정 상단 topbar -->
   <header class="topbar">
     <div class="tb-brand"><b>지리</b></div>
     <div class="tb-stats">
@@ -31,265 +63,280 @@
     <span id="xp-text" class="xp-text"></span>
   </div>
 
+  <!-- 탭 콘텐츠 영역 -->
   <div class="home-tabs">
-    <section class="panel tab-panel active" id="tab-play">
+
+    <!-- ==============================
+         탭1: 학습 (기본 첫 화면)
+         ============================== -->
+    <section class="panel tab-panel active" id="tab-study">
+
+      <!-- 1. 오늘의 미션 -->
+      <div class="mission-card">
+        <h2>🎯 오늘의 지리 미션 <small>매일 자정 갱신</small></h2>
+        <div id="mission-body"></div>
+      </div>
+
+      <!-- 2. 나를 위한 추천 -->
       <div id="play-hero" class="play-hero"></div>
-      <div id="beginner-guide" class="beginner-guide hidden"></div>
+
+      <!-- 3. 지도 학습 (정사각형 나란히) -->
+      <div>
+        <h2>🗺️ 지도 학습</h2>
+        <div class="learn-sq-row">
+          <button class="learn-btn-sq" id="btn-explore">
+            <span class="mode-icon">🔍</span>
+            <b>지도 탐색</b>
+            <small>시·군 경계와 위치를 자유롭게 학습</small>
+          </button>
+          <button class="learn-btn-sq" id="btn-theme-learn">
+            <span class="mode-icon">🗂️</span>
+            <b>테마별 학습</b>
+            <small>도청·축제·특산물 등 테마로 지역 훑어보기</small>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==============================
+         탭2: 퀴즈 (13종 게임)
+         ============================== -->
+    <section class="panel tab-panel" id="tab-quiz">
       <h2>🎮 게임 모드 <span class="swipe-hint">밀거나 화살표로 선택</span></h2>
       <div class="carousel-wrap">
-      <button class="car-arrow car-prev" id="car-prev" aria-label="이전">‹</button>
-      <button class="car-arrow car-next" id="car-next" aria-label="다음">›</button>
-      <div class="mode-carousel" id="mode-carousel">
-        <button class="mode-card" data-mode="location" style="--mc:#1278C2">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#CDEBFD"/>
-            <path d="M0 72 Q20 66 40 72 T80 72 T120 72 T160 72 V92 H0 Z" fill="#9ED5F6"/>
-            <ellipse cx="26" cy="20" rx="14" ry="6" fill="#fff"/><ellipse cx="34" cy="16" rx="9" ry="5" fill="#fff"/>
-            <path d="M133 12 l2.5 6 6 2.5 -6 2.5 -2.5 6 -2.5-6 -6-2.5 6-2.5 Z" fill="#FFD23F"/>
-            <path d="M52 62 Q44 44 60 38 Q72 28 90 34 Q108 30 114 46 Q122 56 110 64 Q100 76 82 72 Q64 78 52 62 Z" fill="#A8D158" stroke="#fff" stroke-width="3.5"/>
-            <circle cx="74" cy="52" r="2.8" fill="#4A3426"/><circle cx="90" cy="52" r="2.8" fill="#4A3426"/>
-            <ellipse cx="68" cy="58" rx="3.6" ry="2.2" fill="#FF8F7A" opacity=".7"/><ellipse cx="96" cy="58" rx="3.6" ry="2.2" fill="#FF8F7A" opacity=".7"/>
-            <path d="M77 58 Q82 63 87 58" stroke="#4A3426" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-            <path d="M118 14 a11 11 0 1 1 -0.1 0 M118 25 l0 0" fill="#E2574C"/>
-            <circle cx="118" cy="25" r="11" fill="#E2574C" stroke="#fff" stroke-width="3"/>
-            <path d="M109 31 L118 46 L127 31 Z" fill="#E2574C" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/>
-            <circle cx="118" cy="24" r="4.4" fill="#fff"/>
-          </svg>
-          <span class="mode-name">위치 사냥</span>
-          <span class="mode-desc">이름 또는 설명(특산물·축제·마스코트)을 보고 지도에서 탭!</span>
-          <span class="mode-play">PLAY ▶</span>
-        </button>
-        <button class="mode-card" data-mode="theme" style="--mc:#D6336C">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#FCE7F0"/>
-            <path d="M0 72 Q20 66 40 72 T80 72 T120 72 T160 72 V92 H0 Z" fill="#F5C2D8"/>
-            <g stroke="#fff" stroke-width="2.5" stroke-linejoin="round">
-              <path d="M18 16 h34 l11 10 -11 10 h-34 z" fill="#E2574C"/>
-              <path d="M28 40 h40 l11 10 -11 10 h-40 z" fill="#F5A623"/>
-              <path d="M20 62 h28 l10 8 -10 8 h-28 z" fill="#2FA34F"/>
-            </g>
-            <circle cx="25" cy="26" r="2.6" fill="#fff"/><circle cx="35" cy="50" r="2.6" fill="#fff"/><circle cx="27" cy="70" r="2.4" fill="#fff"/>
-            <path d="M106 30 Q100 17 114 13 Q127 8 136 17 Q148 16 149 30 Q154 42 141 47 Q145 61 131 60 Q119 70 108 59 Q96 56 101 43 Q99 35 106 30 Z" fill="#A8D158" stroke="#fff" stroke-width="3"/>
-            <circle cx="119" cy="34" r="2.6" fill="#4A3426"/><circle cx="133" cy="34" r="2.6" fill="#4A3426"/>
-            <ellipse cx="113" cy="40" rx="3.2" ry="2" fill="#FF8F7A" opacity=".7"/><ellipse cx="139" cy="40" rx="3.2" ry="2" fill="#FF8F7A" opacity=".7"/>
-            <path d="M121 43 Q126 47 131 43" stroke="#4A3426" stroke-width="2" fill="none" stroke-linecap="round"/>
-          </svg>
-          <span class="mode-name">테마 게임</span>
-          <span class="mode-desc">도청·혁신도시·축제·특산물·세계유산 등 테마로 지역 찾기</span>
-          <span class="mode-play">PLAY ▶</span>
-        </button>
-        <button class="mode-card" data-mode="bingo" style="--mc:#8A4FBE">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#EFE6FB"/>
-            <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#D9C6F2"/>
-            <rect x="18" y="12" width="62" height="62" rx="8" fill="#fff" stroke="#8A4FBE" stroke-width="3"/>
-            <path d="M38.7 12 V74 M59.3 12 V74 M18 32.7 H80 M18 53.3 H80" stroke="#C9B3EC" stroke-width="2"/>
-            <g fill="#8A4FBE">
-              <rect x="21" y="15" width="14.7" height="14.7" rx="3"/>
-              <rect x="41.6" y="35.6" width="14.7" height="14.7" rx="3"/>
-              <rect x="62.3" y="56.3" width="14.7" height="14.7" rx="3"/>
-            </g>
-            <text x="49" y="9" text-anchor="middle" font-size="11" font-weight="900" fill="#8A4FBE">BINGO</text>
-            <path d="M104 54 Q96 38 110 32 Q122 24 136 30 Q148 28 152 42 Q156 54 144 60 Q134 70 120 66 Q106 68 104 54 Z" fill="#A8D158" stroke="#fff" stroke-width="3"/>
-            <circle cx="119" cy="48" r="2.6" fill="#4A3426"/><circle cx="133" cy="48" r="2.6" fill="#4A3426"/>
-            <ellipse cx="113" cy="54" rx="3" ry="1.9" fill="#FF8F7A" opacity=".7"/><ellipse cx="139" cy="54" rx="3" ry="1.9" fill="#FF8F7A" opacity=".7"/>
-            <path d="M121 57 Q126 61 131 57" stroke="#4A3426" stroke-width="2.1" fill="none" stroke-linecap="round"/>
-          </svg>
-          <span class="mode-name">빙고 게임</span>
-          <span class="mode-desc">5×5 빙고판에서 설명에 맞는 지역 찾기! 2번 틀리면 게임 끝</span>
-          <span class="mode-play">PLAY ▶</span>
-        </button>
-        <button class="mode-card" data-mode="streak" style="--mc:#E8590C">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#FFE8D6"/>
-            <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#FCCFA8"/>
-            <path d="M46 72 Q30 60 40 42 Q45 33 42 24 Q56 32 55 45 Q62 36 60 25 Q74 37 71 56 Q68 72 56 74 Q50 76 46 72 Z" fill="#FF6B35" stroke="#fff" stroke-width="3"/>
-            <path d="M49 70 Q42 61 48 50 Q51 57 55 50 Q60 59 55 68 Q52 72 49 70 Z" fill="#FFD23F"/>
-            <g fill="#E8590C" stroke="#fff" stroke-width="2">
-              <rect x="88" y="56" width="10" height="16" rx="2"/>
-              <rect x="103" y="44" width="10" height="28" rx="2"/>
-              <rect x="118" y="30" width="10" height="42" rx="2"/>
-            </g>
-            <path d="M86 52 L132 22" stroke="#E2574C" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-            <path d="M132 22 l-8 0 4 -6 Z" fill="#E2574C"/>
-            <text x="100" y="18" text-anchor="middle" font-size="11" font-weight="900" fill="#E8590C">WIN</text>
-          </svg>
-          <span class="mode-name">연승 모드</span>
-          <span class="mode-desc">시간제한 없이 끝없이 출제! 한 번 틀리면 종료</span>
-          <span class="mode-play">PLAY ▶</span>
-        </button>
-        <button class="mode-card" data-mode="muniname" style="--mc:#2FA34F">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#CDEBFD"/>
-            <path d="M0 72 Q20 66 40 72 T80 72 T120 72 T160 72 V92 H0 Z" fill="#9ED5F6"/>
-            <ellipse cx="130" cy="18" rx="14" ry="6" fill="#fff"/><ellipse cx="122" cy="14" rx="9" ry="5" fill="#fff"/>
-            <path d="M40 64 Q32 46 48 40 Q60 30 78 36 Q96 32 102 48 Q110 58 98 66 Q88 78 70 74 Q52 80 40 64 Z" fill="#A8D158" stroke="#fff" stroke-width="3.5"/>
-            <circle cx="62" cy="54" r="2.8" fill="#4A3426"/><circle cx="78" cy="54" r="2.8" fill="#4A3426"/>
-            <path d="M65 60 Q70 65 75 60" stroke="#4A3426" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-            <circle cx="112" cy="38" r="17" fill="#FFFFFF99" stroke="#1B4F8F" stroke-width="4"/>
-            <path d="M124 51 L136 64" stroke="#1B4F8F" stroke-width="6.5" stroke-linecap="round"/>
-            <text x="112" y="45" text-anchor="middle" font-size="19" font-weight="900" fill="#1278C2">?</text>
-            <path d="M22 30 l2 5 5 2 -5 2 -2 5 -2-5 -5-2 5-2 Z" fill="#FFD23F"/>
-          </svg>
-          <span class="mode-name">지역 판독</span>
-          <span class="mode-desc">지도에 깜빡이는 시·군의 이름을 맞혀라</span>
-          <span class="mode-play">PLAY ▶</span>
-        </button>
-        <button class="mode-card" data-mode="detective" style="--mc:#6A5ACD">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#E3DEF9"/>
-            <path d="M0 72 Q20 66 40 72 T80 72 T120 72 T160 72 V92 H0 Z" fill="#C9C0F0"/>
-            <ellipse cx="30" cy="16" rx="13" ry="6" fill="#fff"/>
-            <path d="M52 66 Q44 48 60 42 Q72 32 90 38 Q108 34 114 50 Q122 60 110 68 Q100 80 82 76 Q64 82 52 66 Z" fill="#A8D158" stroke="#fff" stroke-width="3.5"/>
-            <path d="M58 38 Q80 24 104 38 L100 30 Q97 22 88 22 L74 22 Q65 22 64 30 Z" fill="#6A5ACD" stroke="#fff" stroke-width="2.5"/>
-            <rect x="54" y="36" width="54" height="7" rx="3.5" fill="#5345B8" stroke="#fff" stroke-width="2"/>
-            <circle cx="72" cy="56" r="2.8" fill="#4A3426"/><circle cx="88" cy="56" r="2.8" fill="#4A3426"/>
-            <path d="M75 62 Q80 66 85 62" stroke="#4A3426" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-            <circle cx="122" cy="58" r="12" fill="#FFFFFF99" stroke="#1B4F8F" stroke-width="3.5"/>
-            <path d="M130 67 L139 76" stroke="#1B4F8F" stroke-width="5.5" stroke-linecap="round"/>
-            <text x="34" y="50" font-size="17" font-weight="900" fill="#6A5ACD">?</text>
-            <text x="22" y="64" font-size="12" font-weight="900" fill="#8E7BE5">?</text>
-          </svg>
-          <span class="mode-name">지역 추리</span>
-          <span class="mode-desc">힌트를 하나씩 열며 추리! 힌트를 아낄수록 고득점</span>
-          <span class="mode-play">PLAY ▶</span>
-        </button>
-        <button class="mode-card" data-mode="climate" style="--mc:#E8740C">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#CDEBFD"/>
-            <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#9ED5F6"/>
-            <circle cx="38" cy="28" r="13" fill="#FFD23F" stroke="#fff" stroke-width="3"/>
-            <g stroke="#FFD23F" stroke-width="3.4" stroke-linecap="round">
-              <path d="M38 8 V13 M38 43 V48 M18 28 H23 M53 28 H58 M24 14 L27 17 M49 39 L52 42 M52 14 L49 17 M27 39 L24 42"/>
-            </g>
-            <ellipse cx="116" cy="26" rx="17" ry="9" fill="#fff" stroke="#9ED5F6" stroke-width="2"/>
-            <ellipse cx="104" cy="22" rx="10" ry="7" fill="#fff"/>
-            <g stroke="#20A2EE" stroke-width="3.2" stroke-linecap="round">
-              <path d="M106 38 L102 46 M116 38 L112 46 M126 38 L122 46"/>
-            </g>
-            <rect x="72" y="22" width="10" height="34" rx="5" fill="#fff" stroke="#1B4F8F" stroke-width="2.6"/>
-            <rect x="75" y="34" width="4" height="20" rx="2" fill="#E2574C"/>
-            <circle cx="77" cy="58" r="7" fill="#E2574C" stroke="#fff" stroke-width="2.4"/>
-            <path d="M30 62 Q24 70 32 76 Q40 80 48 74 Q54 68 46 62 Q38 58 30 62 Z" fill="#A8D158" stroke="#fff" stroke-width="2.6"/>
-            <path d="M112 62 Q106 70 114 76 Q122 80 130 74 Q136 68 128 62 Q120 58 112 62 Z" fill="#A8D158" stroke="#fff" stroke-width="2.6"/>
-          </svg>
-          <span class="mode-name">기후 비교</span>
-          <span class="mode-desc">두 지역 상대 비교 — 그래프·도표가 매번 바뀜</span>
-          <span class="mode-play">PLAY ▶</span>
-        </button>
-        <button class="mode-card" data-mode="stats" style="--mc:#C77F00">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#FFF3C9"/>
-            <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#FCE49A"/>
-            <ellipse cx="28" cy="16" rx="13" ry="6" fill="#fff"/>
-            <rect x="58" y="40" width="13" height="28" rx="4" fill="#20A2EE" stroke="#fff" stroke-width="2.6"/>
-            <rect x="75" y="28" width="13" height="40" rx="4" fill="#A8D158" stroke="#fff" stroke-width="2.6"/>
-            <rect x="92" y="16" width="13" height="52" rx="4" fill="#FFB13D" stroke="#fff" stroke-width="2.6"/>
-            <path d="M58 24 Q80 6 104 10" stroke="#E2574C" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-            <path d="M104 10 l-7 -1 5 -5 Z" fill="#E2574C"/>
-            <path d="M18 56 Q12 64 20 70 Q28 74 36 68 Q42 62 34 56 Q26 52 18 56 Z" fill="#A8D158" stroke="#fff" stroke-width="2.6"/>
-            <path d="M122 56 Q116 64 124 70 Q132 74 140 68 Q146 62 138 56 Q130 52 122 56 Z" fill="#A795E0" stroke="#fff" stroke-width="2.6"/>
-          </svg>
-          <span class="mode-name">통계 비교</span>
-          <span class="mode-desc">두 시·도 통계 대결 — 탭 또는 진술형</span>
-          <span class="mode-play">PLAY ▶</span>
-        </button>
-        <button class="mode-card" data-mode="mcq" style="--mc:#1B4F8F">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#CDEBFD"/>
-            <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#9ED5F6"/>
-            <ellipse cx="132" cy="16" rx="13" ry="6" fill="#fff"/>
-            <rect x="40" y="22" width="62" height="48" rx="8" fill="#fff" stroke="#1B4F8F" stroke-width="3.2"/>
-            <g stroke="#9CC8E8" stroke-width="3.2" stroke-linecap="round">
-              <path d="M50 36 H92 M50 46 H86 M50 56 H78"/>
-            </g>
-            <circle cx="108" cy="56" r="15" fill="#2FA34F" stroke="#fff" stroke-width="3"/>
-            <path d="M101 56 L106 61 L116 50" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="112" y="18" width="9" height="30" rx="3" transform="rotate(35 116 33)" fill="#FFD23F" stroke="#C77F00" stroke-width="2"/>
-            <path d="M101 47 l6 9 -10 -1 Z" transform="rotate(35 102 50)" fill="#F2B58A"/>
-            <path d="M24 36 l2 5 5 2 -5 2 -2 5 -2-5 -5-2 5-2 Z" fill="#FFD23F"/>
-          </svg>
-          <span class="mode-name">개념 퀴즈</span>
-          <span class="mode-desc">수능특강+수능완성 4지선다 170여 문항</span>
-          <span class="mode-play">PLAY ▶</span>
-        </button>
-        <button class="mode-card" data-mode="ox" style="--mc:#D8554A">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#CDEBFD"/>
-            <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#9ED5F6"/>
-            <ellipse cx="80" cy="14" rx="13" ry="6" fill="#fff"/>
-            <circle cx="50" cy="46" r="20" fill="none" stroke="#2FA34F" stroke-width="9"/>
-            <circle cx="50" cy="46" r="20" fill="none" stroke="#fff" stroke-width="2" opacity=".5"/>
-            <g stroke="#E2574C" stroke-width="9" stroke-linecap="round">
-              <path d="M96 30 L128 62 M128 30 L96 62"/>
-            </g>
-            <path d="M78 26 L72 44 L80 44 L70 66 L88 40 L80 40 L88 26 Z" fill="#FFD23F" stroke="#C77F00" stroke-width="2" stroke-linejoin="round"/>
-          </svg>
-          <span class="mode-name">스피드 OX</span>
-          <span class="mode-desc">60초 타임어택! 빠르게 O/X 판단</span>
-          <span class="mode-play">PLAY ▶</span>
-        </button>
-        <button class="mode-card battle" data-mode="battle" style="--mc:#E2574C">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#FFE3E0"/>
-            <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#F8C9C4"/>
-            <path d="M14 52 Q6 36 20 30 Q32 22 46 28 Q58 26 62 40 Q66 52 56 58 Q46 68 32 64 Q18 66 14 52 Z" fill="#A8D158" stroke="#fff" stroke-width="3.2"/>
-            <path d="M28 42 L34 45 M44 45 L50 42" stroke="#4A3426" stroke-width="2.6" stroke-linecap="round"/>
-            <circle cx="33" cy="48" r="2.6" fill="#4A3426"/><circle cx="45" cy="48" r="2.6" fill="#4A3426"/>
-            <path d="M34 56 Q39 53 44 56" stroke="#4A3426" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-            <path d="M98 52 Q90 36 104 30 Q116 22 130 28 Q142 26 146 40 Q150 52 140 58 Q130 68 116 64 Q102 66 98 52 Z" fill="#A795E0" stroke="#fff" stroke-width="3.2"/>
-            <path d="M112 45 L118 42 M128 42 L134 45" stroke="#3B2F66" stroke-width="2.6" stroke-linecap="round"/>
-            <circle cx="117" cy="48" r="2.6" fill="#3B2F66"/><circle cx="129" cy="48" r="2.6" fill="#3B2F66"/>
-            <path d="M118 56 Q123 53 128 56" stroke="#3B2F66" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-            <path d="M80 18 L74 36 L82 36 L72 58 L90 32 L82 32 L90 18 Z" fill="#FFD23F" stroke="#C77F00" stroke-width="2" stroke-linejoin="round"/>
-            <text x="80" y="78" text-anchor="middle" font-size="15" font-weight="900" fill="#C2362B">VS</text>
-          </svg>
-          <span class="mode-name">1:1 배틀</span>
-          <span class="mode-desc">친구와 번갈아 풀며 점수 대결 (혼합 출제)</span>
-          <span class="mode-play">BATTLE ▶</span>
-        </button>
-        <button class="mode-card" data-mode="acidrain" style="--mc:#5B8DEF">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#DCEBFF"/>
-            <ellipse cx="48" cy="15" rx="20" ry="9" fill="#fff"/><ellipse cx="66" cy="12" rx="13" ry="8" fill="#fff"/>
-            <g stroke="#7FB0F0" stroke-width="2.4" stroke-linecap="round" opacity=".7"><path d="M30 30 L26 40"/><path d="M120 24 L116 34"/><path d="M100 36 L96 46"/></g>
-            <rect x="40" y="44" width="34" height="22" rx="5" fill="#fff" stroke="#5B8DEF" stroke-width="2.5" transform="rotate(-9 57 55)"/>
-            <rect x="92" y="32" width="34" height="22" rx="5" fill="#EAF2FF" stroke="#9DBDF0" stroke-width="2.5" transform="rotate(8 109 43)"/>
-            <rect x="60" y="62" width="36" height="23" rx="5" fill="#fff" stroke="#2FA34F" stroke-width="3" transform="rotate(-3 78 73)"/>
-            <path d="M68 73 l4 5 9 -11" fill="none" stroke="#2FA34F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="mode-name">지역 산성비</span>
-          <span class="mode-desc">떨어지는 지역 중 주제에 맞는 것만 콕!</span>
-          <span class="mode-play">PLAY ▶</span>
-        </button>
-        <button class="mode-card" data-mode="runner" style="--mc:#16A34A">
-          <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="92" fill="#BDEAD0"/>
-            <path d="M0 34 Q30 18 62 31 T124 27 T160 35 V92 H0 Z" fill="#8CD17D"/>
-            <path d="M59 0 L101 0 L139 92 L21 92 Z" fill="#35424B"/>
-            <path d="M72 0 L88 0 L104 92 L56 92 Z" fill="#4D5963" opacity=".9"/>
-            <path d="M80 5 L80 87" stroke="#fff" stroke-width="3" stroke-dasharray="8 8" opacity=".9"/>
-            <path d="M37 55 h26" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".75"/>
-            <path d="M119 42 l-8 18 h16 Z" fill="#F97316" stroke="#fff" stroke-width="2"/>
-            <ellipse cx="66" cy="79" rx="17" ry="6" fill="#0000002A"/>
-            <path d="M52 68 Q45 61 50 52 Q55 43 65 42 Q77 42 82 52 Q88 64 68 78 Q60 73 52 68 Z" fill="#16A34A" stroke="#fff" stroke-width="3"/>
-            <circle cx="66" cy="57" r="11" fill="#EAF7CB"/>
-            <path d="M66 47 l4 11 -4 -3 -4 3 Z" fill="#EF4444"/>
-            <path d="M66 67 l4 -9 -4 3 -4 -3 Z" fill="#2563EB"/>
-            <circle cx="62" cy="56" r="1.8" fill="#143C2A"/><circle cx="70" cy="56" r="1.8" fill="#143C2A"/>
-            <path d="M62 61 Q66 64 70 61" stroke="#143C2A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-            <path d="M51 60 l-13 -7" stroke="#12834B" stroke-width="5" stroke-linecap="round"/>
-            <path d="M80 59 l12 -8" stroke="#12834B" stroke-width="5" stroke-linecap="round"/>
-            <rect x="31" y="45" width="18" height="13" rx="2" fill="#FFF5C4" stroke="#2B7A52" stroke-width="1.5"/>
-            <path d="M35 49 l5 4 5 -5" stroke="#60A5FA" stroke-width="1.4" fill="none"/>
-          </svg>
-          <span class="mode-name">지리 러너</span>
-          <span class="mode-desc">달리며 장애물 피하고, 갈림길 정답 차선으로!</span>
-          <span class="mode-play">PLAY ▶</span>
-        </button>
+        <button class="car-arrow car-prev" id="car-prev" aria-label="이전">‹</button>
+        <button class="car-arrow car-next" id="car-next" aria-label="다음">›</button>
+        <div class="mode-carousel" id="mode-carousel">
+
+          <button class="mode-card" data-mode="location" style="--mc:#1278C2">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#CDEBFD"/>
+              <path d="M0 72 Q20 66 40 72 T80 72 T120 72 T160 72 V92 H0 Z" fill="#9ED5F6"/>
+              <ellipse cx="26" cy="20" rx="14" ry="6" fill="#fff"/><ellipse cx="34" cy="16" rx="9" ry="5" fill="#fff"/>
+              <path d="M133 12 l2.5 6 6 2.5 -6 2.5 -2.5 6 -2.5-6 -6-2.5 6-2.5 Z" fill="#FFD23F"/>
+              <path d="M52 62 Q44 44 60 38 Q72 28 90 34 Q108 30 114 46 Q122 56 110 64 Q100 76 82 72 Q64 78 52 62 Z" fill="#A8D158" stroke="#fff" stroke-width="3.5"/>
+              <circle cx="74" cy="52" r="2.8" fill="#4A3426"/><circle cx="90" cy="52" r="2.8" fill="#4A3426"/>
+              <ellipse cx="68" cy="58" rx="3.6" ry="2.2" fill="#FF8F7A" opacity=".7"/><ellipse cx="96" cy="58" rx="3.6" ry="2.2" fill="#FF8F7A" opacity=".7"/>
+              <path d="M77 58 Q82 63 87 58" stroke="#4A3426" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <circle cx="118" cy="25" r="11" fill="#E2574C" stroke="#fff" stroke-width="3"/>
+              <path d="M109 31 L118 46 L127 31 Z" fill="#E2574C" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/>
+              <circle cx="118" cy="24" r="4.4" fill="#fff"/>
+            </svg>
+            <span class="mode-name">위치 사냥</span>
+            <span class="mode-desc">이름 또는 설명을 보고 지도에서 탭!</span>
+            <span class="mode-play">PLAY ▶</span>
+          </button>
+
+          <button class="mode-card" data-mode="theme" style="--mc:#D6336C">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#FCE7F0"/>
+              <path d="M0 72 Q20 66 40 72 T80 72 T120 72 T160 72 V92 H0 Z" fill="#F5C2D8"/>
+              <g stroke="#fff" stroke-width="2.5" stroke-linejoin="round">
+                <path d="M18 16 h34 l11 10 -11 10 h-34 z" fill="#E2574C"/>
+                <path d="M28 40 h40 l11 10 -11 10 h-40 z" fill="#F5A623"/>
+                <path d="M20 62 h28 l10 8 -10 8 h-28 z" fill="#2FA34F"/>
+              </g>
+              <path d="M106 30 Q100 17 114 13 Q127 8 136 17 Q148 16 149 30 Q154 42 141 47 Q145 61 131 60 Q119 70 108 59 Q96 56 101 43 Q99 35 106 30 Z" fill="#A8D158" stroke="#fff" stroke-width="3"/>
+              <circle cx="119" cy="34" r="2.6" fill="#4A3426"/><circle cx="133" cy="34" r="2.6" fill="#4A3426"/>
+              <path d="M121 43 Q126 47 131 43" stroke="#4A3426" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span class="mode-name">테마 게임</span>
+            <span class="mode-desc">도청·혁신도시·축제·특산물 등 테마로 지역 찾기</span>
+            <span class="mode-play">PLAY ▶</span>
+          </button>
+
+          <button class="mode-card" data-mode="bingo" style="--mc:#8A4FBE">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#EFE6FB"/>
+              <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#D9C6F2"/>
+              <rect x="18" y="12" width="62" height="62" rx="8" fill="#fff" stroke="#8A4FBE" stroke-width="3"/>
+              <path d="M38.7 12 V74 M59.3 12 V74 M18 32.7 H80 M18 53.3 H80" stroke="#C9B3EC" stroke-width="2"/>
+              <g fill="#8A4FBE">
+                <rect x="21" y="15" width="14.7" height="14.7" rx="3"/>
+                <rect x="41.6" y="35.6" width="14.7" height="14.7" rx="3"/>
+                <rect x="62.3" y="56.3" width="14.7" height="14.7" rx="3"/>
+              </g>
+              <path d="M104 54 Q96 38 110 32 Q122 24 136 30 Q148 28 152 42 Q156 54 144 60 Q134 70 120 66 Q106 68 104 54 Z" fill="#A8D158" stroke="#fff" stroke-width="3"/>
+              <circle cx="119" cy="48" r="2.6" fill="#4A3426"/><circle cx="133" cy="48" r="2.6" fill="#4A3426"/>
+              <path d="M121 57 Q126 61 131 57" stroke="#4A3426" stroke-width="2.1" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span class="mode-name">빙고 게임</span>
+            <span class="mode-desc">5×5 빙고판에서 설명에 맞는 지역 찾기! 2번 틀리면 끝</span>
+            <span class="mode-play">PLAY ▶</span>
+          </button>
+
+          <button class="mode-card" data-mode="streak" style="--mc:#E8590C">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#FFE8D6"/>
+              <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#FCCFA8"/>
+              <path d="M46 72 Q30 60 40 42 Q45 33 42 24 Q56 32 55 45 Q62 36 60 25 Q74 37 71 56 Q68 72 56 74 Q50 76 46 72 Z" fill="#FF6B35" stroke="#fff" stroke-width="3"/>
+              <path d="M49 70 Q42 61 48 50 Q51 57 55 50 Q60 59 55 68 Q52 72 49 70 Z" fill="#FFD23F"/>
+              <g fill="#E8590C" stroke="#fff" stroke-width="2">
+                <rect x="88" y="56" width="10" height="16" rx="2"/>
+                <rect x="103" y="44" width="10" height="28" rx="2"/>
+                <rect x="118" y="30" width="10" height="42" rx="2"/>
+              </g>
+              <path d="M86 52 L132 22" stroke="#E2574C" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span class="mode-name">연승 모드</span>
+            <span class="mode-desc">시간제한 없이 끝없이 출제! 한 번 틀리면 종료</span>
+            <span class="mode-play">PLAY ▶</span>
+          </button>
+
+          <button class="mode-card" data-mode="muniname" style="--mc:#2FA34F">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#CDEBFD"/>
+              <path d="M0 72 Q20 66 40 72 T80 72 T120 72 T160 72 V92 H0 Z" fill="#9ED5F6"/>
+              <path d="M40 64 Q32 46 48 40 Q60 30 78 36 Q96 32 102 48 Q110 58 98 66 Q88 78 70 74 Q52 80 40 64 Z" fill="#A8D158" stroke="#fff" stroke-width="3.5"/>
+              <circle cx="62" cy="54" r="2.8" fill="#4A3426"/><circle cx="78" cy="54" r="2.8" fill="#4A3426"/>
+              <path d="M65 60 Q70 65 75 60" stroke="#4A3426" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <circle cx="112" cy="38" r="17" fill="#FFFFFF99" stroke="#1B4F8F" stroke-width="4"/>
+              <path d="M124 51 L136 64" stroke="#1B4F8F" stroke-width="6.5" stroke-linecap="round"/>
+              <text x="112" y="45" text-anchor="middle" font-size="19" font-weight="900" fill="#1278C2">?</text>
+            </svg>
+            <span class="mode-name">지역 판독</span>
+            <span class="mode-desc">지도에 깜빡이는 시·군의 이름을 맞혀라</span>
+            <span class="mode-play">PLAY ▶</span>
+          </button>
+
+          <button class="mode-card" data-mode="detective" style="--mc:#6A5ACD">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#E3DEF9"/>
+              <path d="M0 72 Q20 66 40 72 T80 72 T120 72 T160 72 V92 H0 Z" fill="#C9C0F0"/>
+              <path d="M52 66 Q44 48 60 42 Q72 32 90 38 Q108 34 114 50 Q122 60 110 68 Q100 80 82 76 Q64 82 52 66 Z" fill="#A8D158" stroke="#fff" stroke-width="3.5"/>
+              <path d="M58 38 Q80 24 104 38 L100 30 Q97 22 88 22 L74 22 Q65 22 64 30 Z" fill="#6A5ACD" stroke="#fff" stroke-width="2.5"/>
+              <rect x="54" y="36" width="54" height="7" rx="3.5" fill="#5345B8" stroke="#fff" stroke-width="2"/>
+              <circle cx="72" cy="56" r="2.8" fill="#4A3426"/><circle cx="88" cy="56" r="2.8" fill="#4A3426"/>
+              <path d="M75 62 Q80 66 85 62" stroke="#4A3426" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <circle cx="122" cy="58" r="12" fill="#FFFFFF99" stroke="#1B4F8F" stroke-width="3.5"/>
+              <path d="M130 67 L139 76" stroke="#1B4F8F" stroke-width="5.5" stroke-linecap="round"/>
+            </svg>
+            <span class="mode-name">지역 추리</span>
+            <span class="mode-desc">힌트를 하나씩 열며 추리! 힌트를 아낄수록 고득점</span>
+            <span class="mode-play">PLAY ▶</span>
+          </button>
+
+          <button class="mode-card" data-mode="climate" style="--mc:#E8740C">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#CDEBFD"/>
+              <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#9ED5F6"/>
+              <circle cx="38" cy="28" r="13" fill="#FFD23F" stroke="#fff" stroke-width="3"/>
+              <g stroke="#FFD23F" stroke-width="3.4" stroke-linecap="round">
+                <path d="M38 8 V13 M38 43 V48 M18 28 H23 M53 28 H58 M24 14 L27 17 M49 39 L52 42 M52 14 L49 17 M27 39 L24 42"/>
+              </g>
+              <ellipse cx="116" cy="26" rx="17" ry="9" fill="#fff" stroke="#9ED5F6" stroke-width="2"/>
+              <ellipse cx="104" cy="22" rx="10" ry="7" fill="#fff"/>
+              <g stroke="#20A2EE" stroke-width="3.2" stroke-linecap="round">
+                <path d="M106 38 L102 46 M116 38 L112 46 M126 38 L122 46"/>
+              </g>
+              <rect x="72" y="22" width="10" height="34" rx="5" fill="#fff" stroke="#1B4F8F" stroke-width="2.6"/>
+              <rect x="75" y="34" width="4" height="20" rx="2" fill="#E2574C"/>
+              <circle cx="77" cy="58" r="7" fill="#E2574C" stroke="#fff" stroke-width="2.4"/>
+            </svg>
+            <span class="mode-name">기후 비교</span>
+            <span class="mode-desc">두 지역 상대 비교 — 그래프·도표가 매번 바뀜</span>
+            <span class="mode-play">PLAY ▶</span>
+          </button>
+
+          <button class="mode-card" data-mode="stats" style="--mc:#C77F00">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#FFF3C9"/>
+              <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#FCE49A"/>
+              <ellipse cx="28" cy="16" rx="13" ry="6" fill="#fff"/>
+              <rect x="58" y="40" width="13" height="28" rx="4" fill="#20A2EE" stroke="#fff" stroke-width="2.6"/>
+              <rect x="75" y="28" width="13" height="40" rx="4" fill="#A8D158" stroke="#fff" stroke-width="2.6"/>
+              <rect x="92" y="16" width="13" height="52" rx="4" fill="#FFB13D" stroke="#fff" stroke-width="2.6"/>
+              <path d="M58 24 Q80 6 104 10" stroke="#E2574C" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span class="mode-name">통계 비교</span>
+            <span class="mode-desc">두 시·도 통계 대결 — 탭 또는 진술형</span>
+            <span class="mode-play">PLAY ▶</span>
+          </button>
+
+          <button class="mode-card" data-mode="mcq" style="--mc:#1B4F8F">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#CDEBFD"/>
+              <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#9ED5F6"/>
+              <ellipse cx="132" cy="16" rx="13" ry="6" fill="#fff"/>
+              <rect x="40" y="22" width="62" height="48" rx="8" fill="#fff" stroke="#1B4F8F" stroke-width="3.2"/>
+              <g stroke="#9CC8E8" stroke-width="3.2" stroke-linecap="round">
+                <path d="M50 36 H92 M50 46 H86 M50 56 H78"/>
+              </g>
+              <circle cx="108" cy="56" r="15" fill="#2FA34F" stroke="#fff" stroke-width="3"/>
+              <path d="M101 56 L106 61 L116 50" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M24 36 l2 5 5 2 -5 2 -2 5 -2-5 -5-2 5-2 Z" fill="#FFD23F"/>
+            </svg>
+            <span class="mode-name">개념 퀴즈</span>
+            <span class="mode-desc">수능특강+수능완성 4지선다 170여 문항</span>
+            <span class="mode-play">PLAY ▶</span>
+          </button>
+
+          <button class="mode-card" data-mode="ox" style="--mc:#D8554A">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#CDEBFD"/>
+              <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#9ED5F6"/>
+              <ellipse cx="80" cy="14" rx="13" ry="6" fill="#fff"/>
+              <circle cx="50" cy="46" r="20" fill="none" stroke="#2FA34F" stroke-width="9"/>
+              <g stroke="#E2574C" stroke-width="9" stroke-linecap="round">
+                <path d="M96 30 L128 62 M128 30 L96 62"/>
+              </g>
+              <path d="M78 26 L72 44 L80 44 L70 66 L88 40 L80 40 L88 26 Z" fill="#FFD23F" stroke="#C77F00" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            <span class="mode-name">스피드 OX</span>
+            <span class="mode-desc">60초 타임어택! 빠르게 O/X 판단</span>
+            <span class="mode-play">PLAY ▶</span>
+          </button>
+
+          <button class="mode-card battle" data-mode="battle" style="--mc:#E2574C">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#FFE3E0"/>
+              <path d="M0 74 Q20 68 40 74 T80 74 T120 74 T160 74 V92 H0 Z" fill="#F8C9C4"/>
+              <path d="M14 52 Q6 36 20 30 Q32 22 46 28 Q58 26 62 40 Q66 52 56 58 Q46 68 32 64 Q18 66 14 52 Z" fill="#A8D158" stroke="#fff" stroke-width="3.2"/>
+              <path d="M98 52 Q90 36 104 30 Q116 22 130 28 Q142 26 146 40 Q150 52 140 58 Q130 68 116 64 Q102 66 98 52 Z" fill="#A795E0" stroke="#fff" stroke-width="3.2"/>
+              <path d="M80 18 L74 36 L82 36 L72 58 L90 32 L82 32 L90 18 Z" fill="#FFD23F" stroke="#C77F00" stroke-width="2" stroke-linejoin="round"/>
+              <text x="80" y="78" text-anchor="middle" font-size="15" font-weight="900" fill="#C2362B">VS</text>
+            </svg>
+            <span class="mode-name">1:1 배틀</span>
+            <span class="mode-desc">친구와 번갈아 풀며 점수 대결 (혼합 출제)</span>
+            <span class="mode-play">BATTLE ▶</span>
+          </button>
+
+          <button class="mode-card" data-mode="acidrain" style="--mc:#5B8DEF">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#DCEBFF"/>
+              <ellipse cx="48" cy="15" rx="20" ry="9" fill="#fff"/><ellipse cx="66" cy="12" rx="13" ry="8" fill="#fff"/>
+              <g stroke="#7FB0F0" stroke-width="2.4" stroke-linecap="round" opacity=".7">
+                <path d="M30 30 L26 40"/><path d="M120 24 L116 34"/><path d="M100 36 L96 46"/>
+              </g>
+              <rect x="40" y="44" width="34" height="22" rx="5" fill="#fff" stroke="#5B8DEF" stroke-width="2.5" transform="rotate(-9 57 55)"/>
+              <rect x="92" y="32" width="34" height="22" rx="5" fill="#EAF2FF" stroke="#9DBDF0" stroke-width="2.5" transform="rotate(8 109 43)"/>
+              <rect x="60" y="62" width="36" height="23" rx="5" fill="#fff" stroke="#2FA34F" stroke-width="3" transform="rotate(-3 78 73)"/>
+              <path d="M68 73 l4 5 9 -11" fill="none" stroke="#2FA34F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="mode-name">지역 산성비</span>
+            <span class="mode-desc">떨어지는 지역 중 주제에 맞는 것만 콕!</span>
+            <span class="mode-play">PLAY ▶</span>
+          </button>
+
+          <button class="mode-card" data-mode="runner" style="--mc:#16A34A">
+            <svg class="mode-art" viewBox="0 0 160 92" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="92" fill="#BDEAD0"/>
+              <path d="M0 34 Q30 18 62 31 T124 27 T160 35 V92 H0 Z" fill="#8CD17D"/>
+              <path d="M59 0 L101 0 L139 92 L21 92 Z" fill="#35424B"/>
+              <path d="M72 0 L88 0 L104 92 L56 92 Z" fill="#4D5963" opacity=".9"/>
+              <path d="M80 5 L80 87" stroke="#fff" stroke-width="3" stroke-dasharray="8 8" opacity=".9"/>
+              <path d="M37 55 h26" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".75"/>
+              <path d="M119 42 l-8 18 h16 Z" fill="#F97316" stroke="#fff" stroke-width="2"/>
+              <path d="M52 68 Q45 61 50 52 Q55 43 65 42 Q77 42 82 52 Q88 64 68 78 Q60 73 52 68 Z" fill="#16A34A" stroke="#fff" stroke-width="3"/>
+            </svg>
+            <span class="mode-name">지리 러너</span>
+            <span class="mode-desc">달리며 장애물 피하고, 갈림길 정답 차선으로!</span>
+            <span class="mode-play">PLAY ▶</span>
+          </button>
+
+        </div>
       </div>
-      </div>
-      <button id="btn-all-modes" class="all-modes-btn">📋 전체 모드 한눈에 보기 (13종)</button>
 
       <div class="region-filter">
         <h3>출제 범위</h3>
@@ -297,32 +344,9 @@
       </div>
     </section>
 
-    <section class="panel tab-panel" id="tab-challenge">
-      <div class="recommend-card">
-        <img class="mascot" src="guide-hello.png?v=20260617l" alt="지리센스 마스코트">
-        <div class="rec-wrap">
-          <div class="rec-bubble" id="rec-bubble"></div>
-          <button class="rec-btn" id="rec-btn"></button>
-        </div>
-      </div>
-      <div class="daily-box">
-        <h2>🔁 오늘의 도전 <small>매일 자정 갱신 · 전국 같은 문제</small></h2>
-        <div id="daily-body"></div>
-      </div>
-      <div class="mission-card">
-        <h2>🎯 오늘의 지리 미션 <small>매일 자정 갱신</small></h2>
-        <div id="mission-body"></div>
-      </div>
-      <div class="boss-box">
-        <h2>👹 권역 보스전 <small>숙련도 60%↑ 도전</small></h2>
-        <div id="boss-body"></div>
-      </div>
-      <div class="wanted-box">
-        <h2>🔍 오답 지역 수배서</h2>
-        <div id="wanted-body"></div>
-      </div>
-    </section>
-
+    <!-- ==============================
+         탭3: 도감
+         ============================== -->
     <section class="panel tab-panel" id="tab-collection">
       <div class="learn-section">
         <h2>📖 지역 도감</h2>
@@ -343,36 +367,10 @@
       </div>
     </section>
 
+    <!-- ==============================
+         탭4: 기록
+         ============================== -->
     <section class="panel tab-panel" id="tab-record">
-      <div class="learn-section">
-        <h2>📖 지도 학습</h2>
-        <div class="learn-row">
-          <button class="learn-btn" id="btn-explore">
-            <span class="mode-icon">🔍</span>
-            <span><b>지도 탐색</b><small>시·군 경계와 위치를 자유롭게 학습</small></span>
-          </button>
-          <button class="learn-btn" id="btn-theme-learn">
-            <span class="mode-icon">🗂️</span>
-            <span><b>테마별 학습</b><small>도청·축제·특산물 등 테마로 지역 훑어보기</small></span>
-          </button>
-        </div>
-      </div>
-      <div class="weak-box">
-        <h2>🩹 내 약점 리포트</h2>
-        <div id="weak-body"></div>
-      </div>
-      <div class="mastery-box">
-        <h2>🗺️ 나의 정복도</h2>
-        <div id="mastery-list"></div>
-      </div>
-      <div class="freq-box">
-        <h2>🔥 5개년 기출 빈출 지역</h2>
-        <p id="freq-span" class="freq-span"></p>
-        <div id="freq-list"></div>
-      </div>
-    </section>
-
-    <section class="panel tab-panel" id="tab-board">
       <div class="ach-box">
         <h2>🏅 업적 <span id="ach-count" class="ach-count"></span></h2>
         <div id="ach-list" class="ach-grid"></div>
@@ -382,18 +380,26 @@
         <div id="home-board"></div>
         <button id="reset-data" class="text-btn">기록 초기화</button>
       </div>
-      <footer class="credit">자료: 2027 EBS 수능특강·수능완성, 기상청 평년값, 통계청 · 지도: 통계청 행정구역
-        <br></footer>
+      <div class="mastery-box">
+        <h2>🗺️ 나의 정복도</h2>
+        <div id="mastery-list"></div>
+      </div>
+      <div class="weak-box">
+        <h2>🩹 약점 리포트</h2>
+        <div id="weak-body"></div>
+      </div>
+      <footer class="credit">자료: 2027 EBS 수능특강·수능완성, 기상청 평년값, 통계청 · 지도: 통계청 행정구역<br></footer>
     </section>
+
   </div><!-- home-tabs -->
 
+  <!-- 고정 하단 탭바 -->
   <nav class="tabbar" id="tabbar">
     <div class="tabbar-inner">
-      <button class="tab-btn active" data-tab="play"><span class="ic">🎮</span><span>플레이</span></button>
-      <button class="tab-btn" data-tab="challenge"><span class="ic">🎯</span><span>미션</span></button>
-      <button class="tab-btn" data-tab="collection"><span class="ic">📖</span><span>도감</span></button>
-      <button class="tab-btn" data-tab="record"><span class="ic">📚</span><span>학습</span></button>
-      <button class="tab-btn" data-tab="board"><span class="ic">🏆</span><span>기록</span></button>
+      <button class="tab-btn active" data-tab="study"><span class="ic">📖</span><span>학습</span></button>
+      <button class="tab-btn" data-tab="quiz"><span class="ic">🎮</span><span>퀴즈</span></button>
+      <button class="tab-btn" data-tab="collection"><span class="ic">🏞️</span><span>도감</span></button>
+      <button class="tab-btn" data-tab="record"><span class="ic">🏆</span><span>기록</span></button>
     </div>
   </nav>
 </div>
@@ -408,16 +414,6 @@
   </div>
 </div>
 
-<!-- ===== 전체 모드 보기 모달 ===== -->
-<div id="modes-modal" class="modal hidden">
-  <div class="dialog wide-dialog">
-    <button id="modes-close" class="dialog-x" aria-label="닫기">✕</button>
-    <h2>🎮 전체 게임 모드</h2>
-    <p class="dialog-sub">원하는 모드를 골라 바로 시작하세요.</p>
-    <div id="modes-list" class="modes-grid"></div>
-  </div>
-</div>
-
 <!-- ===== 테마 선택 모달 ===== -->
 <div id="theme-modal" class="modal hidden">
   <div class="dialog">
@@ -425,6 +421,16 @@
     <h2>🏷️ 테마 선택</h2>
     <p class="dialog-sub">테마를 고르면 그 주제에 해당하는 지역만 지도에서 맞히는 퀴즈가 시작됩니다.</p>
     <div id="theme-list" class="theme-list"></div>
+  </div>
+</div>
+
+<!-- ===== 전체 모드 보기 모달 ===== -->
+<div id="modes-modal" class="modal hidden">
+  <div class="dialog wide-dialog">
+    <button id="modes-close" class="dialog-x" aria-label="닫기">✕</button>
+    <h2>🎮 전체 게임 모드</h2>
+    <p class="dialog-sub">원하는 모드를 골라 바로 시작하세요.</p>
+    <div id="modes-list" class="modes-grid"></div>
   </div>
 </div>
 
@@ -532,7 +538,7 @@
   </div>
 </div>
 
-<!-- 메인 게임 엔진 (Firebase module) -->
+<!-- 메인 게임 엔진 -->
 <script type="module" src="js/engine.js"></script>
 </body>
 </html>
