@@ -3631,10 +3631,6 @@ $('btn-save-score').onclick=()=>{
 };
 $('btn-retry').onclick=()=>startGame(G.mode);
 $('btn-home').onclick=()=>{ initHome(); show('screen-home'); resetHomeTab(); };
-$('btn-quit').onclick=()=>{ stopArcade(); stopTimer(); clearMapTap(); $('map-svg').onclick=null;
-  ['hud-qnum','hud-combo','hud-score'].forEach(id=>$(id).parentElement.style.visibility='');
-  initHome(); show('screen-home'); resetHomeTab();
-};
 
 // ---------- 게임 모드 캐러셀: 화살표·드래그·휠 가로 스크롤 ----------
 (function initCarousel(){
@@ -3683,14 +3679,20 @@ $('btn-gacha-close').onclick=()=>{
 };
 $('btn-collection').onclick=openCollection;
 $('btn-explore').onclick=()=>startGame('explore');
-$('btn-cards-back').onclick=()=>{ initHome(); show('screen-home'); };
 
 // ---------- Firebase Auth: account-chip 로그아웃 이미 renderAccount에서 처리됨 ----------
 // (로그인은 index.html에서 완료 후 game.html로 리다이렉트)
 
-// ---------- 하단 탭 네비게이션 ----------
+// ---------- 하단 탭 네비게이션: 어떤 화면에 있든 항상 홈으로 이동 후 해당 탭 표시 ----------
 document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>{
   const t=b.dataset.tab;
+  if(!$('screen-home').classList.contains('active')){
+    stopArcade(); stopTimer(); clearMapTap();
+    const ms=$('map-svg'); if(ms) ms.onclick=null;
+    ['hud-qnum','hud-combo','hud-score'].forEach(id=>{ const el=$(id); if(el&&el.parentElement) el.parentElement.style.visibility=''; });
+    initHome();
+    show('screen-home');
+  }
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='tab-'+t));
   document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active', x===b));
   try{ window.scrollTo(0,0); }catch(e){}
