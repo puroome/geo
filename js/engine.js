@@ -367,7 +367,7 @@ function initHome(){
   renderAccount();
   renderPlayHero();
   renderBeginnerGuide();
-  renderRecommend();
+
   renderDaily();
   renderMission();
   renderBoss();
@@ -439,9 +439,7 @@ function recommendAction(){
     label:'위치 사냥 시작', action:()=>{ G.region='전체'; startGame('location'); }};
 }
 function renderRecommend(){
-  const bubble=$('rec-bubble'), btn=$('rec-btn'); if(!bubble||!btn) return;
-  const r=recommendAction();
-  bubble.textContent=r.text; btn.textContent=r.label; btn.onclick=r.action;
+  /* rec-bubble/rec-btn 제거됨 — renderPlayHero()로 통합 */
 }
 // 🏠 첫 화면(플레이 탭) 추천 한 판 + 미션 요약 — "어디부터?" 고민 줄이기
 function renderPlayHero(){
@@ -455,7 +453,7 @@ function renderPlayHero(){
     `<button class="ph-btn" id="ph-start">▶ ${r.label}</button>`+
     `<button class="ph-mission" id="ph-mission">🎯 오늘의 미션 ${done}/${total} 달성 · 보러 가기 →</button>`;
   $('ph-start').onclick=r.action;
-  $('ph-mission').onclick=()=>{ const t=document.querySelector('.tab-btn[data-tab="challenge"]'); if(t) t.click(); };
+  $('ph-mission').onclick=()=>{ const t=document.querySelector('.tab-btn[data-tab="study"]'); if(t) t.click(); };
 }
 // 🔰 초보자 추천 순서 (계정/기록이 적을 때만)
 function renderBeginnerGuide(){
@@ -3699,7 +3697,7 @@ document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>
 }));
 // 홈 복귀 시 항상 '플레이' 탭으로
 function resetHomeTab(){
-  const pb=document.querySelector('.tab-btn[data-tab="play"]');
+  const pb=document.querySelector('.tab-btn[data-tab="study"]');
   if(pb) pb.click();
 }
 
