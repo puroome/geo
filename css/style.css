@@ -74,7 +74,7 @@ button { font-family:inherit; }
 }
 .tb-chip.account-chip { cursor:pointer; transition:.15s; }
 .tb-chip.account-chip:hover { border-color:var(--sea); }
-.tb-chip.account-chip.on { background:var(--navy); color:#fff; border-color:var(--navy); }
+.tb-chip.account-chip.on { background:rgba(27,79,143,.5); color:#fff; border-color:rgba(27,79,143,.5); }
 .tb-chip.account-chip small { opacity:.8; font-weight:700; margin-left:2px; }
 .tb-progress { display:flex; align-items:center; gap:8px; flex:1 1 auto; min-width:60px; max-width:520px; margin:0 14px; overflow:hidden; }
 .tb-progress .rank-badge { font-size:.78rem; font-weight:800; color:var(--navy); white-space:nowrap; margin:0; flex-shrink:0; }
@@ -100,15 +100,15 @@ button { font-family:inherit; }
 .tab-btn {
   flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:2px;
   background:none; border:none; cursor:pointer; padding:8px 2px 7px;
-  font-weight:400; position:relative; transition:color .15s;
+  font-weight:800; position:relative; transition:color .15s;
 }
 .tab-btn .ic { display:none; }
 .tab-btn .tb-label {
-  display:inline-block; font-size:1.056rem; font-weight:400;
+  display:inline-block; font-size:1.056rem; font-weight:800;
   padding:4px 14px; border-radius:14px; border:none; opacity:.6;
-  transition:opacity .15s, transform .15s, font-weight .15s;
+  transition:opacity .15s, transform .15s;
 }
-.tab-btn.active .tb-label { opacity:1; transform:translateY(-1px); font-weight:600; }
+.tab-btn.active .tb-label { opacity:1; transform:translateY(-1px); }
 .tb-label.tb-y { background:#FFE9A8; color:#1E3A8A; }   /* 옅은 노랑 + 보색(남색) */
 .tb-label.tb-b { background:#8EC9FB; color:#B45309; }   /* 파랑 + 보색(주황) */
 .tb-label.tb-r { background:#FCA5A5; color:#15803D; }   /* 빨강 + 보색(녹색) */
@@ -254,7 +254,7 @@ button { font-family:inherit; }
 /* 계정 칩 + 로그인/교사 모달 */
 .account-chip { cursor:pointer; border:2px solid var(--line2); font-size:.82rem; transition:.15s; }
 .account-chip:hover { border-color:var(--sea); }
-.account-chip.on { background:var(--navy); color:#fff; border-color:var(--navy); }
+.account-chip.on { background:rgba(27,79,143,.5); color:#fff; border-color:rgba(27,79,143,.5); }
 .account-chip small { opacity:.8; font-weight:700; margin-left:3px; }
 .dialog { position:relative; background:#fff; border-radius:18px; padding:22px 20px;
   width:min(360px,92vw); box-shadow:0 18px 50px rgba(14,42,64,.4); text-align:left; }
