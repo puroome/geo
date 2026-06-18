@@ -106,9 +106,9 @@ button { font-family:inherit; }
 .tab-btn .tb-label {
   display:inline-block; font-size:1.056rem; font-weight:400;
   padding:4px 14px; border-radius:14px; border:none; opacity:.6;
-  transition:opacity .15s, transform .15s;
+  transition:opacity .15s, transform .15s, font-weight .15s;
 }
-.tab-btn.active .tb-label { opacity:1; transform:translateY(-1px); }
+.tab-btn.active .tb-label { opacity:1; transform:translateY(-1px); font-weight:600; }
 .tb-label.tb-y { background:#FFE9A8; color:#1E3A8A; }   /* 옅은 노랑 + 보색(남색) */
 .tb-label.tb-b { background:#8EC9FB; color:#B45309; }   /* 파랑 + 보색(주황) */
 .tb-label.tb-r { background:#FCA5A5; color:#15803D; }   /* 빨강 + 보색(녹색) */
