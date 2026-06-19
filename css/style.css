@@ -384,6 +384,22 @@ button { font-family:inherit; }
 .tl-desc { font-size:.8rem; color:var(--dim); line-height:1.4; margin-top:3px; }
 .tl-actions { display:flex; gap:9px; margin-top:12px; }
 .tl-actions button { flex:1; }
+.tl-dialog { max-width:640px; }
+.tl-split { display:flex; margin-top:10px; border:1.5px solid var(--line2); border-radius:14px; overflow:hidden; max-height:60vh; }
+.tl-index { flex:0 0 132px; background:#F7FBFF; border-right:1.5px solid var(--line2); overflow-y:auto; }
+.tl-index-item { display:block; width:100%; text-align:left; padding:11px 12px; border:none; border-bottom:1px solid var(--line); background:none; cursor:pointer; font-size:.82rem; font-weight:700; color:var(--dim); }
+.tl-index-item:hover { background:#EEF6FC; }
+.tl-index-item.on { background:#fff; color:var(--navy); border-left:3px solid var(--sea); padding-left:9px; }
+.tl-content { flex:1; min-width:0; min-height:0; display:flex; flex-direction:column; padding:14px; }
+.tl-content .tl-list { flex:1; min-height:0; overflow-y:auto; margin-bottom:12px; }
+.tl-quiz-btn { width:100%; flex:0 0 auto; }
+@media (max-width:480px){
+  .tl-split { flex-direction:column; max-height:none; }
+  .tl-index { flex:0 0 auto; display:flex; overflow-x:auto; border-right:none; border-bottom:1.5px solid var(--line2); }
+  .tl-index-item { flex:0 0 auto; white-space:nowrap; border-bottom:none; border-right:1px solid var(--line); }
+  .tl-index-item.on { border-left:none; border-bottom:3px solid var(--sea); padding-left:12px; }
+  .tl-content { max-height:46vh; }
+}
 
 /* ⚡ 카드 강화 */
 .rcard-stars { display:flex; justify-content:center; gap:1px; margin-top:2px; }
