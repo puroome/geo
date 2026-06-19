@@ -457,13 +457,19 @@
     </div>
 </nav>
 
-<!-- ===== 테마별 학습 모달 ===== -->
+<<!-- ===== 테마별 학습 모달 ===== -->
 <div id="themelearn-modal" class="modal hidden">
-  <div class="dialog wide-dialog">
+  <div class="dialog wide-dialog tl-dialog">
     <button id="themelearn-close" class="dialog-x" aria-label="닫기">✕</button>
-    <h2 id="themelearn-title">🗂️ 테마별 학습</h2>
-    <p class="dialog-sub">테마를 고르면 해당 지역들을 설명과 함께 학습하고, 바로 퀴즈로 이어갈 수 있어요.</p>
-    <div id="themelearn-list" class="theme-list"></div>
+    <h2>🗂️ 테마별 학습</h2>
+    <p class="dialog-sub">테마를 고르면 오른쪽에 해당 지역들이 설명과 함께 나와요. 다 봤으면 퀴즈로 이어가세요.</p>
+    <div class="tl-split">
+      <div id="themelearn-index" class="tl-index"></div>
+      <div class="tl-content">
+        <div id="themelearn-list" class="tl-list"></div>
+        <button class="primary-btn tl-quiz-btn" id="tl-quiz">🏷️ 이 테마로 퀴즈</button>
+      </div>
+    </div>
   </div>
 </div>
 
