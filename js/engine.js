@@ -451,15 +451,11 @@ function renderRecommend(){
 function renderPlayHero(){
   const box=$('play-hero'); if(!box) return;
   const r=recommendAction();
-  ensureMission();
-  const done=mission.list.filter(m=>m.done).length, total=mission.list.length;
   box.innerHTML=
     `<div class="ph-label">오늘의 추천 한 판</div>`+
     `<div class="ph-text">${r.text}</div>`+
-    `<button class="ph-btn" id="ph-start">▶ ${r.label}</button>`+
-    `<button class="ph-mission" id="ph-mission">🎯 오늘의 미션 ${done}/${total} 달성 · 보러 가기 →</button>`;
+    `<button class="ph-btn" id="ph-start">▶ ${r.label}</button>`;
   $('ph-start').onclick=r.action;
-  $('ph-mission').onclick=()=>{ const t=document.querySelector('.tab-btn[data-tab="study"]'); if(t) t.click(); };
 }
 // 🔰 초보자 추천 순서 (계정/기록이 적을 때만)
 function renderBeginnerGuide(){
