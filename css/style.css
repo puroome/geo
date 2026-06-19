@@ -75,7 +75,7 @@ button { font-family:inherit; }
 }
 .tb-chip.account-chip { cursor:pointer; transition:.15s; }
 .tb-chip.account-chip:hover { border-color:var(--sea); }
-.tb-chip.account-chip.on { background:rgba(27,79,143,.5); color:#fff; border-color:rgba(27,79,143,.5); }
+.tb-chip.account-chip.on { background:var(--good-bg); color:var(--good); border-color:transparent; }
 .tb-chip.account-chip small { opacity:.8; font-weight:700; margin-left:2px; }
 .tb-progress { display:flex; align-items:center; gap:8px; flex:1 1 auto; min-width:60px; max-width:520px; margin:0 14px; overflow:hidden; }
 .tb-progress .rank-badge { font-size:.78rem; font-weight:800; color:var(--navy); white-space:nowrap; margin:0; flex-shrink:0; }
@@ -255,7 +255,7 @@ button { font-family:inherit; }
 /* 계정 칩 + 로그인/교사 모달 */
 .account-chip { cursor:pointer; border:2px solid var(--line2); font-size:.82rem; transition:.15s; }
 .account-chip:hover { border-color:var(--sea); }
-.account-chip.on { background:rgba(27,79,143,.5); color:#fff; border-color:rgba(27,79,143,.5); }
+.account-chip.on { background:var(--good-bg); color:var(--good); border-color:transparent; }
 .account-chip small { opacity:.8; font-weight:700; margin-left:3px; }
 .dialog { position:relative; background:#fff; border-radius:18px; padding:22px 20px;
   width:min(360px,92vw); box-shadow:0 18px 50px rgba(14,42,64,.4); text-align:left; }
