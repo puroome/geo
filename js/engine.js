@@ -509,30 +509,34 @@ function renderWeakReport(){
 }
 
 // 🗂️ 테마별 학습 — 테마를 골라 해당 지역들을 설명과 함께 훑어보고(학습), 바로 퀴즈로 연결
+let THEME_SEL=null;
 function openThemeLearn(){
-  const box=$('themelearn-list'); if(!box){ return; }
-  $('themelearn-title').textContent='🗂️ 테마별 학습';
-  box.classList.remove('study');
-  box.innerHTML='';
-  buildThemes().forEach(t=>{
+  const idx=$('themelearn-index'), box=$('themelearn-list');
+  if(!idx||!box) return;
+  const themes=buildThemes();
+  THEME_SEL = (THEME_SEL && themes.find(t=>t.key===THEME_SEL.key)) || themes[0];
+  idx.innerHTML='';
+  themes.forEach(t=>{
     const b=document.createElement('button');
-    b.className='theme-pick';
-    b.innerHTML=`<span class="tp-label">${t.label}</span><span class="tp-count">${t.items.length}개 지역</span>`;
-    b.onclick=()=>showThemeLearn(t);
-    box.appendChild(b);
+    b.className='tl-index-item'+(t===THEME_SEL?' on':'');
+    b.innerHTML=t.label;
+    b.onclick=()=>{
+      THEME_SEL=t;
+      idx.querySelectorAll('.tl-index-item').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      renderThemeLearnContent();
+    };
+    idx.appendChild(b);
   });
+  renderThemeLearnContent();
   $('themelearn-modal').classList.remove('hidden');
 }
-function showThemeLearn(t){
-  $('themelearn-title').textContent=t.label;
-  const box=$('themelearn-list'); box.classList.add('study');
-  box.innerHTML=
-    '<div class="tl-list">'+t.items.map(it=>{
-      const muni=it.a.replace(/\(.+\)$/,''); const prov=(MUNIS[it.a]||{}).prov||'';
-      return `<div class="tl-item"><div class="tl-top"><b>${muni}</b> <span class="tl-prov">${prov}</span></div><div class="tl-desc">${it.c}</div></div>`;
-    }).join('')+'</div>'+
-    `<div class="tl-actions"><button class="ghost-btn" id="tl-back">← 테마 목록</button><button class="primary-btn" id="tl-quiz">🏷️ 이 테마로 퀴즈</button></div>`;
-  $('tl-back').onclick=openThemeLearn;
+function renderThemeLearnContent(){
+  const t=THEME_SEL; const box=$('themelearn-list'); if(!t||!box) return;
+  box.innerHTML=t.items.map(it=>{
+    const muni=it.a.replace(/\(.+\)$/,''); const prov=(MUNIS[it.a]||{}).prov||'';
+    return `<div class="tl-item"><div class="tl-top"><b>${muni}</b> <span class="tl-prov">${prov}</span></div><div class="tl-desc">${it.c}</div></div>`;
+  }).join('');
   $('tl-quiz').onclick=()=>{ $('themelearn-modal').classList.add('hidden'); startGame('theme', t.key); };
 }
 
