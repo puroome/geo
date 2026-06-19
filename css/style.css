@@ -1248,3 +1248,5 @@ button { font-family:inherit; }
 
 .error-msg{ display:none; margin-top:10px; font-size:.82rem; font-weight:700; color:var(--red); text-align:center; }
 .hint{ font-size:.78rem; color:var(--faint); text-align:center; }
+
+.tab-panel { max-width:680px; margin:0 auto; width:100%; }
