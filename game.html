@@ -104,9 +104,11 @@
          ============================== -->
     <section class="panel tab-panel active" id="tab-study">
 
+      <div id="tab-study-home">
+
       <!-- 1. 오늘의 미션 -->
       <div class="mission-card">
-        <h2>🎯 오늘의 미션 <small>매일 자정 갱신</small></h2>
+        <h2>🎯 오늘의 지리 미션 <small>매일 자정 갱신</small></h2>
         <div id="mission-body"></div>
       </div>
 
@@ -392,9 +394,24 @@
             <span class="mode-desc">달리며 장애물 피하고, 갈림길 정답 차선으로!</span>
             <span class="mode-play">PLAY ▶</span>
           </button>
-
         </div>
       </div>
+
+      </div><!-- tab-study-home -->
+
+      <div id="tab-study-theme" class="hidden">
+        <button class="ghost-btn" id="tl-back-home" style="margin-bottom:12px">← 학습으로</button>
+        <h2>🗂️ 테마별 학습</h2>
+        <p class="dialog-sub" style="margin:6px 0 14px">테마를 고르면 오른쪽에 해당 지역들이 설명과 함께 나와요. 다 봤으면 퀴즈로 이어가세요.</p>
+        <div class="tl-split">
+          <div id="themelearn-index" class="tl-index"></div>
+          <div class="tl-content">
+            <div id="themelearn-list" class="tl-list"></div>
+            <button class="primary-btn tl-quiz-btn" id="tl-quiz">🏷️ 이 테마로 퀴즈</button>
+          </div>
+        </div>
+      </div>
+
     </section>
 
     <!-- ==============================
@@ -456,22 +473,6 @@
       <button class="tab-btn" data-tab="record"><span class="ic">🏆</span><span class="tb-label tb-g">기록</span></button>
     </div>
 </nav>
-
-<<!-- ===== 테마별 학습 모달 ===== -->
-<div id="themelearn-modal" class="modal hidden">
-  <div class="dialog wide-dialog tl-dialog">
-    <button id="themelearn-close" class="dialog-x" aria-label="닫기">✕</button>
-    <h2>🗂️ 테마별 학습</h2>
-    <p class="dialog-sub">테마를 고르면 오른쪽에 해당 지역들이 설명과 함께 나와요. 다 봤으면 퀴즈로 이어가세요.</p>
-    <div class="tl-split">
-      <div id="themelearn-index" class="tl-index"></div>
-      <div class="tl-content">
-        <div id="themelearn-list" class="tl-list"></div>
-        <button class="primary-btn tl-quiz-btn" id="tl-quiz">🏷️ 이 테마로 퀴즈</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ===== 테마 선택 모달 ===== -->
 <div id="theme-modal" class="modal hidden">
