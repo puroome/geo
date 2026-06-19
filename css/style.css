@@ -384,7 +384,6 @@ button { font-family:inherit; }
 .tl-desc { font-size:.8rem; color:var(--dim); line-height:1.4; margin-top:3px; }
 .tl-actions { display:flex; gap:9px; margin-top:12px; }
 .tl-actions button { flex:1; }
-.tl-dialog { max-width:640px; }
 .tl-split { display:flex; margin-top:10px; border:1.5px solid var(--line2); border-radius:14px; overflow:hidden; max-height:60vh; }
 .tl-index { flex:0 0 132px; background:#F7FBFF; border-right:1.5px solid var(--line2); overflow-y:auto; }
 .tl-index-item { display:block; width:100%; text-align:left; padding:11px 12px; border:none; border-bottom:1px solid var(--line); background:none; cursor:pointer; font-size:.82rem; font-weight:700; color:var(--dim); }
