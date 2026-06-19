@@ -3814,6 +3814,18 @@ onAuthStateChanged(auth, async (user) => {
     chip.textContent = `👤 ${shown}`;
     chip.onclick = () => { if (confirm(`${shown} 로그아웃?`)) signOut(auth).then(() => window.location.href = 'index.html'); };
   }
+  // ponytail: 교사 전용 버튼 — 클라이언트 단 이메일 비교라 강제력은 없지만,
+  // 구글시트 '링크 열기' 정도의 낮은 위험도 기능이라 이 정도 체크면 충분.
+  // 더 민감한 기능이 추가되면 Firestore users/{uid}.role 같은 서버 측 플래그로 격상할 것.
+  const sheetBtn = $('teacher-sheet-btn');
+  if (sheetBtn) {
+    if (user.email === 'master@james.com') {
+      sheetBtn.classList.remove('hidden');
+      sheetBtn.onclick = () => window.open('https://docs.google.com/spreadsheets/d/1jeUgI23CIGUJyS-j3Nbp0_NDvWHaVmkJBjID06udZRw/edit?gid=1338477713#gid=1338477713', '_blank');
+    } else {
+      sheetBtn.classList.add('hidden');
+    }
+  }
   // Firestore 사용자 문서 초기화 (첫 접속 시)
   try {
     const userRef = doc(db, 'users', user.uid);
