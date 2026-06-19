@@ -77,6 +77,7 @@ button { font-family:inherit; }
 .tb-chip.account-chip:hover { border-color:var(--sea); }
 .tb-chip.account-chip.on { background:var(--good-bg); color:var(--good); border-color:transparent; }
 .tb-chip.account-chip small { opacity:.8; font-weight:700; margin-left:2px; }
+#teacher-sheet-btn { cursor:pointer; }
 .tb-progress { display:flex; align-items:center; gap:8px; flex:1 1 auto; min-width:60px; max-width:520px; margin:0 14px; overflow:hidden; }
 .tb-progress .rank-badge { font-size:.78rem; font-weight:800; color:var(--navy); white-space:nowrap; margin:0; flex-shrink:0; }
 .tb-progress .xp-bar-wrap { flex:1 1 auto; min-width:26px; height:8px; }
