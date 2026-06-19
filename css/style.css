@@ -69,7 +69,8 @@ button { font-family:inherit; }
 .tb-brand .tb-em { color:var(--sea-d); }
 .tb-stats { display:flex; align-items:center; gap:6px; flex-shrink:0; }
 .tb-chip {
-  background:#fff; border:1.5px solid var(--line2); border-radius:99px; padding:5px 11px;
+  background:#fff; border:1.5px solid var(--line2); border-radius:99px; padding:0 11px;
+  height:32px; display:inline-flex; align-items:center; justify-content:center;
   font-weight:800; font-size:.8rem; color:var(--navy); white-space:nowrap;
 }
 .tb-chip.account-chip { cursor:pointer; transition:.15s; }
