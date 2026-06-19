@@ -108,7 +108,7 @@ function buildThemes(){
   });
   const pop1=Object.entries(provTop).map(([prov,n])=>({a:n, c:`${prov}에서 인구가 가장 많은 시·군`}));
   THEMES_CACHE=[
-    {key:'docheong', label:'🏛️ 도청 소재지', items:[
+    {key:'docheong', label:'🏛️ 도청 소재지', short:'도청소재', items:[
       {a:'수원시',c:'경기도의 도청 소재지'},
       {a:'춘천시',c:'강원특별자치도의 도청 소재지'},
       {a:'청주시',c:'충청북도의 도청 소재지'},
@@ -119,7 +119,7 @@ function buildThemes(){
       {a:'창원시',c:'경상남도의 도청 소재지'},
       {a:'제주시',c:'제주특별자치도의 도청 소재지'},
     ]},
-    {key:'innov', label:'🏢 혁신도시·기업도시', items:[
+    {key:'innov', label:'🏢 혁신도시·기업도시', short:'혁신도시', items:[
       {a:'나주시',c:'광주·전남 공동 혁신도시(빛가람동, 한국전력 등)'},
       {a:'김천시',c:'경북 혁신도시(한국도로공사 등)'},
       {a:'진주시',c:'경남 혁신도시(LH 한국토지주택공사)'},
@@ -130,7 +130,7 @@ function buildThemes(){
       {a:'태안군',c:'관광 레저형 기업도시'},
       {a:'충주시',c:'지식 기반형 기업도시'},
     ]},
-    {key:'festival', label:'🎉 축제', items:[
+    {key:'festival', label:'🎉 축제', short:'축제', items:[
       {a:'보령시',c:'대천 해수욕장의 머드 축제'},
       {a:'진주시',c:'남강 유등 축제'},
       {a:'함평군',c:'나비 축제'},
@@ -146,7 +146,7 @@ function buildThemes(){
       {a:'하동군',c:'야생차 문화 축제'},
       {a:'영동군',c:'난계 국악·포도 축제'},
     ]},
-    {key:'traffic', label:'✈️ 교통(공항·KTX)', items:[
+    {key:'traffic', label:'✈️ 교통(공항·KTX)', short:'교통', items:[
       {a:'인천광역시',c:'영종도 간척지에 세운 우리나라 최대 관문 국제공항이 있는, 수도권 서해안의 항구 도시'},
       {a:'서울특별시',c:'우리나라 수도이자, 강서구에 국내선 중심 김포 국제공항이 있는 도시'},
       {a:'부산광역시',c:'경부 고속철도(KTX)의 종착역과 김해 국제공항을 끼고 있는, 우리나라 제2의 도시이자 최대 무역항'},
@@ -162,8 +162,8 @@ function buildThemes(){
       {a:'강릉시',c:'2018 평창 동계올림픽 빙상 경기가 열린, 경강선 KTX가 닿는 강원 동해안 도시'},
       {a:'경주시',c:'신라 천년의 고도(古都)로 불국사·석굴암이 있는, 신경주역(경부 KTX) 도시'},
     ]},
-    {key:'pop1', label:'👥 인구 1위 지역(도별)', items:pop1},
-    {key:'special', label:'🍊 특산물', items:[
+    {key:'pop1', label:'👥 인구 1위 지역(도별)', short:'인구', items:pop1},
+    {key:'special', label:'🍊 특산물', short:'특산물', items:[
       {a:'횡성군',c:'한우(축산물 지리적 표시제 1호)'},
       {a:'보성군',c:'녹차(드넓은 차밭)'},
       {a:'영광군',c:'법성포 굴비'},
@@ -179,7 +179,7 @@ function buildThemes(){
       {a:'청양군',c:'고추·구기자'},
       {a:'광양시',c:'매실'},
     ]},
-    {key:'heritage', label:'🏯 유네스코 세계유산', items:[
+    {key:'heritage', label:'🏯 유네스코 세계유산', short:'세계유산', items:[
       {a:'경주시',c:'불국사·석굴암, 경주 역사유적지구'},
       {a:'합천군',c:'해인사 장경판전(팔만대장경)'},
       {a:'서울특별시',c:'종묘·창덕궁·조선 왕릉'},
@@ -519,7 +519,7 @@ function openThemeLearn(){
   themes.forEach(t=>{
     const b=document.createElement('button');
     b.className='tl-index-item'+(t===THEME_SEL?' on':'');
-    b.innerHTML=t.label;
+    b.innerHTML=t.label.split(' ')[0]+' '+t.short;
     b.onclick=()=>{
       THEME_SEL=t;
       idx.querySelectorAll('.tl-index-item').forEach(x=>x.classList.remove('on'));
@@ -529,7 +529,8 @@ function openThemeLearn(){
     idx.appendChild(b);
   });
   renderThemeLearnContent();
-  $('themelearn-modal').classList.remove('hidden');
+  $('tab-study-home').classList.add('hidden');
+  $('tab-study-theme').classList.remove('hidden');
 }
 function renderThemeLearnContent(){
   const t=THEME_SEL; const box=$('themelearn-list'); if(!t||!box) return;
@@ -537,7 +538,7 @@ function renderThemeLearnContent(){
     const muni=it.a.replace(/\(.+\)$/,''); const prov=(MUNIS[it.a]||{}).prov||'';
     return `<div class="tl-item"><div class="tl-top"><b>${muni}</b> <span class="tl-prov">${prov}</span></div><div class="tl-desc">${it.c}</div></div>`;
   }).join('');
-  $('tl-quiz').onclick=()=>{ $('themelearn-modal').classList.add('hidden'); startGame('theme', t.key); };
+  $('tl-quiz').onclick=()=>{ startGame('theme', t.key); };
 }
 
 // 👹 권역 보스전 — 숙련도 게이트 + 칭호
@@ -623,7 +624,7 @@ function openModesModal(){
 $('btn-all-modes')?.addEventListener('click', openModesModal);
 $('modes-close')?.addEventListener('click', ()=>$('modes-modal').classList.add('hidden'));
 $('btn-theme-learn')?.addEventListener('click', openThemeLearn);
-$('themelearn-close')?.addEventListener('click', ()=>$('themelearn-modal').classList.add('hidden'));
+$('tl-back-home')?.addEventListener('click', ()=>{ $('tab-study-theme').classList.add('hidden'); $('tab-study-home').classList.remove('hidden'); });
 // 🪙 코인 칩 탭 → 도감(카드 뽑기) 탭으로 (코인 사용처 안내)
 document.querySelector('.coin-chip')?.addEventListener('click', ()=>{
   const t=document.querySelector('.tab-btn[data-tab="collection"]'); if(t) t.click();
@@ -3708,6 +3709,8 @@ document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>
 }));
 // 홈 복귀 시 항상 '플레이' 탭으로
 function resetHomeTab(){
+  $('tab-study-theme')?.classList.add('hidden');
+  $('tab-study-home')?.classList.remove('hidden');
   const pb=document.querySelector('.tab-btn[data-tab="study"]');
   if(pb) pb.click();
 }
