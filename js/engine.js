@@ -624,7 +624,6 @@ function openModesModal(){
 $('btn-all-modes')?.addEventListener('click', openModesModal);
 $('modes-close')?.addEventListener('click', ()=>$('modes-modal').classList.add('hidden'));
 $('btn-theme-learn')?.addEventListener('click', openThemeLearn);
-$('tl-back-home')?.addEventListener('click', ()=>{ $('tab-study-theme').classList.add('hidden'); $('tab-study-home').classList.remove('hidden'); });
 // 🪙 코인 칩 탭 → 도감(카드 뽑기) 탭으로 (코인 사용처 안내)
 document.querySelector('.coin-chip')?.addEventListener('click', ()=>{
   const t=document.querySelector('.tab-btn[data-tab="collection"]'); if(t) t.click();
@@ -3694,7 +3693,6 @@ $('btn-explore').onclick=()=>startGame('explore');
 document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>{
   const t=b.dataset.tab;
   if(!$('screen-home').classList.contains('active')){
-    // 점수가 아직 저장되지 않은 라운드 중(지도 탐색처럼 점수 없는 모드는 제외) 나가는 경우만 확인
     const inUnsavedRound = $('screen-game').classList.contains('active') && G.mode && G.mode!=='explore';
     if(inUnsavedRound && !confirm('지금 나가면 이번 라운드 점수는 저장되지 않아요. 그래도 나가시겠어요?')) return;
     stopArcade(); stopTimer(); clearMapTap();
@@ -3703,6 +3701,8 @@ document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>
     initHome();
     show('screen-home');
   }
+  $('tab-study-theme')?.classList.add('hidden');
+  $('tab-study-home')?.classList.remove('hidden');
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='tab-'+t));
   document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active', x===b));
   try{ window.scrollTo(0,0); }catch(e){}
