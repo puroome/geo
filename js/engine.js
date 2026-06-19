@@ -87,7 +87,7 @@ const MODE_INFO = {
   ox:       {title:'⚡ 스피드 OX (60초)', useMap:false, time:60},
   battle:   {title:'⚔️ 1:1 배틀', useMap:true, n:16, time:30},
   theme:    {title:'🏷️ 테마 게임', useMap:true, n:12, time:30},
-  wanted:   {title:'🔍 오답 수배 복습', useMap:true, n:12, time:30},
+  wanted:   {title:'🔍 오답지역 복습', useMap:true, n:12, time:30},
   boss:     {title:'👹 권역 보스전', useMap:true, n:10, time:30},
   bingo:    {title:'🧩 빙고 게임', useMap:false, n:25, time:22},
   streak:   {title:'🔥 연승 모드', useMap:true, time:0},
@@ -433,7 +433,7 @@ function recommendAction(){
   const wn=Object.keys(wanted).length;
   if(bossCand) return {text:`${regionLabel(bossCand)} 숙련도 ${Math.round(bossMastery(bossCand)*100)}%! 보스전 도전 각이야 👹`,
     label:'보스전 도전', action:()=>startGame('boss', bossCand)};
-  if(wn>0) return {text:`최근 틀린 지역 ${wn}곳이 수배 중! 이것부터 잡고 가자 🔍`,
+  if(wn>0) return {text:`최근 틀린 지역 ${wn}곳부터 익히자 🔍`,
     label:`오답 ${wn}곳 복습`, action:()=>{ G.region='전체'; startGame('wanted'); }};
   if(xp<300) return {text:'처음이라면 지도 탐색으로 지도와 친해져 볼까? 🗺️',
     label:'지도 탐색', action:()=>startGame('explore')};
@@ -474,7 +474,7 @@ function renderBeginnerGuide(){
   box.querySelectorAll('.bg-step').forEach(b=>b.onclick=()=>startGame(b.dataset.m));
 }
 
-// 🩹 약점 리포트 — 권역별 정답률(약한 순) + 자주 틀린 시·군(수배) + 바로 복습
+// 🩹 약점 리포트 — 권역별 정답률(약한 순) + 자주 틀린 시·군 + 바로 복습
 function renderWeakReport(){
   const box=$('weak-body'); if(!box) return;
   const regs=BOSS_REGIONS.map(r=>({r, s:stats[r]||{c:0,t:0}}))
@@ -550,12 +550,12 @@ function renderBoss(){
   box.querySelectorAll('.boss-btn:not([disabled])').forEach(b=>b.onclick=()=>startGame('boss', b.dataset.region));
 }
 
-// 🔍 오답 지역 수배서 — 틀린 시·군을 모아 복습 유도
+// 🔍 오답 지역 — 틀린 시·군을 모아 복습 유도
 function renderWanted(){
   const box=$('wanted-body'); if(!box) return;
   const keys=Object.keys(wanted).sort((a,b)=>wanted[b].miss-wanted[a].miss);
   if(!keys.length){
-    box.innerHTML='<div class="wanted-empty">수배 중인 지역이 없습니다. 위치 사냥·지역 판독·추리에서 틀린 시·군이 자동으로 여기에 모입니다.</div>';
+    box.innerHTML='<div class="wanted-empty">오답 지역이 없습니다. 위치 사냥·지역 판독·추리에서 틀린 시·군이 자동으로 여기에 모입니다.</div>';
     return;
   }
   const danger=keys.filter(m=>wanted[m].miss>=3).length;
@@ -564,9 +564,9 @@ function renderWanted(){
     return `<span class="wanted-chip${dg?' danger':''}">${dg?'🚨 ':''}${muniShort(m)}<small>${w.miss}회</small></span>`;
   }).join('');
   box.innerHTML=
-    `<div class="wanted-sub">${keys.length}개 지역 수배 중${danger?` · <b style="color:var(--red)">위험 ${danger}곳</b>`:''} · 2연속 정답 시 해제</div>`+
+    `<div class="wanted-sub">${keys.length}개 지역 오답 중${danger?` · <b style="color:var(--red)">위험 ${danger}곳</b>`:''} · 2연속 정답 시 해제</div>`+
     `<div class="wanted-chips">${chips}</div>`+
-    `<button class="primary-btn" id="btn-wanted-review">🎯 수배 지역만 복습 (${Math.min(keys.length,MODE_INFO.wanted.n)}문제)</button>`;
+    `<button class="primary-btn" id="btn-wanted-review">🎯 오답 지역만 복습 (${Math.min(keys.length,MODE_INFO.wanted.n)}문제)</button>`;
   $('btn-wanted-review').onclick=()=>{ G.region='전체'; startGame('wanted'); };
 }
 
@@ -625,7 +625,7 @@ document.querySelector('.coin-chip')?.addEventListener('click', ()=>{
   const t=document.querySelector('.tab-btn[data-tab="collection"]'); if(t) t.click();
 });
 $('reset-data').onclick=()=>{
-  if(confirm('모든 기록(점수·숙련도·랭킹·수배서)을 초기화할까요?')){
+  if(confirm('모든 기록(점수·숙련도·랭킹·오답지역)을 초기화할까요?')){
     store.remove('geo_stats'); store.remove('geo_xp'); store.remove('geo_board'); store.remove('geo_wanted'); store.remove('geo_mission'); store.remove('geo_titles');
     ['geo_ach','geo_daily_done','geo_daily_score','geo_maxcombo','geo_bingo_black','geo_beststreak','geo_cardlv'].forEach(k=>store.remove(k));
     stats={}; xp=0; board={}; wanted={}; mission=null; titles={}; ach={}; cardLv={}; initHome();
@@ -1200,7 +1200,7 @@ function recordStat(region, correct){
 
 // --- 오답 지역 수배서 ---
 // 시·군 위치 모드(위치 사냥·지역 판독·추리)에서 그 시·군을 정확히 맞혔는지(hit)를 기록.
-// 틀리면 수배 등록(miss 누적, 3회↑ '위험'), 2연속 정답이면 수배 해제.
+// 틀리면 오답지 등록(miss 누적, 3회↑ '위험'), 2연속 정답이면 수배 해제.
 function logResult(muni, hit){
   if(!muni) return;
   if(hit){
@@ -1405,7 +1405,7 @@ function feedback(correct, head, body, pts){
   const ptsTag = pts ? ` <span class="fb-pts${pts<0?' minus':''}">${pts>0?'+':''}${pts}점</span>` : '';
   const REGION_TAP_TYPES=['location','wanted','theme','muniname','detective','bingo'];
   const note = (!correct && REGION_TAP_TYPES.includes(G.curType))
-    ? '<div class="fb-note">📌 이 지역은 [미션] 탭 ‘오답 수배서’에 등록됐어요 — 나중에 복습!</div>' : '';
+    ? '<div class="fb-note">📌 이 지역은 [미션] 탭 ‘오답지’에 등록됐어요 — 나중에 복습!</div>' : '';
   fb.innerHTML=`<div class="fb-head">${face}${head}${flair}${ptsTag}</div>${body}${note}`;
   fb.classList.remove('hidden'); fb.classList.add('pop');
   setTimeout(()=>fb.classList.remove('pop'),400);
