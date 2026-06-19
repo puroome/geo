@@ -3807,6 +3807,7 @@ async function loadGameData() {
 onAuthStateChanged(auth, async (user) => {
   if (!user) { window.location.href = 'index.html'; return; }
   currentUser = user;
+  if (user.displayName && String(user.displayName).trim()) userDisplayName = String(user.displayName).trim();   // USERS 시트 name 열 → syncUsers()가 이미 Firebase Auth displayName에 동기화해둠
   const emailId = user.email.split('@')[0];
   const chip = $('account-chip');
   if (chip) {
