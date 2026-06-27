@@ -1,4 +1,4 @@
-const CACHE_NAME = 'exam-supervisor-app-v1';
+const CACHE_NAME = 'korean-geography-v1';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
