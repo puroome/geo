@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>한국지리 GAME</title>
+  <script type="text/javascript" nonce="5cc3d97cd0464a6ca62effa6443" src="//local.adguard.org?ts=1782558473152&amp;type=content-script&amp;dmn=chatgpt.com&amp;url=https%3A%2F%2Fchatgpt.com%2Fbackend-api%2Festuary%2Fcontent%3Fid%3Dfile_00000000f648720683b44bc91cb93cea%26fn%3D03_%25ED%2595%259C%25EA%25B5%25AD%25EC%25A7%2580%25EB%25A6%25AC%25ED%2595%2599%25EC%258A%25B5%25EC%2595%25B1_index.html%26cd%3Dattachment%26ts%3D495155%26p%3Dfs%26cid%3D1%26sig%3D1754d086938d57b60a6744e61302f06913adc74611d1103e2c95146808748768%26v%3D0&amp;app=whale.exe&amp;css=2&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script><script type="text/javascript" nonce="5cc3d97cd0464a6ca62effa6443" src="//local.adguard.org?ts=1782558473152&amp;name=AdGuard%20Assistant&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;type=user-script"></script><link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0f766e">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -64,5 +66,17 @@
     passwordInput.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
     emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') passwordInput.focus(); });
   </script>
+
+  <!-- PWA: 서비스 워커 등록 -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('./service-worker.js')
+        .catch((error) => {
+          console.error('서비스 워커 등록 실패:', error);
+        });
+    }
+  </script>
+
 </body>
 </html>
